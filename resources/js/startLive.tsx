@@ -10,7 +10,7 @@ const createApp = (plugins: any[]) => {
   
   createInertiaApp({
     resolve: (name: string) => {
-      return import(`./pages/live/${name}`);
+      return require(`./pages/live/${name}`);
     },
     setup({ el, App, props }) {
       console.log(props.initialPage.props);

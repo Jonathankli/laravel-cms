@@ -12,13 +12,11 @@ const createApp = (plugins: any[]) => {
   createInertiaApp({
     resolve: (name: string) => {
 
-      const module = import(`./pages/cms/${name}`);
+      const module = require(`./pages/cms/${name}`);
   
-      return module.then(m => {
-        if(m.default.layout || m.default.layout === null) return m.default;
-        m.default.layout = page => <CmsLayout children={page} navigation={page?.props?.navigation}/>
-        return m.default;
-      });
+      if(module.default.layout || module.default.layout === null) return module.default;
+      module.default.layout = page => <CmsLayout children={page} navigation={page?.props?.navigation}/>
+      return module.default;
     },
     setup({ el, App, props }) {
       console.log(props.initialPage.props);

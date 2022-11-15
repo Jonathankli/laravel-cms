@@ -16,6 +16,7 @@ class CmsServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'cms');
 
         $router->middlewareGroup('cms', [
             StartSession::class,

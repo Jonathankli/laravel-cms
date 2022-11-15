@@ -5,6 +5,7 @@ namespace Jkli\Cms;
 use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\ServiceProvider;
+use Jkli\Cms\Console\PluginMapCommand;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
 
 class CmsServiceProvider extends ServiceProvider
@@ -28,7 +29,9 @@ class CmsServiceProvider extends ServiceProvider
                 __DIR__.'/../config/config.php' => config_path('cms.php'),
             ], 'config');
 
-            $this->commands([]);
+            $this->commands([
+                PluginMapCommand::class
+            ]);
         }
         
     }

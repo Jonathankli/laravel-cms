@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     {{-- <link href="{{ mix('/css/app.css', 'vendor/onehub-gastro') }}" rel="stylesheet" /> --}}
-    <script src="{{ mix('index.js', 'vendor/onehub') }}" defer></script>
+    <script src="{{ mix('cms.js', 'cms') }}" defer></script>
     @inertiaHead
   </head>
   <body>

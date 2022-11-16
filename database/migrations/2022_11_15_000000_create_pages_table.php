@@ -16,12 +16,12 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->uuid('id');
-            $table->string('url');
+            $table->string('path');
             $table->string('name');
             
             //SEO
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->boolean('no_index')->default(false);
             $table->boolean('no_follow')->default(false);
 

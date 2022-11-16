@@ -26,8 +26,10 @@ return new class extends Migration
             $table->boolean('no_follow')->default(false);
 
             $table->boolean('is_active')->default(true);
+            $table->boolean('use_parent_path')->default(true);
 
             $table->foreignUuid('node_id')->references('id')->on('nodes');
+            $table->foreignUuid('parent_id')->nullable()->references('id')->on('pages');
 
             $table->timestamps();
         });

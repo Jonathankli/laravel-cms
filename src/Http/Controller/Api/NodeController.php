@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace Jkli\CmsHttp\Controllers\API;
 
 use Illuminate\Http\Request;
 use Jkli\Cms\Http\Controller\Controller;

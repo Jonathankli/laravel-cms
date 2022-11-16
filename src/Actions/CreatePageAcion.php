@@ -1,10 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace Jkli\CmsHttp\Controllers\API;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\CreatePageRequest;
 use Jkli\Cms\Models\Node;
 use Jkli\Cms\Models\Page;
@@ -12,11 +9,6 @@ use Jkli\Cms\Models\Page;
 class CreatePageAcion
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function __construct(protected CreatePageRequest $request) {}
 
     /**

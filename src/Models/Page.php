@@ -18,4 +18,14 @@ class Page extends Model
     {
         return Node::recursiveChildren(Node::query(), fn($q) => $q->where('id', $this->node_id));
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(Page::class);
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Page::class);
+    }
 }

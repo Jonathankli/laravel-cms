@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace Jkli\CmsHttp\Controllers;
 
+use Jkli\CmsHttp\Controllers\API\CreatePageAcion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Jkli\Cms\Http\Controller\Controller;
@@ -17,7 +18,9 @@ class PageController extends Controller
      */
     public function index()
     {
-        
+        Inertia::render("Navi/Show", [
+            'pages' => Page::all()
+        ]);
     }
 
     /**
@@ -29,7 +32,7 @@ class PageController extends Controller
     public function store(CreatePageAcion $action)
     {
         $page = $action->handle();
-        $nodes = Node::withRecursiveChildren(fn($q) => $q->where('id', $page->node_id))->get();
+        $nodes = $page->nodes();
         
         Inertia::render("Page/Show", [
             $page,
@@ -46,7 +49,7 @@ class PageController extends Controller
     public function show($id)
     {
         $page = Page::findOrFail($id);
-        $nodes = Node::withRecursiveChildren(fn($q) => $q->where('id', $page->node_id))->get();
+        $nodes = $page->nodes();
 
         Inertia::render("Page/Show", [
             $page,

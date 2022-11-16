@@ -7,6 +7,8 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\ServiceProvider;
 use Jkli\Cms\Console\PluginMapCommand;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
+use Jkli\Cms\Models\Page;
+use Jkli\Cms\Observers\PageObserver;
 
 class CmsServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,7 @@ class CmsServiceProvider extends ServiceProvider
             HandleInertiaRequests::class
         ]);
 
+        $this->registerObservers();
         
         if ($this->app->runningInConsole()) {
 
@@ -36,6 +39,11 @@ class CmsServiceProvider extends ServiceProvider
             ]);
         }
         
+    }
+
+    public function registerObservers()
+    {
+        Page::observe(PageObserver::class);
     }
 
     /**

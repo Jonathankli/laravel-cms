@@ -3,8 +3,9 @@
 namespace Jkli\Cms\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreatePageRequest extends FormRequest
+class UpdatePageRequest extends FormRequest
 {
 
     /**
@@ -15,9 +16,9 @@ class CreatePageRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'path' => ['required', 'string', 'max:255', 'unique:pages,path'],
-            'title' => ['required', 'string', 'max:255'],
+            'name' => ['nullable', 'string', 'max:255'],
+            'path' => ['nullable', 'string', 'max:255'],
+            'title' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'no_index' => ['nullable', 'boolean'],
             'no_follow' => ['nullable', 'boolean'],

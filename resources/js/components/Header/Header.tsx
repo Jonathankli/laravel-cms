@@ -2,7 +2,7 @@ import React from 'react';
 import { Header as MantineHeader, Group, Container, SegmentedControl, Center, Box, Text } from '@mantine/core';
 import { IconEye, IconPencil, IconDirections } from '@tabler/icons';
 import { useStyles } from './styles';
-import NavigationModal from '../../modals/NavigationModal/NavigationModal';
+import { NavigationTrigger } from '../../features/navigation';
 
 const viewControllOptions = [
     {
@@ -30,17 +30,10 @@ export function Header() {
 
   return (
     <>
-      <NavigationModal/>
       <MantineHeader height={56}>
         <Container className={classes.inner} >
 
-          <Group spacing={0} className={classes.navi} position="left" noWrap>
-            <IconDirections/>
-            <div className={classes.navigationText}>
-              <Text className={classes.navigationHeadline}>Navigation</Text>
-              <Text className={classes.navigationSite}>Startseite</Text>
-            </div>
-          </Group>
+          <NavigationTrigger />
 
           <SegmentedControl
               data={viewControllOptions}

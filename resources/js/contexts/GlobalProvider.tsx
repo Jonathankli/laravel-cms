@@ -10,7 +10,7 @@ import React from "react";
 const GlobalProviders = (props) => {
     const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
         key: "mantine-color-scheme",
-        defaultValue: "dark",
+        defaultValue: "light",
         getInitialValueInEffect: true,
     });
 

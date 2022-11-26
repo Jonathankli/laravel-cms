@@ -1,6 +1,6 @@
 <?php
 
-namespace Jkli\CmsHttp\Controllers\API;
+namespace Jkli\Cms\Actions;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use Jkli\Cms\Models\Page;
 class ShowPageAcion
 {
 
-    public function __construct(protected Request $request, protected ?string $path) {}
+    public function __construct(protected Request $request) {}
 
     /**
      * Creates a new Page
@@ -17,21 +17,16 @@ class ShowPageAcion
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function handle(?string $path = null)
+    public function handle(?string $path = null): Page
     {
         if(!$path) {
-            if($this->path) {
-                $path = $this->path;
-            } else {
-                $path = $this->request->route('path');
-            }
+            $path = $this->request->route('path');
+            $path = trim($path, "/");
         }
 
         if(!$path) {
-            throw new Exception("No page path is provided!");
+            $path = "/";
         }
-
-        $path = trim($path, "/");
 
         $page = Page::where('full_path', $path)
             ->firstOrFail(); 

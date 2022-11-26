@@ -15,8 +15,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('pages', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('path');
+            $table->string('full_path');
             $table->string('name');
             
             //SEO
@@ -29,9 +30,11 @@ return new class extends Migration
             $table->boolean('use_parent_path')->default(true);
 
             $table->foreignUuid('node_id')->references('id')->on('nodes');
-            $table->foreignUuid('parent_id')->nullable()->references('id')->on('pages');
 
             $table->timestamps();
+        });
+        Schema::table('pages', function (Blueprint $table) {
+            $table->foreignUuid('parent_id')->nullable()->references('id')->on('pages');
         });
     }
 

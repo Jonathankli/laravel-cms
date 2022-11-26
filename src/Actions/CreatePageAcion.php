@@ -1,6 +1,6 @@
 <?php
 
-namespace Jkli\CmsHttp\Controllers\API;
+namespace Jkli\Cms\Actions;
 
 use Jkli\Cms\Http\Requests\CreatePageRequest;
 use Jkli\Cms\Models\Node;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Jkli\CmsHttp\Controllers;
+namespace Jkli\Cms\Http\Controller;
 
-use Jkli\CmsHttp\Controllers\API\CreatePageAcion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Jkli\Cms\Actions\CreatePageAcion;
+use Jkli\Cms\Actions\ShowPageAcion;
 use Jkli\Cms\Http\Controller\Controller;
-use Jkli\Cms\Models\Node;
 use Jkli\Cms\Models\Page;
 
 class PageController extends Controller
@@ -18,7 +18,7 @@ class PageController extends Controller
      */
     public function index()
     {
-        Inertia::render("Navi/Show", [
+        return Inertia::render("Navi/Show", [
             'pages' => Page::all()
         ]);
     }
@@ -34,7 +34,7 @@ class PageController extends Controller
         $page = $action->handle();
         $nodes = $page->nodes();
         
-        Inertia::render("Page/Show", [
+        return Inertia::render("Page/Show", [
             $page,
             $nodes
         ]);
@@ -46,12 +46,12 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ShowPageAcion $action)
     {
-        $page = Page::findOrFail($id);
+        $page = $action->handle();
         $nodes = $page->nodes();
 
-        Inertia::render("Page/Show", [
+        return Inertia::render("Page/Show", [
             $page,
             $nodes
         ]);

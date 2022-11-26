@@ -1,6 +1,6 @@
 <?php
 
-namespace Jkli\CmsHttp\Controllers\API;
+namespace Jkli\Cms\Actions;
 
 use Exception;
 use Illuminate\Http\Request;

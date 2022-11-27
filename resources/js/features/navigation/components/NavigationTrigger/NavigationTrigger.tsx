@@ -9,7 +9,7 @@ export function NavigationTrigger() {
   const { classes } = useStyles();
   const [open, setIsOpen] = useState(false);
 
-  const modal = open ? <NavigationModel pages={[]} close={setIsOpen.bind(this, false)}/> : null;
+  const modal = open ? <NavigationModel close={setIsOpen.bind(this, false)}/> : null;
 
   return (
     <>

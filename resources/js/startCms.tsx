@@ -10,9 +10,10 @@ InertiaProgress.init();
 const createApp = (plugins: any[]) => {
   
   createInertiaApp({
-    resolve: (name: string) => {
+    resolve: async (name: string) => {
 
-      const module = require(`./pages/cms/${name}`);
+      const pages = import.meta.glob('./pages/**/*.tsx');
+      const module = await pages[`./pages/cms/${name}.tsx`]();
   
       if(module.default.layout || module.default.layout === null) return module.default;
       module.default.layout = page => <CmsLayout children={page} navigation={page?.props?.navigation}/>

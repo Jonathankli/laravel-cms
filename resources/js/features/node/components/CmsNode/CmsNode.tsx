@@ -11,13 +11,10 @@ export const ActiveNodeContext = createContext<string>("");
 export function CmsNode(props: CmsNodeProps) {
 
     const { node } = props;
-    const { classes } = useStyles();
 
     return ( 
         <ActiveNodeContext.Provider value={node.id}>
-            <div className={classes.container}>
-                <Section node={node} />
-            </div>
+            <Section node={node} />
         </ActiveNodeContext.Provider>
     );
 }

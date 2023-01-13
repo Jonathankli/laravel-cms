@@ -1,21 +1,20 @@
 import React from "react";
-import InertiaProvider, { InertiaPageProps } from "./InertiaProvider";
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "../store";
 import MantineProvider from "./MantineProvider";
 
 interface GlobalProvidersProps {
-    inertiaProps: InertiaPageProps,
     children: any
 }
-
 
 const GlobalProviders = (props: GlobalProvidersProps) => {
 
     return (
-        <InertiaProvider props={props.inertiaProps}>
+        <ReduxProvider store={store}>
             <MantineProvider>
                 {props.children}
             </MantineProvider>
-        </InertiaProvider>
+        </ReduxProvider>
     );
 };
 

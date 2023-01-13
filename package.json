@@ -33,7 +33,7 @@
     "@jkli/react-finder": "^0.3.0",
     "@mantine/core": "^5.7.2",
     "@mantine/hooks": "^5.7.2",
-    "@reduxjs/toolkit": "^1.9.0",
+    "@reduxjs/toolkit": "^1.9.1",
     "@tabler/icons": "^1.111.0",
     "react-redux": "^8.0.5"
   },

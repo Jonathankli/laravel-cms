@@ -3,7 +3,7 @@ import { Outlet } from '../features/node';
 
 export function Section(props) {
     return (
-        <div>
+        <div style={{width: "100%"}}>
             Section<br/>
             <Outlet />
         </div>

@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Jkli\Cms\Models\Node;
 
 return new class extends Migration
 {
@@ -16,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('nodes', function (Blueprint $table) {
             $table->uuid('id')->primary();
+
             $table->string('type');
+            $table->number('index');
+            $table->number('outlet_index');
             $table->json('data')->nullable();
 
             $table->timestamps();

@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAcion;
 use Jkli\Cms\Actions\ShowPageAcion;
 use Jkli\Cms\Http\Controller\Controller;
+use Jkli\Cms\Http\Resources\NodeResource;
+use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Models\Page;
 
 class PageController extends Controller
@@ -33,7 +35,7 @@ class PageController extends Controller
     {
         $page = $action->handle();
         $nodes = $page->nodes();
-        
+
         return Inertia::render("Page/Show", [
             $page,
             $nodes
@@ -49,11 +51,10 @@ class PageController extends Controller
     public function show(ShowPageAcion $action)
     {
         $page = $action->handle();
-        $nodes = $page->nodes();
 
         return Inertia::render("Page/Show", [
-            $page,
-            $nodes
+            "page" => PageResource::make($page),
+            "nodes" => fn () => NodeResource::collection($page->nodes()->get())->all()
         ]);
     }
 

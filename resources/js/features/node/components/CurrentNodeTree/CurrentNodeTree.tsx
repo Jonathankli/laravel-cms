@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { CmsNode } from "../CmsNode/CmsNode";
+import { NodeActionContainer } from "../NodeActionContaibner/NodeActionContainer";
 import { Outlet } from "../Outlet/Outlet";
 
 interface CurrentNodeTreeProps {
@@ -18,6 +19,8 @@ export function CurrentNodeTree(props: CurrentNodeTreeProps) {
     }, [nodes])
 
     return ( 
-        <Outlet nodeId={rootNode.id}/>
+        <NodeActionContainer node={rootNode}>
+            <Outlet nodeId={rootNode.id}/>
+        </NodeActionContainer>
     );
 }

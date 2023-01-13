@@ -15,6 +15,7 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
     const { classes, cx } = useStyles();
     const activeNodeId = useCmsSelector(selectAvtiveNodeId);
     const dispatch = useCmsDispatch();
+    const isActiveNode = activeNodeId === node.id;
 
     const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -22,12 +23,12 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
     }
 
     return ( 
-        <>
-            <InsertNode/>
-            <div className={cx(classes.container, { [classes.active]: activeNodeId === node.id })} onMouseMove={onMouseMove}>
+        <div onMouseMove={onMouseMove} style={{minHeight: "100%"}}>
+            {isActiveNode && <InsertNode/>}
+            <div className={cx(classes.container, { [classes.active]: isActiveNode})}>
                 {children}
             </div>
-            <InsertNode/>
-        </>
+            {isActiveNode && <InsertNode/>}
+        </div>
     );
 }

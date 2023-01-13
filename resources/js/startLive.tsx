@@ -9,17 +9,16 @@ InertiaProgress.init();
 const createApp = (plugins: any[]) => {
   
   createInertiaApp({
-    resolve: (name: string) => {
-      return require(`./pages/live/${name}`);
+    resolve: async (name: string) => {
+      const pages = import.meta.glob('./pages/**/*.tsx');
+      return await pages[`./pages/cms/${name}.tsx`]();
     },
     setup({ el, App, props }) {
       console.log(props.initialPage.props);
       props.initialPage.props.plugins = plugins;
       const root = ReactDOM.createRoot(el);
       root.render(
-        <GlobalProviders>
           <App {...props} />
-        </GlobalProviders>
       )
     },
   })

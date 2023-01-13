@@ -20,7 +20,8 @@ export function Outlet(props: OutletProps) {
         const id = nodeId ? nodeId : dynamicNodeId;
         return (nodes as CmsNode[]).filter(
             (n) => n.parent === id && index === n.outlet
-        );
+        )
+        .sort((a, b) => a.index - b.index);
     }, [nodeId, dynamicNodeId, nodes, index]);
 
     return (

@@ -26,7 +26,8 @@ class NodeResource extends JsonResource
             'id' => $this->id,
             'type' => $this->type,
             'parent' => $this->parent_id,
-            'outlet_index' => $this->outlet_index,
+            'outlet' => $this->outlet_index,
+            'index' => $this->index,
             'data' => $this->data,
         ];
     }

@@ -20,25 +20,21 @@ class CmsSeeder extends Seeder
         ]);
         $sec1 = Node::create([
             "type" => "section",
-            "outlet_index" => 1,
             "index" => 1,
             "parent_id" => $rootNode->id,
         ]);
         Node::create([
             "type" => "section",
-            "outlet_index" => 1,
             "index" => 2,
             "parent_id" => $rootNode->id,
         ]);
         Node::create([
             "type" => "headline",
-            "outlet_index" => 1,
             "index" => 1,
             "parent_id" => $sec1->id,
         ]);
         Node::create([
             "type" => "text",
-            "outlet_index" => 1,
             "index" => 2,
             "parent_id" => $sec1->id,
         ]);

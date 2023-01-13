@@ -15,7 +15,7 @@ class PagePathService
             $path = explode('/', trim($page->parent->full_path, '/'));
         }
         $path = array_merge($path, explode('/', trim($page->path, '/')));
-        return '/' + implode('/', $path);
+        return '/' . implode('/', $path);
     }
 
     public function preUpdateCheck(Page $page): bool

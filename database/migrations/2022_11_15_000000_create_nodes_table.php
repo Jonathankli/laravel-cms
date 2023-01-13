@@ -17,8 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
 
             $table->string('type');
-            $table->number('index');
-            $table->number('outlet_index');
+            $table->integer('index')->nullable();
+            $table->integer('outlet_index')->nullable();
             $table->json('data')->nullable();
 
             $table->timestamps();

@@ -5,7 +5,7 @@ import { InertiaProgress } from '@inertiajs/progress'
 import GlobalProviders from './contexts/GlobalProvider'
 import CmsLayout from './layouts/CmsLayout'
 
-InertiaProgress.init();
+// InertiaProgress.init();
 
 const createApp = (plugins: any[]) => {
   

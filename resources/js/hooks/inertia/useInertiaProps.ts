@@ -1,9 +1,7 @@
-import { useContext } from "react";
-import { InertiaContext } from "../../contexts/InertiaProvider";
+import { usePage } from "@inertiajs/inertia-react";
 
-const useInertiaProps = () => {
-    const props = useContext(InertiaContext);
-    return props;
+const useInertiaProps = () => {;
+    return usePage().props;
 }
  
 export default useInertiaProps;

@@ -4,6 +4,7 @@ import { useNodeId } from "../../hooks/useNodeId";
 import { CmsNode } from "../CmsNode/CmsNode";
 import { EmptyOutlet } from "../EmptyOutlet/EmptyOutlet";
 import { InsertNode } from "../InsertNode/InsertNode";
+import { NodeActionContainer } from "../NodeActionContaibner/NodeActionContainer";
 import { useStyles } from "./useStyles";
 
 interface OutletProps {
@@ -31,12 +32,10 @@ export function Outlet(props: OutletProps) {
 
     return (
         <>
-        <InsertNode />
             {children.map((node) => (
-                <>
-                    <CmsNode key={node.id} node={node} />
-                    <InsertNode />
-                </>
+                <NodeActionContainer key={node.id} node={node}>
+                    <CmsNode node={node} />
+                </NodeActionContainer>
             ))}
         </>
     );

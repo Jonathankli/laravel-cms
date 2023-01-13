@@ -45,5 +45,26 @@ class CmsSeeder extends Seeder
             "description" => "Homepage Test CMS",
             "node_id" => $rootNode->id,
         ]);
+
+        $rootNode = Node::create([
+            "type" => "root"
+        ]);
+        $sec1 = Node::create([
+            "type" => "section",
+            "index" => 1,
+            "parent_id" => $rootNode->id,
+        ]);
+        Node::create([
+            "type" => "headline",
+            "index" => 1,
+            "parent_id" => $sec1->id,
+        ]);
+        Page::create([
+            "path" => "test/",
+            "name" => "Test",
+            "title" => "Test",
+            "description" => "Testseite CMS",
+            "node_id" => $rootNode->id,
+        ]);
     }
 }

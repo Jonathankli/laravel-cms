@@ -11,7 +11,6 @@ export const ActiveNodeContext = createContext<string>("");
 export function CmsNode(props: CmsNodeProps) {
 
     const { node } = props;
-
     const { classes } = useStyles();
 
     return ( 

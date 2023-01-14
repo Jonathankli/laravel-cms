@@ -19,16 +19,17 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
 
     const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        dispatch(setActiveNode(node.id));
+        if(!isActiveNode)
+            dispatch(setActiveNode(node.id));
     }
 
     return ( 
-        <div onMouseMove={onMouseMove} style={{minHeight: "100%"}}>
-            {isActiveNode && <InsertNode/>}
+        <div onMouseMove={onMouseMove}>
+            {isActiveNode && <InsertNode nodeId={node.id} insert="before"/>}
             <div className={cx(classes.container, { [classes.active]: isActiveNode})}>
                 {children}
             </div>
-            {isActiveNode && <InsertNode/>}
+            {isActiveNode && <InsertNode nodeId={node.id} insert="after"/>}
         </div>
     );
 }

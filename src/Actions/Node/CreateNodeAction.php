@@ -47,6 +47,7 @@ class CreateNodeAction
         $node->parent_id = $refNode->parent_id;
         $node->outlet = $refNode->outlet;
         $node->index = $index;
+        $node->type = $this->req->input("type");
         $node->settings = $this->req->input("settings");
         $node->save();
 
@@ -70,8 +71,9 @@ class CreateNodeAction
         $node = new Node();
         $node->parent_id = $parentNode->id;
         $node->outlet = $outlet;
-        $node->settings = $this->req->input("settings");
         $node->index = 0;
+        $node->type = $this->req->input("type");
+        $node->settings = $this->req->input("settings");
 
         if($lastNode) {
             $node->index = $lastNode->index++;

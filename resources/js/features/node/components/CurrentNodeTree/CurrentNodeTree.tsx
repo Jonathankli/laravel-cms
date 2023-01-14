@@ -18,8 +18,6 @@ export function CurrentNodeTree(props: CurrentNodeTreeProps) {
     }, [nodes])
 
     return ( 
-        <NodeActionContainer node={rootNode}>
-            <Outlet nodeId={rootNode.id}/>
-        </NodeActionContainer>
+        <Outlet nodeId={rootNode.id}/>
     );
 }

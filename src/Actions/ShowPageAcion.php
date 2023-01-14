@@ -21,7 +21,7 @@ class ShowPageAcion
     {
         if(!$path) {
             $path = $this->request->route('path');
-            $path = trim($path, "/");
+            $path = rtrim($path, "/");
         }
 
         if(!$path) {

@@ -3,7 +3,7 @@ import { createStyles } from "@mantine/core";
 export const useStyles = createStyles((theme) => ({
     background: {
       position: 'fixed',
-      zIndex: 1000,
+      zIndex: 100,
       top: 0,
       left: 0,
       width: '100%',
@@ -13,7 +13,7 @@ export const useStyles = createStyles((theme) => ({
   
     container: {
       position: 'fixed',
-      zIndex: 1010,
+      zIndex: 100,
       width: '100%',
       height: '100%',
       maxWidth: '900px',

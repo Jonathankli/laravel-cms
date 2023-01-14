@@ -2,7 +2,7 @@
 
 namespace Jkli\Cms\Services;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Jkli\Cms\Models\Page;
 
 class PagePathService
@@ -14,8 +14,10 @@ class PagePathService
         if($page->use_parent_path && $page->parent_id != null) {
             $path = explode('/', trim($page->parent->full_path, '/'));
         }
-        $path = array_merge($path, explode('/', trim($page->path, '/')));
-        return '/' . implode('/', $path);
+        $path = array_filter(array_merge($path, explode('/', trim($page->path, '/'))));
+        $path = '/' . implode('/', $path);
+        $path = preg_replace(["/[^A-Za-z0-9. -]/", "/ /"], ["", "-"], $path);
+        return $path;
     }
 
     public function preUpdateCheck(Page $page): bool

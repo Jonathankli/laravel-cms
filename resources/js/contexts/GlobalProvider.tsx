@@ -1,3 +1,4 @@
+import { ModalsProvider } from "@mantine/modals";
 import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "../store";
@@ -12,7 +13,9 @@ const GlobalProviders = (props: GlobalProvidersProps) => {
     return (
         <ReduxProvider store={store}>
             <MantineProvider>
-                {props.children}
+                <ModalsProvider>
+                    {props.children}
+                </ModalsProvider>
             </MantineProvider>
         </ReduxProvider>
     );

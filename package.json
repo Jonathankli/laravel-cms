@@ -32,9 +32,12 @@
     "@inertiajs/progress": "^0.2.7",
     "@jkli/react-finder": "^0.3.0",
     "@mantine/core": "^5.7.2",
+    "@mantine/form": "^5.10.0",
     "@mantine/hooks": "^5.7.2",
+    "@mantine/modals": "^5.10.0",
     "@reduxjs/toolkit": "^1.9.1",
     "@tabler/icons": "^1.111.0",
+    "axios": "^1.2.2",
     "react-redux": "^8.0.5"
   },
   "devDependencies": {

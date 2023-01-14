@@ -4,9 +4,11 @@ import { LoadingOverlay, Portal } from '@mantine/core';
 import { useStyles } from './styles';
 import { Inertia } from '@inertiajs/inertia';
 import useInertiaProps from '../../../../hooks/inertia/useInertiaProps';
-import { FinderItemSettings } from '@jkli/react-finder/dist/esm/types';
-import { IconLocation } from '@tabler/icons';
+import { FinderItemSettings, ItemAction } from '@jkli/react-finder/dist/esm/types';
+import { IconLocation, IconPlus } from '@tabler/icons';
 import { parsePagesToNavi } from '../../util/parsePagesToNavi';
+import { openModal } from '@mantine/modals';
+import { NewPageForm } from '../NewPageForm/NewPageForm';
 
 interface NavigationModelProps {
     close(): void
@@ -29,16 +31,28 @@ const NavigationModel = (props: NavigationModelProps) => {
         })
     }, []);
 
+    const addFolder = (item?: FinderItem) => {
+        openModal({
+            title: 'Add new page',
+            children: (<NewPageForm pageId={item?.id} />),
+          });
+    }
+
     const itemDefaults: FinderItemSettings = {
         actions: [
+            {
+                Icon: IconPlus,
+                name: "Neu",
+                onClick: addFolder
+            },
             {
                 Icon: IconLocation,
                 name: "Wechseln",
                 onClick: (item) => Inertia.visit("/cms/"+ item?.data.path, {
                     onSuccess: props.close
                 })
-            }
-        ]
+            },
+        ],
     }
 
     return (

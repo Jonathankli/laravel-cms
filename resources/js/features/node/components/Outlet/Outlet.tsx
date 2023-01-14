@@ -1,11 +1,9 @@
-import React, { createContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useNodeId } from "../../hooks/useNodeId";
 import { CmsNode } from "../CmsNode/CmsNode";
 import { EmptyOutlet } from "../EmptyOutlet/EmptyOutlet";
-import { InsertNode } from "../InsertNode/InsertNode";
-import { NodeActionContainer } from "../NodeActionContaibner/NodeActionContainer";
-import { useStyles } from "./useStyles";
+import { NodeActionContainer } from "../NodeActionContainer/NodeActionContainer";
 
 interface OutletProps {
     index?: number;
@@ -14,7 +12,6 @@ interface OutletProps {
 
 export function Outlet(props: OutletProps) {
     const { index = 0, nodeId } = props;
-    // const { classes } = useStyles();
     const dynamicNodeId = useNodeId();
     const { nodes } = useInertiaProps();
 

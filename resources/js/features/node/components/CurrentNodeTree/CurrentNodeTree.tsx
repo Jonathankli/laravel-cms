@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
-import { CmsNode } from "../CmsNode/CmsNode";
-import { NodeActionContainer } from "../NodeActionContaibner/NodeActionContainer";
+import { NodeActionContainer } from "../NodeActionContainer/NodeActionContainer";
 import { Outlet } from "../Outlet/Outlet";
 
 interface CurrentNodeTreeProps {

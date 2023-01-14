@@ -16,7 +16,7 @@ class Page extends Model
 
     public function nodes()
     {
-        return Node::recursiveChildren(Node::query(), fn($q) => $q->where('id', $this->node_id));
+        return Node::find($this->node_id)->descendantsAndSelf();
     }
 
     public function parent()

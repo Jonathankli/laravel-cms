@@ -6,13 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAcion;
-use Jkli\Cms\Actions\ShowPageAcion;
+use Jkli\Cms\Actions\Node\CreateNodeAction;
 use Jkli\Cms\Http\Controller\Controller;
-use Jkli\Cms\Http\Resources\NodeResource;
-use Jkli\Cms\Http\Resources\PageResource;
-use Jkli\Cms\Models\Page;
 
-class PageController extends Controller
+class NodeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,23 +18,20 @@ class PageController extends Controller
      */
     public function index()
     {
-        return Inertia::render("Navi/Show", [
-            'pages' => Page::all()
-        ]);
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Jkli\Cms\Actions\Node\CreateNodeAction  $action
      * @return \Illuminate\Http\Response
      */
-    public function store(CreatePageAcion $action)
+    public function store(CreateNodeAction $action)
     {
-        $page = $action->handle();
-        $nodes = $page->nodes();
-
-        return Redirect::route("page.show");
+        $node = $action->handle();
+        $path = $node->rootAncestor->page->full_path;
+        return Redirect::route("page.show", ["path" => $path]);
     }
 
     /**
@@ -46,14 +40,9 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ShowPageAcion $action)
+    public function show()
     {
-        $page = $action->handle();
-
-        return Inertia::render("Page/Show", [
-            "page" => PageResource::make($page),
-            "nodes" => fn () => NodeResource::collection($page->nodes()->get())->all()
-        ]);
+        //
     }
 
     /**

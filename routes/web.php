@@ -8,6 +8,7 @@ Route::middleware(['cms'])->group(function() {
 
     Route::get('/', [DashboardController::class, "index"]);
     Route::get('/cms/{path?}', [PageController::class, "show"])
-        ->where('path', '.*');;
+        ->where('path', '.*')
+        ->name('page.show');
 
 });

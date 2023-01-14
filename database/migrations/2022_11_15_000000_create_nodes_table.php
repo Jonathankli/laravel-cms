@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->string('type');
             $table->integer('index')->nullable();
-            $table->integer('outlet_index')->default(0);
-            $table->json('data')->nullable();
+            $table->integer('outlet')->default(0);
+            $table->json('settings')->nullable();
 
             $table->timestamps();
         });

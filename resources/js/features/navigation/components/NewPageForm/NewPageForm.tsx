@@ -33,7 +33,8 @@ export function NewPageForm(props: NewPageFormProps) {
 
     const handleSubmit = (data: typeof form.values) => {
         Inertia.post("/page", data, {
-            onSuccess: props.onSuccess
+            onSuccess: props.onSuccess,
+            onError: form.setErrors 
         });
     }
 

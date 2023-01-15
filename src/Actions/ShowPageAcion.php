@@ -24,10 +24,8 @@ class ShowPageAcion
             $path = rtrim($path, "/");
         }
 
-        if(!$path) {
-            $path = "/";
-        }
-
+        $path = "/".$path;
+        
         $page = Page::where('full_path', $path)
             ->firstOrFail(); 
 

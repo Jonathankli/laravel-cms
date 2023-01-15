@@ -51,7 +51,7 @@ const NavigationModel = (props: NavigationModelProps) => {
             {
                 Icon: IconLocation,
                 name: "Wechseln",
-                onClick: (item) => Inertia.visit("/cms/"+ item?.data.path, {
+                onClick: (item) => Inertia.visit("/cms"+ item?.data.path, {
                     onSuccess: props.close
                 })
             },

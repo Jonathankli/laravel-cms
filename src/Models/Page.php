@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     use HasUuids;
+
+    protected $fillable = [
+        'name',
+        'title',
+        'path',
+        'use_parent_path',
+        'node_id'
+    ];
     
     public function rootNode()
     {

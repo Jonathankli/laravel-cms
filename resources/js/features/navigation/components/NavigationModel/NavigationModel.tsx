@@ -7,7 +7,7 @@ import useInertiaProps from '../../../../hooks/inertia/useInertiaProps';
 import { FinderItemSettings, ItemAction } from '@jkli/react-finder/dist/esm/types';
 import { IconLocation, IconPlus } from '@tabler/icons';
 import { parsePagesToNavi } from '../../util/parsePagesToNavi';
-import { openModal } from '@mantine/modals';
+import { closeAllModals, openModal } from '@mantine/modals';
 import { NewPageForm } from '../NewPageForm/NewPageForm';
 
 interface NavigationModelProps {
@@ -34,7 +34,10 @@ const NavigationModel = (props: NavigationModelProps) => {
     const addFolder = (item?: FinderItem) => {
         openModal({
             title: 'Add new page',
-            children: (<NewPageForm pageId={item?.id} />),
+            children: (<NewPageForm pageId={item?.id} onSuccess={() => {
+                closeAllModals();
+                props.close();
+            }}/>),
           });
     }
 

@@ -5,9 +5,11 @@ import { useForm } from "@mantine/form";
 import axios from "axios";
 import { IconCheck, IconX } from "@tabler/icons";
 import { useStyles } from "./styles";
+import { Inertia } from "@inertiajs/inertia";
 
 interface NewPageFormProps {
     pageId?: string;
+    onSuccess?(): void
 }
 
 export function NewPageForm(props: NewPageFormProps) {
@@ -17,6 +19,7 @@ export function NewPageForm(props: NewPageFormProps) {
             path: "",
             title: "",
             use_parent_path: true,
+            parent_id: props.pageId ?? null,
         },
     });
     const pathInfo = usePathInfo(
@@ -28,8 +31,16 @@ export function NewPageForm(props: NewPageFormProps) {
 
     const { classes, cx } = useStyles();
 
+    const handleSubmit = (data: typeof form.values) => {
+        Inertia.post("/page", data, {
+            onSuccess: props.onSuccess
+        });
+    }
+
     return (
-        <>
+        <form
+            onSubmit={form.onSubmit(handleSubmit)}
+        >
             <TextInput
                 {...form.getInputProps("name")}
                 label="Pagename"
@@ -69,16 +80,16 @@ export function NewPageForm(props: NewPageFormProps) {
                     }
                 />
             )}
-            <Button fullWidth mt="md">
-                Submit
+            <Button fullWidth mt="md" type="submit">
+                Add
             </Button>
-        </>
+        </form>
     );
 }
 
 function usePrefillInputs<T>(form: any) {
   useEffect(() => {
-    if (!form.isTouched("path") && !form.isTouched("title")) {
+    if (!form.isTouched("path")) {
         form.setFieldValue(
             "path",
             form.values.name
@@ -86,8 +97,11 @@ function usePrefillInputs<T>(form: any) {
                 .replace(/(?![A-Za-z0-9_.\-~])/g, "")
                 .toLowerCase()
         );
+        form.setTouched({ path: false });
+    }
+    if (!form.isTouched("title")) {
         form.setFieldValue("title", form.values.name);
-        form.resetTouched();
+        form.setTouched({ title: false });
     }
 }, [form.values.name]);
 }

@@ -13,6 +13,9 @@ Route::middleware(['cms'])->group(function() {
         ->where('path', '.*')
         ->name('page.show');
 
+    Route::post('/page', [PageController::class, "store"])
+        ->name('page.store');
+
     Route::post('/nodes', [NodeController::class, "store"])
         ->name('node.store');
 

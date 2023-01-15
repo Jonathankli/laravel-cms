@@ -22,6 +22,7 @@ class CreatePageRequest extends FormRequest
             'no_index' => ['nullable', 'boolean'],
             'no_follow' => ['nullable', 'boolean'],
             'uses_parent_path' => ['nullable', 'boolean'],
+            'parent_id' => ['nullable', 'exists:pages,id'],
         ];
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Onehub\Core\Facades;
+namespace Jkli\Cms\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static void registerPlugin(\Onehub\Core\Plugin $plugin)
+ * @method static void plugin(\Jkli\Cms\Contracts\Pluginable $plugin)
  * 
  * @see \CFMmedia\BlankConnector\BlankConnector
  */

@@ -4,13 +4,14 @@ namespace Jkli\Cms;
 
 use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\ServiceProvider;
+use Jkli\Cms\CmsObjects\Text;
 use Jkli\Cms\Console\PluginMapCommand;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Observers\PageObserver;
+use Jkli\Cms\PluginServiceProvider;
 
-class CmsServiceProvider extends ServiceProvider
+class CmsServiceProvider extends PluginServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -27,6 +28,8 @@ class CmsServiceProvider extends ServiceProvider
         ]);
 
         $this->registerObservers();
+
+        $this->cmsObject(Text::class);
         
         if ($this->app->runningInConsole()) {
 

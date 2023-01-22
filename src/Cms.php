@@ -3,10 +3,14 @@
 namespace Jkli\Cms;
 
 use Illuminate\Support\Collection;
+use Jkli\Cms\Contracts\Pluginable;
 
 class Cms
 {
 
+    /**
+     * @var Collection<\Jkli\Cms\Contracts\Pluginable> $plugins
+     */
     protected Collection $plugins;
 
     public function __construct()
@@ -14,7 +18,7 @@ class Cms
         $this->plugins = collect();
     }
 
-    public function plugin(Plugin $plugin)
+    public function plugin(Pluginable $plugin)
     {
         $this->plugins->push($plugin);
         return $this;
@@ -24,5 +28,18 @@ class Cms
     {
         return $this->plugins;
     }
-   
+
+    public function getCmsObjects(): Collection
+    {
+        return $this->plugins->flatMap(
+            fn ($plugin) => collect($plugin->getCmsObjects())->mapWithKeys(
+                fn ($object) => [$object::type() => $object]
+            )
+        );
+    }
+
+    public function getCmsObject(string $key): string
+    {
+        return $this->getCmsObjects()->get($key);
+    }
 }

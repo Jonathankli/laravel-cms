@@ -5,6 +5,9 @@ namespace Jkli\Cms\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Middleware;
+use Jkli\Cms\Facades\Cms;
+use Jkli\Cms\Http\Resources\CmsObject\CmsObjectResource;
+use Jkli\Cms\Http\Resources\CmsObject\GropedCmsObjectCollection;
 use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Models\Page;
 
@@ -40,6 +43,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
+            'cmsObjects' => CmsObjectResource::collection(Cms::getCmsObjects())->all(),
+            'groupedCmsObjects' => Inertia::lazy(fn() => GropedCmsObjectCollection::make(Cms::getCmsObjects())),
             'pages' => Inertia::lazy(fn() => PageResource::collection(Page::all())->all())
         ]);
     }

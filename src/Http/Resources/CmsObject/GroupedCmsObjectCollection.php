@@ -4,7 +4,7 @@ namespace Jkli\Cms\Http\Resources\CmsObject;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class GropedCmsObjectCollection extends ResourceCollection
+class GroupedCmsObjectCollection extends ResourceCollection
 {
 
     /**
@@ -27,7 +27,7 @@ class GropedCmsObjectCollection extends ResourceCollection
         }, true);
 
         return $grouped->map(fn($objects, $group) => [
-            'groupName' => $group,
+            'name' => $group,
             'objects' => CmsObjectResource::collection($objects)->all()
         ])->values();
     }

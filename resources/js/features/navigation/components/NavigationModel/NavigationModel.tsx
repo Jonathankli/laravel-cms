@@ -21,7 +21,6 @@ const NavigationModel = (props: NavigationModelProps) => {
     const { pages } = useInertiaProps();
 
     useEffect(() => {
-        if(pages) return;
         Inertia.reload({
             only: ['pages'],
             preserveState: true,

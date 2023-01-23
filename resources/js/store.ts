@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import nodeSlice from './features/node/nodeSlice'
+import objectEditorSlice from './features/objectEditor/objectEditorSlice'
 
 export const store = configureStore({
   reducer: {
-    node: nodeSlice
+    node: nodeSlice,
+    objectEditor: objectEditorSlice
   },
 })
 

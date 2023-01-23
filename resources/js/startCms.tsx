@@ -24,7 +24,7 @@ const createApp = (plugins: any[]) => {
       props.initialPage.props.plugins = plugins;
       const root = ReactDOM.createRoot(el);
       root.render(
-        <GlobalProviders inertiaProps={props.initialPage.props}>
+        <GlobalProviders>
           <App {...props} />
         </GlobalProviders>
       )

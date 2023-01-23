@@ -13,9 +13,8 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
     const { node, children } = props;
 
     const { classes, cx } = useStyles();
-    const activeNodeId = useCmsSelector(selectAvtiveNodeId);
+    const isActiveNode = useCmsSelector(state => state.node.activeNodeId === node.id);
     const dispatch = useCmsDispatch();
-    const isActiveNode = activeNodeId === node.id;
 
     const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();

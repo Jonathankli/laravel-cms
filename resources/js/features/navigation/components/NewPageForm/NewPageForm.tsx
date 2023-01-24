@@ -5,7 +5,7 @@ import { useForm } from "@mantine/form";
 import axios from "axios";
 import { IconCheck, IconX } from "@tabler/icons";
 import { useStyles } from "./styles";
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/react";
 
 interface NewPageFormProps {
     pageId?: string;
@@ -32,7 +32,7 @@ export function NewPageForm(props: NewPageFormProps) {
     const { classes, cx } = useStyles();
 
     const handleSubmit = (data: typeof form.values) => {
-        Inertia.post("/page", data, {
+        router.post("/page", data, {
             onSuccess: props.onSuccess,
             onError: form.setErrors 
         });

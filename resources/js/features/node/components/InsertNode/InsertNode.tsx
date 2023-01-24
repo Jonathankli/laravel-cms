@@ -1,8 +1,6 @@
-import { Inertia } from "@inertiajs/inertia";
-import { ActionIcon, Button } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
-import React, { useState } from "react";
-import { ObjectPickerModal, useObjectPicker } from "../../../objectEditor";
+import React from "react";
 import { useStyles } from "./useStyles";
 
 interface InsertNodeProps {

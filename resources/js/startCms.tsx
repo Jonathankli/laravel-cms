@@ -1,11 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createInertiaApp } from '@inertiajs/inertia-react'
-import { InertiaProgress } from '@inertiajs/progress'
+import { createInertiaApp } from '@inertiajs/react'
 import GlobalProviders from './contexts/GlobalProvider'
 import CmsLayout from './layouts/CmsLayout'
-
-// InertiaProgress.init();
 
 const createApp = (plugins: any[]) => {
   

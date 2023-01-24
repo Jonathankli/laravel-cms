@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Finder, FinderItem } from '@jkli/react-finder';
 import { LoadingOverlay, Portal } from '@mantine/core';
 import { useStyles } from './styles';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react'
 import useInertiaProps from '../../../../hooks/inertia/useInertiaProps';
 import { FinderItemSettings, ItemAction } from '@jkli/react-finder/dist/esm/types';
 import { IconLocation, IconPlus } from '@tabler/icons';
@@ -21,7 +21,7 @@ const NavigationModel = (props: NavigationModelProps) => {
     const { pages } = useInertiaProps();
 
     useEffect(() => {
-        Inertia.reload({
+        router.reload({
             only: ['pages'],
             preserveState: true,
             preserveScroll: true,
@@ -50,7 +50,7 @@ const NavigationModel = (props: NavigationModelProps) => {
             {
                 Icon: IconLocation,
                 name: "Wechseln",
-                onClick: (item) => Inertia.visit("/cms"+ item?.data.path, {
+                onClick: (item) => router.visit("/cms"+ item?.data.path, {
                     onSuccess: props.close
                 })
             },

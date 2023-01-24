@@ -1,8 +1,8 @@
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/react";
 import React, { MouseEvent, useRef } from "react";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
 import { useObjectPicker } from "../../../objectEditor";
-import { selectAvtiveNodeId, setActiveNode } from "../../nodeSlice";
+import { setActiveNode } from "../../nodeSlice";
 import { InsertNode } from "../InsertNode/InsertNode";
 import { useStyles } from "./useStyles";
 
@@ -27,7 +27,7 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
     };
 
     const onObjectSelect = (obj: CmsObject) => {
-        Inertia.post("/nodes", {
+        router.post("/nodes", {
             ref_node: node.id,
             insert: openInsert.current,
             type: obj.type,

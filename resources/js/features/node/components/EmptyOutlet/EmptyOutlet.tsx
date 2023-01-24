@@ -1,4 +1,4 @@
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/react";
 import { Button } from "@mantine/core";
 import React, { useState } from "react";
 import { ObjectPickerModal, useObjectPicker } from "../../../objectEditor";
@@ -11,7 +11,7 @@ interface EmptyOutletProps {
 export function EmptyOutlet(props: EmptyOutletProps) {
 
     const onObjectSelect = (obj: CmsObject) => {
-        Inertia.post("/nodes", {
+        router.post("/nodes", {
             ref_node: props.nodeId,
             outlet: props.index,
             insert: "outlet",

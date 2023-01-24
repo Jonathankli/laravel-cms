@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/react";
 import {
     Accordion,
     Card,
@@ -17,7 +17,7 @@ export function ObjectPicker(props: ObjectPickerProps) {
     const { groupedCmsObjects } = useInertiaProps();
 
     useEffect(() => {
-        Inertia.reload({
+        router.reload({
             only: ["groupedCmsObjects"],
             preserveState: true,
             preserveScroll: true,

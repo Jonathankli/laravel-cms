@@ -1,10 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createInertiaApp } from '@inertiajs/inertia-react'
-import { InertiaProgress } from '@inertiajs/progress'
-import GlobalProviders from './contexts/GlobalProvider'
-
-InertiaProgress.init();
+import { createInertiaApp } from '@inertiajs/react'
 
 const createApp = (plugins: any[]) => {
   

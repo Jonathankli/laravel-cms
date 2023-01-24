@@ -30,7 +30,7 @@ class NodeController extends Controller
     public function store(CreateNodeAction $action)
     {
         $node = $action->handle();
-        $path = $node->rootAncestor->page->full_path;
+        $path = ltrim($node->rootAncestor->page->full_path, "/");
         return Redirect::route("page.show", ["path" => $path]);
     }
 

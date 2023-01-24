@@ -6,21 +6,24 @@ import type { RootState } from '../../store'
 interface ObjectEditorState {
     isSelectorOpen: boolean;
     prevSelectedObject: CmsObject | null;
+    activeObjectPicerUuid: string | null;
 }
 
 // Define the initial state using that type
 const initialState: ObjectEditorState = {
   isSelectorOpen: false,
   prevSelectedObject: null,
+  activeObjectPicerUuid: null,
 }
 
 export const objectEditorSlice = createSlice({
   name: 'node',
   initialState,
   reducers: {
-    openSelector: (state, action: PayloadAction) => {
+    openSelector: (state, action: PayloadAction<string>) => {
       state.isSelectorOpen = true;
       state.prevSelectedObject = null;
+      state.activeObjectPicerUuid = action.payload;
     },
     selectObject: (state, action: PayloadAction<CmsObject>) => {
       state.isSelectorOpen = false;
@@ -28,6 +31,7 @@ export const objectEditorSlice = createSlice({
     },
     abortSelection: (state, action: PayloadAction) => {
       state.isSelectorOpen = false;
+      state.activeObjectPicerUuid = null;
     },
   },
 })

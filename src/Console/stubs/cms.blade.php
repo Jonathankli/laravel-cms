@@ -5,8 +5,8 @@
 @endif
 
 const plugins = [
-    @foreach ($plugins as $plugin)
-        require({{$plugin}})
+    @foreach ($pluginMap as $name => $package)
+        "{{$name}}": require("{{$package}}"),
     @endforeach
 ];
 

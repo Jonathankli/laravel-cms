@@ -4,6 +4,8 @@ namespace Jkli\Cms\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Jkli\Cms\Contracts\Pluginable;
+use Jkli\Cms\Facades\Cms;
 
 class PluginMapCommand extends Command
 {
@@ -12,7 +14,7 @@ class PluginMapCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:create-plugin-map';
+    protected $signature = 'cms:plugin-map';
 
     /**
      * The console command description.
@@ -28,17 +30,33 @@ class PluginMapCommand extends Command
      */
     public function handle()
     {
+        $pluginMap = collect();
+        foreach (Cms::getPlugins() as $plugin) {
+            if(!data_get($plugin, 'noFrontentRegister', false)) {
+                $pluginMap->put($plugin->getName(), $this->getPluginPackageName($plugin));
+            }
+        }
+
         $map = view()->file(__DIR__."/stubs/cms.blade.php", [
-            'cms' => true,
-            'plugins' => []
+            "pluginMap" => $pluginMap,
+            "cms" => true,
         ])->render();
         
-        $path = resource_path('js/cms');
+        $path = resource_path('js');
         if(!File::exists($path)) {
             File::makeDirectory($path);
         }
-        File::put("$path/cms.ts", $map);
+        File::put("$path/cms/cms.ts", $map);
 
         return Command::SUCCESS;
+    }
+
+    public function getPluginPackageName(Pluginable $plugin)
+    {
+        $cmsExportAccessor = $plugin->getCmsPluginExport();
+        if(!$cmsExportAccessor) {
+            return $plugin->getNpmPackageName();
+        }
+        return $plugin->getNpmPackageName()."/".$cmsExportAccessor;
     }
 }

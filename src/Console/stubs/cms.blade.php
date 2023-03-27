@@ -6,7 +6,7 @@
 
 const plugins = [
     @foreach ($pluginMap as $name => $package)
-        "{{$name}}": require("{{$package}}"),
+        require("{{$package}}"),
     @endforeach
 ];
 

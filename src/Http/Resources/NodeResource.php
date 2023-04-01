@@ -3,6 +3,7 @@
 namespace Jkli\Cms\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Jkli\Cms\Facades\Cms;
 
 class NodeResource extends JsonResource
 {
@@ -22,9 +23,13 @@ class NodeResource extends JsonResource
      */
     public function toArray($request)
     {
+        $objects = Cms::getCmsObjects();
+        $object = $objects->get($this->type);
+
         return [
             'id' => $this->id,
             'type' => $this->type,
+            'component' => $object ? $object::component() : null,
             'parent' => $this->parent_id,
             'outlet' => $this->outlet,
             'index' => $this->index,

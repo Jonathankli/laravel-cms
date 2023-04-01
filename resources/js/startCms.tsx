@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import GlobalProviders from './contexts/GlobalProvider'
 import CmsLayout from './layouts/CmsLayout'
+import { ConfigProviders, Config } from './contexts/ConfigProvider'
 
-const createApp = (plugins: any[]) => {
+const createApp = (config: Config) => {
   
   createInertiaApp({
     resolve: async (name: string) => {
@@ -18,12 +19,13 @@ const createApp = (plugins: any[]) => {
     },
     setup({ el, App, props }) {
       console.log(props.initialPage.props);
-      props.initialPage.props.plugins = plugins;
       const root = ReactDOM.createRoot(el);
       root.render(
-        <GlobalProviders>
-          <App {...props} />
-        </GlobalProviders>
+        <ConfigProviders config={config}>
+          <GlobalProviders>
+            <App {...props} />
+          </GlobalProviders>
+        </ConfigProviders>
       )
     },
   })

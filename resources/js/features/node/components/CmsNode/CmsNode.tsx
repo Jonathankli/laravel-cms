@@ -1,5 +1,7 @@
-import React, { createContext, useMemo } from "react";
+import React, { createContext, Suspense, useMemo } from "react";
 import { Section } from "../../../../components/Section";
+import useConfig from "../../../../hooks/config/useConfig";
+import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useStyles } from "./useStyles";
 
 interface CmsNodeProps {
@@ -11,10 +13,26 @@ export const ActiveNodeContext = createContext<string>("");
 export function CmsNode(props: CmsNodeProps) {
 
     const { node } = props;
+    const objects = useConfig().objects;
+    const object = objects[node.component];
+    
+
+    if(!object) {
+        return <>{`Node component "${node.component}" not found!`}</>;
+    }
+
+    let Component = object.Component
+    let Fallback: any = null;
+    if(typeof Component === "object") {
+        Fallback = Component.Fallback;
+        Component = Component.Component;
+    }
 
     return ( 
         <ActiveNodeContext.Provider value={node.id}>
-            <Section node={node} />
+            <Suspense fallback={Fallback}>
+                <Component node={node} />
+            </Suspense>
         </ActiveNodeContext.Provider>
     );
 }

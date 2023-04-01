@@ -19,22 +19,22 @@ class CmsSeeder extends Seeder
             "type" => "root"
         ]);
         $sec1 = Node::create([
-            "type" => "section",
+            "type" => "Jkli\CmsObjects\CmsObjects\Section",
             "index" => 1,
             "parent_id" => $rootNode->id,
         ]);
         Node::create([
-            "type" => "section",
+            "type" => "Jkli\CmsObjects\CmsObjects\Section",
             "index" => 2,
             "parent_id" => $rootNode->id,
         ]);
         Node::create([
-            "type" => "headline",
+            "type" => "Jkli\CmsObjects\CmsObjects\Text",
             "index" => 1,
             "parent_id" => $sec1->id,
         ]);
         Node::create([
-            "type" => "text",
+            "type" => "Jkli\CmsObjects\CmsObjects\Text",
             "index" => 2,
             "parent_id" => $sec1->id,
         ]);
@@ -50,12 +50,12 @@ class CmsSeeder extends Seeder
             "type" => "root"
         ]);
         $sec1 = Node::create([
-            "type" => "section",
+            "type" => "Jkli\CmsObjects\CmsObjects\Section",
             "index" => 1,
             "parent_id" => $rootNode->id,
         ]);
         Node::create([
-            "type" => "headline",
+            "type" => "Jkli\CmsObjects\CmsObjects\Text",
             "index" => 1,
             "parent_id" => $sec1->id,
         ]);

@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 
-const createApp = (plugins: any[]) => {
+export const createLive = (plugins: any[]) => {
   
   createInertiaApp({
     resolve: async (name: string) => {
@@ -19,5 +19,3 @@ const createApp = (plugins: any[]) => {
     },
   })
 }
-
-export default createApp;

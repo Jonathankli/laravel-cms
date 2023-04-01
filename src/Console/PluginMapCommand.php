@@ -33,20 +33,19 @@ class PluginMapCommand extends Command
         $pluginMap = collect();
         foreach (Cms::getPlugins() as $plugin) {
             if(!data_get($plugin, 'noFrontentRegister', false)) {
-                $pluginMap->put($plugin->getName(), $this->getPluginPackageName($plugin));
+                $pluginMap->push($this->getPluginPackageName($plugin));
             }
         }
 
         $map = view()->file(__DIR__."/stubs/cms.blade.php", [
             "pluginMap" => $pluginMap,
-            "cms" => true,
         ])->render();
         
         $path = resource_path('js');
         if(!File::exists($path)) {
             File::makeDirectory($path);
         }
-        File::put("$path/cms/cms.ts", $map);
+        File::put("$path/cmsPluginMap.ts", $map);
 
         return Command::SUCCESS;
     }

@@ -5,7 +5,7 @@ import GlobalProviders from './contexts/GlobalProvider'
 import CmsLayout from './layouts/CmsLayout'
 import { ConfigProviders, Config } from './contexts/ConfigProvider'
 
-const createApp = (config: Config) => {
+export const createCms = (config: Config) => {
   
   createInertiaApp({
     resolve: async (name: string) => {
@@ -30,5 +30,3 @@ const createApp = (config: Config) => {
     },
   })
 }
-
-export default createApp;

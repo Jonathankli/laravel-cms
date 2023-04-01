@@ -1,4 +1,9 @@
-export { default as startCms } from "./startCms";
-export { default as startLive } from "./startLive";
-export * from "./contexts/ConfigProvider";
+//creater functions
+export * from "./createCms";
+export * from "./createLive";
+
+//features
 export * from "./features/node";
+
+//contexts
+export * from "./contexts/ConfigProvider";

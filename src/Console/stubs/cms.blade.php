@@ -1,13 +1,11 @@
-@if($cms)
-    import {startCms as starter} from "@jkli/cms"
-@else
-    import {startLive as starter} from "@jkli/cms"
-@endif
+@foreach ($pluginMap as $index => $package)
+import plugin{{$index}} from "{{$package}}"
+@endforeach
 
 const plugins = [
-    @foreach ($pluginMap as $name => $package)
-        require("{{$package}}"),
-    @endforeach
+@foreach ($pluginMap as $index => $package)
+    plugin{{$index}},
+@endforeach
 ];
 
-starter(plugins);
+export default plugins;

@@ -1,6 +1,6 @@
 import React, { createContext, Suspense, useMemo } from "react";
 import { Section } from "../../../../components/Section";
-import useConfig from "../../../../hooks/config/useConfig";
+import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useStyles } from "./useStyles";
 
@@ -13,7 +13,7 @@ export const ActiveNodeContext = createContext<string>("");
 export function CmsNode(props: CmsNodeProps) {
 
     const { node } = props;
-    const objects = useConfig().objects;
+    const objects = useFrontendConfig().objects;
     const object = objects[node.component];
     
 

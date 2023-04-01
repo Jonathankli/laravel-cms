@@ -9,6 +9,7 @@ import { IconLocation, IconPlus } from '@tabler/icons';
 import { parsePagesToNavi } from '../../util/parsePagesToNavi';
 import { closeAllModals, openModal } from '@mantine/modals';
 import { NewPageForm } from '../NewPageForm/NewPageForm';
+import { useServerConfig } from '../../../../hooks/config/useServerConfig';
 
 interface NavigationModelProps {
     close(): void
@@ -18,7 +19,7 @@ const NavigationModel = (props: NavigationModelProps) => {
     const [navi, setNavi] = useState<FinderItem[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const { classes } = useStyles();
-    const { pages } = useInertiaProps();
+    const config = useServerConfig();
 
     useEffect(() => {
         router.reload({
@@ -50,7 +51,7 @@ const NavigationModel = (props: NavigationModelProps) => {
             {
                 Icon: IconLocation,
                 name: "Wechseln",
-                onClick: (item) => router.visit("/cms"+ item?.data.path, {
+                onClick: (item) => router.visit(config.paths.cms + item?.data.path, {
                     onSuccess: props.close
                 })
             },

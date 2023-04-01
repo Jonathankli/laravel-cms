@@ -5,4 +5,7 @@
  */
 return [
 
+    'cms_path' => '/cms',
+    'live_path' => '/',
+
 ];

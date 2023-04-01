@@ -1,6 +1,7 @@
 import { router } from "@inertiajs/react";
 import { Button } from "@mantine/core";
 import React, { useState } from "react";
+import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import { ObjectPickerModal, useObjectPicker } from "../../../objectEditor";
 
 interface EmptyOutletProps {
@@ -9,9 +10,9 @@ interface EmptyOutletProps {
 }
 
 export function EmptyOutlet(props: EmptyOutletProps) {
-
+    const config = useServerConfig();
     const onObjectSelect = (obj: CmsObject) => {
-        router.post("/nodes", {
+        router.post(config.paths.admin+"/nodes", {
             ref_node: props.nodeId,
             outlet: props.index,
             insert: "outlet",

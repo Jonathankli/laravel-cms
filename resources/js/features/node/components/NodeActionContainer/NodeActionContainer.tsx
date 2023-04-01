@@ -1,6 +1,7 @@
 import { router } from "@inertiajs/react";
 import React, { MouseEvent, useRef } from "react";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
+import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import { useObjectPicker } from "../../../objectEditor";
 import { setActiveNode } from "../../nodeSlice";
 import { InsertNode } from "../InsertNode/InsertNode";
@@ -25,9 +26,10 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
         e.stopPropagation();
         if (!isActiveNode) dispatch(setActiveNode(node.id));
     };
+    const config = useServerConfig();
 
     const onObjectSelect = (obj: CmsObject) => {
-        router.post("/nodes", {
+        router.post(config.paths.admin+"/nodes", {
             ref_node: node.id,
             insert: openInsert.current,
             type: obj.type,

@@ -8,6 +8,7 @@ use Inertia\Middleware;
 use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Http\Resources\CmsObject\CmsObjectResource;
 use Jkli\Cms\Http\Resources\CmsObject\GroupedCmsObjectCollection;
+use Jkli\Cms\Http\Resources\ConfigResource;
 use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Models\Page;
 
@@ -45,7 +46,8 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'cmsObjects' => CmsObjectResource::collection(Cms::getCmsObjects())->all(),
             'groupedCmsObjects' => Inertia::lazy(fn() => GroupedCmsObjectCollection::make(Cms::getCmsObjects())),
-            'pages' => Inertia::lazy(fn() => PageResource::collection(Page::all())->all())
+            'pages' => Inertia::lazy(fn() => PageResource::collection(Page::all())->all()),
+            'config' => ConfigResource::make(null),
         ]);
     }
 }

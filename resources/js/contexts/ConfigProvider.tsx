@@ -2,21 +2,35 @@ import React, { createContext, useState } from "react";
 
 interface ConfigProvidersProps {
     children: any,
-    config: Config
+    frontendConfig: FrontendConfig
+    serverConfig: ServerConfig;
 }
 
-export interface Config {
+export interface ServerConfig {
+    paths: {
+        cms: string;
+        live: string;
+        admin: string;
+        api: string;
+    }
+}
+
+export interface FrontendConfig {
     plugins?: PluginConfig[];
     objects?: InputConfig[];
     inputs?: InputConfig[];
     actions?: ActionConfig[];
 }
 
-export interface ConfigMap {
+export interface FrontendConfigMap {
     plugins: {[key: string]: PluginConfig};
     objects: {[key: string]: ObjectConfig};
     inputs: {[key: string]: InputConfig};
     actions: {[key: string]: ActionConfig};
+}
+export interface Config {
+    frontendConfig: FrontendConfigMap;
+    serverConfig: ServerConfig;
 }
 
 export interface PluginConfig {
@@ -43,17 +57,27 @@ export interface ActionConfig {
     Component: ComponentWithFallback | ReactComponent
 }
 
-export const defaultConfig = {
-    plugins: {},
-    objects: {},
-    inputs: {},
-    actions: {},
+export const defaultConfig: Config  = {
+    frontendConfig: {
+        plugins: {},
+        objects: {},
+        inputs: {},
+        actions: {},
+    },
+    serverConfig: {
+        paths: {
+            cms: "/cms",
+            live: "/",
+            admin: "/cms/admin",
+            api: "/cms/admin/api",
+        }
+    }
 };
 
-export const ConfigContext = createContext<ConfigMap>(defaultConfig);
+export const ConfigContext = createContext<Config>(defaultConfig);
 
-function map(config: Config): ConfigMap {
-    const configMap = defaultConfig;
+function map(config: FrontendConfig): FrontendConfigMap {
+    const configMap = defaultConfig.frontendConfig;
 
     const objects = (config?.objects || []).concat((config?.plugins || []).flatMap(p => (p?.objects || [])));
     console.log((config?.objects || []), (config?.plugins || []).flatMap(p => (p?.objects || [])) );
@@ -69,14 +93,16 @@ function map(config: Config): ConfigMap {
     
     const plugins = (config?.plugins || []);
     configMap.plugins = plugins.reduce((acc, item) => ({...acc, [item.name]: item}), {});
- console.log(configMap);
  
     return configMap;
 }
 
 export const ConfigProviders = (props: ConfigProvidersProps) => {
 
-    const [config] = useState(Object.freeze(map(props.config)));
+    const [config] = useState(Object.freeze({
+        frontendConfig: map(props.frontendConfig),
+        serverConfig: props.serverConfig,
+    }));
 
     return (
         <ConfigContext.Provider value={config}>

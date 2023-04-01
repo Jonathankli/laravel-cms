@@ -6,6 +6,7 @@ import axios from "axios";
 import { IconCheck, IconX } from "@tabler/icons";
 import { useStyles } from "./styles";
 import { router } from "@inertiajs/react";
+import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 
 interface NewPageFormProps {
     pageId?: string;
@@ -30,9 +31,10 @@ export function NewPageForm(props: NewPageFormProps) {
     usePrefillInputs(form);
 
     const { classes, cx } = useStyles();
+    const config = useServerConfig();
 
     const handleSubmit = (data: typeof form.values) => {
-        router.post("/page", data, {
+        router.post(config.paths.admin+"/page", data, {
             onSuccess: props.onSuccess,
             onError: form.setErrors 
         });
@@ -113,13 +115,14 @@ function usePathInfo(path: string, use_parent_path: boolean, pageId?: string) {
         is_available: boolean;
     }>(null);
     const [debouncedPath, setDebouncedPath] = useDebouncedState("", 400);
+    const config = useServerConfig();
 
     useEffect(() => {
         if (!debouncedPath) {
             setPathInfo(null);
             return;
         }
-        const url = "/api/pagePath/check" + (pageId ? "/" + pageId : "");
+        const url = config.paths.api+"/pagePath/check" + (pageId ? "/" + pageId : "");
         axios
             .get(url, {
                 params: {

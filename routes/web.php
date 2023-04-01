@@ -8,18 +8,29 @@ use Jkli\Cms\Http\Controller\Api\PagePathController;
 
 Route::middleware(['cms'])->group(function() {
 
-    Route::get('/', [DashboardController::class, "index"]);
-    Route::get('/cms/{path?}', [PageController::class, "show"])
-        ->where('path', '.*')
-        ->name('page.show');
+    // Route::get('/', [LiveController::class, "index"]);
 
-    Route::post('/page', [PageController::class, "store"])
-        ->name('page.store');
+    //cms routes
+    Route::prefix(config('cms.cms_path', '/cms'))->group(function() {
 
-    Route::post('/nodes', [NodeController::class, "store"])
-        ->name('node.store');
+        //administration routes
+        Route::prefix('admin')->group(function() {
+            //Admindashboard
+            Route::get('/', [DashboardController::class, "index"]);
 
-    Route::get('/api/pagePath/check/{parentPage?}', [PagePathController::class, "check"])
-        ->name('pagePath.check');
+            Route::post('/page', [PageController::class, "store"])
+                ->name('page.store');
+    
+            Route::post('/nodes', [NodeController::class, "store"])
+                ->name('node.store');
+    
+            Route::get('/api/pagePath/check/{parentPage?}', [PagePathController::class, "check"])
+                ->name('pagePath.check');
+        });
+
+        Route::get('/{path?}', [PageController::class, "show"])
+            ->where('path', '.*')
+            ->name('page.show');
+    });
 
 });

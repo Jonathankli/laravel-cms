@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import GlobalProviders from './contexts/GlobalProvider'
 import CmsLayout from './layouts/CmsLayout'
-import { ConfigProviders, Config } from './contexts/ConfigProvider'
+import { ConfigProviders, FrontendConfig, ServerConfig } from './contexts/ConfigProvider'
 
-export const createCms = (config: Config) => {
+export const createCms = (config: FrontendConfig) => {
   
   createInertiaApp({
     resolve: async (name: string) => {
@@ -21,7 +21,7 @@ export const createCms = (config: Config) => {
       console.log(props.initialPage.props);
       const root = ReactDOM.createRoot(el);
       root.render(
-        <ConfigProviders config={config}>
+        <ConfigProviders frontendConfig={config} serverConfig={props.initialPage.props.config as ServerConfig}>
           <GlobalProviders>
             <App {...props} />
           </GlobalProviders>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 } from "uuid";
 import { useCmsDispatch, useCmsStore } from "../../../hooks/redux";
-import { abortSelection, openSelector } from "../cmsObject";
+import { abortSelection, openSelector } from "../cmsObjectSlice";
 
 export function useObjectPicker(onSelect: (object: CmsObject) => void) {
 

@@ -1,7 +1,7 @@
 import { Drawer } from "@mantine/core";
 import * as React from "react";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
-import { abortSelection, selectObject } from "../../cmsObject";
+import { abortSelection, selectObject } from "../../cmsObjectSlice";
 import { ObjectPickerModal } from "../ObjectPickerModal/ObjectPickerModal";
 
 export function GlobalObjectPicker() {

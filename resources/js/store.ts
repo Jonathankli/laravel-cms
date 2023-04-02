@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import nodeSlice from './features/node/nodeSlice'
-import cmsObjectSlice from './features/cmsObject/cmsObject'
+import cmsObjectSlice from './features/cmsObject/cmsObjectSlice'
 
 export const store = configureStore({
   reducer: {

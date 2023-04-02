@@ -3,21 +3,21 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../store'
 
 // Define a type for the slice state
-interface ObjectPickerState {
+interface CmsObjectState {
     isSelectorOpen: boolean;
     prevSelectedObject: CmsObject | null;
     activeObjectPickerUuid: string | null;
 }
 
 // Define the initial state using that type
-const initialState: ObjectPickerState = {
+const initialState: CmsObjectState = {
   isSelectorOpen: false,
   prevSelectedObject: null,
   activeObjectPickerUuid: null,
 }
 
-export const objectPickerSlice = createSlice({
-  name: 'objectPicker',
+export const cmsObjectSlice = createSlice({
+  name: 'cmsObject',
   initialState,
   reducers: {
     openSelector: (state, action: PayloadAction<string>) => {
@@ -36,9 +36,9 @@ export const objectPickerSlice = createSlice({
   },
 })
 
-export const { openSelector, selectObject, abortSelection } = objectPickerSlice.actions
+export const { openSelector, selectObject, abortSelection } = cmsObjectSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectIsSelectorOpen = (state: RootState) => state.objectPicker.isSelectorOpen;
+export const selectIsSelectorOpen = (state: RootState) => state.cmsObject.isSelectorOpen;
 
-export default objectPickerSlice.reducer
+export default cmsObjectSlice.reducer

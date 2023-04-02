@@ -2,7 +2,7 @@ import { router } from "@inertiajs/react";
 import React, { MouseEvent, useRef } from "react";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
-import { useObjectPicker } from "../../../objectPicker";
+import { useObjectPicker } from "../../../cmsObject";
 import { setActiveNode } from "../../nodeSlice";
 import { InsertNode } from "../InsertNode/InsertNode";
 import { useStyles } from "./useStyles";

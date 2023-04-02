@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import nodeSlice from './features/node/nodeSlice'
-import objectEditorSlice from './features/objectEditor/objectEditorSlice'
+import objectPickerSlice from './features/objectPicker/objectPickerSlice'
 
 export const store = configureStore({
   reducer: {
     node: nodeSlice,
-    objectEditor: objectEditorSlice
+    objectPicker: objectPickerSlice,
   },
 })
 

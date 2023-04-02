@@ -2,10 +2,11 @@ import { router } from "@inertiajs/react";
 import React, { MouseEvent, useRef } from "react";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
-import { useObjectPicker } from "../../../objectEditor";
+import { useObjectPicker } from "../../../objectPicker";
 import { setActiveNode } from "../../nodeSlice";
 import { InsertNode } from "../InsertNode/InsertNode";
 import { useStyles } from "./useStyles";
+import { NodeActions } from "../NodeActions/NodeActions";
 
 interface NodeActionContainerProps {
     node: CmsNode;
@@ -46,11 +47,12 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
 
     return (
         <div onMouseMove={onMouseMove}>
-            {isActiveNode && (
+            {isActiveNode && <>
                 <InsertNode
                     openObjectPicker={openHandlerFactory("before")}
                 />
-            )}
+                <NodeActions />
+            </>}
             <div
                 className={cx(classes.container, {
                     [classes.active]: isActiveNode,

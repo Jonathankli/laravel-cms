@@ -1,8 +1,8 @@
 import { router } from "@inertiajs/react";
 import { Button } from "@mantine/core";
-import React, { useState } from "react";
+import React from "react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
-import { ObjectPickerModal, useObjectPicker } from "../../../objectEditor";
+import { useObjectPicker } from "../../../objectPicker";
 
 interface EmptyOutletProps {
     nodeId: string;

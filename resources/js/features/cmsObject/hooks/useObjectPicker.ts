@@ -25,7 +25,7 @@ export function useObjectPicker(onSelect: (object: CmsObject) => void) {
         return () => unsubscribe();
     }, [store, onSelect])
 
-    const open = () => dispatch(openSelector(uuid));
+    const open = () => dispatch(openSelector({objectPickerId: uuid}));
     const abort = () => dispatch(abortSelection());
 
     return {

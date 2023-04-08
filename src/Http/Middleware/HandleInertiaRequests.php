@@ -3,6 +3,7 @@
 namespace Jkli\Cms\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Middleware;
 use Jkli\Cms\Facades\Cms;
@@ -48,6 +49,7 @@ class HandleInertiaRequests extends Middleware
             'groupedCmsObjects' => Inertia::lazy(fn() => GroupedCmsObjectCollection::make(Cms::getCmsObjects())),
             'pages' => Inertia::lazy(fn() => PageResource::collection(Page::all())->all()),
             'config' => ConfigResource::make(null),
+            'session_data' => Session::get('lcms'),
         ]);
     }
 }

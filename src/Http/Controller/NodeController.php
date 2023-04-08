@@ -4,10 +4,12 @@ namespace Jkli\Cms\Http\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAcion;
 use Jkli\Cms\Actions\Node\CreateNodeAction;
 use Jkli\Cms\Http\Controller\Controller;
+use Jkli\Cms\Http\Resources\NodeResource;
 
 class NodeController extends Controller
 {
@@ -31,6 +33,7 @@ class NodeController extends Controller
     {
         $node = $action->handle();
         $path = ltrim($node->rootAncestor->page->full_path, "/");
+        Session::put("lcms.created_node", NodeResource::make($node));
         return Redirect::route("page.show", ["path" => $path]);
     }
 

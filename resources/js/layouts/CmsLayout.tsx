@@ -1,7 +1,7 @@
 import { AppShell } from '@mantine/core';
 import * as React from 'react';
 import { Header } from '../components/Header/Header';
-import { GlobalObjectPicker } from '../features/cmsObject';
+import { GlobalObjectEditor, GlobalObjectPicker } from '../features/cmsObject';
 
 const CmsLayout = (props) => {
     return (
@@ -11,8 +11,9 @@ const CmsLayout = (props) => {
             styles={(theme) => ({
                 main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
             })}
-        >
+            >
             <GlobalObjectPicker />
+            <GlobalObjectEditor />
             {props.children}
         </AppShell>
      );

@@ -1,7 +1,7 @@
 import { AppShell } from '@mantine/core';
 import * as React from 'react';
 import { Header } from '../components/Header/Header';
-import { GlobalObjectEditor, GlobalObjectPicker } from '../features/cmsObject';
+import { GlobalObjectEditor, GlobalObjectPicker } from '../features/object';
 
 const CmsLayout = (props) => {
     return (

@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 import { useCmsDispatch, useCmsStore } from "../../../hooks/redux";
 import { abortSelection, openSelector } from "../cmsObjectSlice";
 
-export function useObjectPicker(onSelect: (object: CmsObject) => void) {
+export function useObjectPicker(onSelect: (object: StaticCmsObject) => void) {
 
     const dispatch = useCmsDispatch();
     const store = useCmsStore();

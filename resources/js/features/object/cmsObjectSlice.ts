@@ -1,14 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
+import axios from "axios";
 
 // Define a type for the slice state
 interface CmsObjectState {
     isSelectorOpen: boolean;
-    prevSelectedObject: CmsObject | null;
+    prevSelectedObject: StaticCmsObject | null;
     activeObjectPickerUuid: string | null;
     isEditorOpen: boolean;
     editNode: CmsNode | null;
+    editNodeObject: CmsObject | null;
 }
 // Define a type for the slice state
 export interface UpdateNodePayload {
@@ -23,7 +25,17 @@ const initialState: CmsObjectState = {
     activeObjectPickerUuid: null,
     isEditorOpen: false,
     editNode: null,
+    editNodeObject: null,
 };
+
+export const openEditor = createAsyncThunk(
+    'object/fetchObjectDetail',
+    async (node: CmsNode, thunkAPI) => {
+        console.log(node);
+      const response = await axios.get(`/cms/admin/api/nodes/${node.id}/object`);
+      return response.data;
+    }
+)
 
 export const cmsObjectSlice = createSlice({
     name: "cmsObject",
@@ -40,7 +52,7 @@ export const cmsObjectSlice = createSlice({
             state.prevSelectedObject = null;
             state.activeObjectPickerUuid = action.payload.objectPickerId;
         },
-        selectObject: (state, action: PayloadAction<CmsObject>) => {
+        selectObject: (state, action: PayloadAction<StaticCmsObject>) => {
             state.isSelectorOpen = false;
             state.prevSelectedObject = action.payload;
         },
@@ -62,13 +74,21 @@ export const cmsObjectSlice = createSlice({
             state.editNode = null;
         },
     },
+    extraReducers: (builder) => {
+        builder.addCase(openEditor.fulfilled, (state, action) => {
+            state.isEditorOpen = true;
+            state.isSelectorOpen = false;
+            state.prevSelectedObject = null;
+            state.editNode = action.meta.arg;
+            state.editNodeObject = action.payload;
+        });
+    }
 });
 
 export const {
     openSelector,
     selectObject,
     abortSelection,
-    openEditor,
     updateObject,
     saveObject,
     abortEdit,

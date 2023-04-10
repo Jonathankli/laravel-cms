@@ -30,7 +30,7 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
     const config = useServerConfig();
     const {open: openEditor} = useObjectEditor();
 
-    const onObjectSelect = (obj: CmsObject) => {
+    const onObjectSelect = (obj: StaticCmsObject) => {
         router.post(config.paths.admin+"/nodes", {
             ref_node: node.id,
             insert: openInsert.current,

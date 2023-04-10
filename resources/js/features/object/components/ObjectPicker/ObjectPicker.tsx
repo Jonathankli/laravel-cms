@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 
 export interface ObjectPickerProps {
-    onSelect(object: CmsObject): void;
+    onSelect(object: StaticCmsObject): void;
 }
 
 export function ObjectPicker(props: ObjectPickerProps) {

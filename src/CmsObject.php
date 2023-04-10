@@ -31,7 +31,6 @@ abstract class CmsObject
 
     /**
      * Generate data on the serverside
-     * @param \Jkli\Cms\Models\Node $node
      * 
      * @return mixed $data 
      */

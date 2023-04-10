@@ -2,17 +2,8 @@
 
 namespace Jkli\Cms\Http\Resources\CmsObject;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class CmsObjectResource extends JsonResource
+class CmsObjectResource extends StaticCmsObjectResource
 {
-
-    /**
-     * The "data" wrapper that should be applied.
-     *
-     * @var string|null
-     */
-    public static $wrap = null;
 
     /**
      * Transform the resource into an array.
@@ -22,10 +13,9 @@ class CmsObjectResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'type' => $this->resource::type(),
-            'name' => $this->resource::name(),
-            'component' => $this->resource::component(),
-        ];
+        return array_merge(parent::toArray($request), [
+            'settings' => SettingResource::collection($this->settings()),
+            'data' => $this->getServersideData(),
+        ]);
     }
 }

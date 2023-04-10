@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Jkli\Cms\Http\Controller\Api\NodeObjectController;
 use Jkli\Cms\Http\Controller\DashboardController;
 use Jkli\Cms\Http\Controller\NodeController;
 use Jkli\Cms\Http\Controller\PageController;
@@ -23,6 +24,9 @@ Route::middleware(['cms'])->group(function() {
     
             Route::post('/nodes', [NodeController::class, "store"])
                 ->name('node.store');
+    
+            Route::get('/api/nodes/{nodeId}/object', [NodeObjectController::class, "show"])
+                ->name('api.nodes.object');
     
             Route::get('/api/pagePath/check/{parentPage?}', [PagePathController::class, "check"])
                 ->name('pagePath.check');

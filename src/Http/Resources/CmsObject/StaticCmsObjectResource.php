@@ -2,9 +2,9 @@
 
 namespace Jkli\Cms\Http\Resources\CmsObject;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class GroupedCmsObjectCollection extends ResourceCollection
+class StaticCmsObjectResource extends JsonResource
 {
 
     /**
@@ -22,13 +22,10 @@ class GroupedCmsObjectCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        $grouped = $this->collection->groupBy(function ($item) {
-            return $item::group();
-        }, true);
-
-        return $grouped->map(fn($objects, $group) => [
-            'name' => $group,
-            'objects' => StaticCmsObjectResource::collection($objects)->all()
-        ])->values();
+        return [
+            'type' => $this->resource::type(),
+            'name' => $this->resource::name(),
+            'component' => $this->resource::component(),
+        ];
     }
 }

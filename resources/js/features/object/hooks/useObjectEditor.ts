@@ -8,7 +8,7 @@ export function useObjectEditor(node?: CmsNode) {
         let tempNode = _node;
         if(!tempNode) tempNode = node;
         if(!tempNode) throw new Error("No node provided!");
-        dispatch(openEditor({node: tempNode}))
+        dispatch(openEditor(tempNode))
     };
     const abort = () => dispatch(abortSelection());
 

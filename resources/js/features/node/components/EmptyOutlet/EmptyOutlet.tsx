@@ -12,7 +12,7 @@ interface EmptyOutletProps {
 export function EmptyOutlet(props: EmptyOutletProps) {
     const config = useServerConfig();
     const { open: openEditor } = useObjectEditor();
-    const onObjectSelect = (obj: CmsObject) => {
+    const onObjectSelect = (obj: StaticCmsObject) => {
         router.post(config.paths.admin+"/nodes", {
             ref_node: props.nodeId,
             outlet: props.index,
@@ -23,6 +23,7 @@ export function EmptyOutlet(props: EmptyOutletProps) {
             onSuccess: (page) => {
                 const session_data: any = page.props.session_data;
                 const created_node = session_data.created_node;
+                console.log(session_data);
                 openEditor(created_node);
             }
         })

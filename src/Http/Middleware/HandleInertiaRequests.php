@@ -9,6 +9,7 @@ use Inertia\Middleware;
 use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Http\Resources\CmsObject\StaticCmsObjectResource;
 use Jkli\Cms\Http\Resources\CmsObject\GroupedCmsObjectCollection;
+use Jkli\Cms\Http\Resources\CmsObject\StaticCmsObjectSettingResource;
 use Jkli\Cms\Http\Resources\ConfigResource;
 use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Models\Page;
@@ -45,7 +46,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'cmsObjects' => StaticCmsObjectResource::collection(Cms::getCmsObjects())->all(),
+            'cmsObjects' => fn() => StaticCmsObjectResource::collection(Cms::getCmsObjects())->all(),
+            'cmsObjectSettings' => fn() => StaticCmsObjectSettingResource::collection(Cms::getCmsObjectSettings())->all(),
             'groupedCmsObjects' => Inertia::lazy(fn() => GroupedCmsObjectCollection::make(Cms::getCmsObjects())),
             'pages' => Inertia::lazy(fn() => PageResource::collection(Page::all())->all()),
             'config' => ConfigResource::make(null),

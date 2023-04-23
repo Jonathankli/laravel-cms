@@ -14,6 +14,8 @@ abstract class PluginServiceProvider extends ServiceProvider implements Pluginab
 
     protected array $cmsObjects;
 
+    protected array $cmsObjectSettings;
+
     protected string | null $cmsPluginExport = null;
 
     /**
@@ -26,6 +28,7 @@ abstract class PluginServiceProvider extends ServiceProvider implements Pluginab
     {
         parent::__construct($app);
         $this->cmsObjects = array();
+        $this->cmsObjectSettings = array();
         $this->booted(fn() => Cms::plugin($this));
     }
 
@@ -37,6 +40,11 @@ abstract class PluginServiceProvider extends ServiceProvider implements Pluginab
     public function getCmsObjects(): array 
     {
         return $this->cmsObjects;
+    }
+
+    public function getCmsObjectSettings(): array 
+    {
+        return $this->cmsObjectSettings;
     }
 
     public function withCmsComponents(?string $exportPath = "cms"): void 
@@ -51,6 +59,15 @@ abstract class PluginServiceProvider extends ServiceProvider implements Pluginab
             return;
         }
         array_push($this->cmsObjects, $cmsObject);
+    }
+
+    public function cmsObjectSetting(string | array $cmsObjectSetting): void 
+    {
+        if(is_array($cmsObjectSetting)) {
+            $this->cmsObjectSettings = array_merge($this->cmsObjectSettings, $cmsObjectSetting);
+            return;
+        }
+        array_push($this->cmsObjectSettings, $cmsObjectSetting);
     }
 
 

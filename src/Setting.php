@@ -6,14 +6,13 @@ use Illuminate\Support\Collection;
 
 abstract class Setting
 {
-
-    protected static array|string $rules;
-
     protected static string $type;
-
+    
     protected static string $component;
-
+    
     protected static bool $serversideValidation = false;
+    
+    protected array|string $rules;
 
     protected mixed $default = null;
 

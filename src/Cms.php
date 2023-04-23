@@ -38,6 +38,15 @@ class Cms
         );
     }
 
+    public function getCmsObjectSettings(): Collection
+    {
+        return $this->plugins->flatMap(
+            fn ($plugin) => collect($plugin->getCmsObjectSettings())->mapWithKeys(
+                fn ($object) => [$object::type() => $object]
+            )
+        );
+    }
+
     public function getCmsObject(string $key): string
     {
         return $this->getCmsObjects()->get($key);

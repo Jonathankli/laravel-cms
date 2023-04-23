@@ -58,7 +58,9 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
                 <InsertNode
                     openObjectPicker={openHandlerFactory("before")}
                 />
-                <NodeActions />
+                <NodeActions 
+                    node={node}
+                />
             </>}
             <div
                 className={cx(classes.container, {

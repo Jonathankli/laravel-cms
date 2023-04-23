@@ -17,15 +17,15 @@ export interface ServerConfig {
 
 export interface FrontendConfig {
     plugins?: PluginConfig[];
-    objects?: InputConfig[];
-    inputs?: InputConfig[];
+    objects?: ObjectConfig[];
+    objectSettings?: ObjectSettingConfig[];
     actions?: ActionConfig[];
 }
 
 export interface FrontendConfigMap {
     plugins: {[key: string]: PluginConfig};
     objects: {[key: string]: ObjectConfig};
-    inputs: {[key: string]: InputConfig};
+    objectSettings: {[key: string]: ObjectSettingConfig};
     actions: {[key: string]: ActionConfig};
 }
 export interface Config {
@@ -37,7 +37,7 @@ export interface PluginConfig {
     name: string;
     objects?: ObjectConfig[];
     actions?: ActionConfig[];
-    inputs?: InputConfig[];
+    objectSettings?: ObjectSettingConfig[];
 }
 type ReactComponent = (props: any) => JSX.Element;
 export interface ComponentWithFallback {
@@ -48,7 +48,7 @@ export interface ObjectConfig {
     name: string;
     Component: ComponentWithFallback | ReactComponent
 }
-export interface InputConfig {
+export interface ObjectSettingConfig {
     name: string;
     Component: ComponentWithFallback | ReactComponent
 }
@@ -61,7 +61,7 @@ export const defaultConfig: Config  = {
     frontendConfig: {
         plugins: {},
         objects: {},
-        inputs: {},
+        objectSettings: {},
         actions: {},
     },
     serverConfig: {
@@ -88,8 +88,8 @@ function map(config: FrontendConfig): FrontendConfigMap {
     const actions = (config?.actions || []).concat((config?.plugins || []).flatMap(p => (p?.actions || [])));
     configMap.actions = actions.reduce((acc, item) => ({...acc, [item.name]: item}), {});
     
-    const inputs = (config?.inputs || []).concat((config?.plugins || []).flatMap(p => (p?.inputs || [])));
-    configMap.inputs = inputs.reduce((acc, item) => ({...acc, [item.name]: item}), {});
+    const objectSettings = (config?.objectSettings || []).concat((config?.plugins || []).flatMap(p => (p?.objectSettings || [])));
+    configMap.objectSettings = objectSettings.reduce((acc, item) => ({...acc, [item.name]: item}), {});
     
     const plugins = (config?.plugins || []);
     configMap.plugins = plugins.reduce((acc, item) => ({...acc, [item.name]: item}), {});

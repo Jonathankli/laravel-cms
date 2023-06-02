@@ -23,7 +23,6 @@ export function EmptyOutlet(props: EmptyOutletProps) {
             onSuccess: (page) => {
                 const session_data: any = page.props.session_data;
                 const created_node = session_data.created_node;
-                console.log(session_data);
                 openEditor(created_node);
             }
         })

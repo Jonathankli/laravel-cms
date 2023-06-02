@@ -80,9 +80,6 @@ function map(config: FrontendConfig): FrontendConfigMap {
     const configMap = defaultConfig.frontendConfig;
 
     const objects = (config?.objects || []).concat((config?.plugins || []).flatMap(p => (p?.objects || [])));
-    console.log((config?.objects || []), (config?.plugins || []).flatMap(p => (p?.objects || [])) );
-    console.log((config));
-    
     configMap.objects = objects.reduce((acc, item) => ({...acc, [item.name]: item}), {});
     
     const actions = (config?.actions || []).concat((config?.plugins || []).flatMap(p => (p?.actions || [])));

@@ -10,7 +10,6 @@ export const createLive = (plugins: any[]) => {
       return await pages[`./pages/cms/${name}.tsx`]();
     },
     setup({ el, App, props }) {
-      console.log(props.initialPage.props);
       props.initialPage.props.plugins = plugins;
       const root = ReactDOM.createRoot(el);
       root.render(

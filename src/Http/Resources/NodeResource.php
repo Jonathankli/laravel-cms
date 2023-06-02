@@ -2,6 +2,7 @@
 
 namespace Jkli\Cms\Http\Resources;
 
+use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Jkli\Cms\Facades\Cms;
 
@@ -25,6 +26,7 @@ class NodeResource extends JsonResource
     {
         $objects = Cms::getCmsObjects();
         $object = $objects->get($this->type);
+        $object = $object ? new $object($this->resource) : null;
 
         return [
             'id' => $this->id,
@@ -33,7 +35,8 @@ class NodeResource extends JsonResource
             'parent' => $this->parent_id,
             'outlet' => $this->outlet,
             'index' => $this->index,
-            'settings' => $this->settings,
+            'settings' => $object ? $object->settingData() : null,
+            'data' => $object ? $object->getServersideData() : null,
         ];
     }
 }

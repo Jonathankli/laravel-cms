@@ -1,7 +1,8 @@
-import React, { createContext, Suspense, useMemo } from "react";
+import React, { createContext, Suspense, useEffect, useMemo } from "react";
 import { Section } from "../../../../components/Section";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
+import { useCmsSelector } from "../../../../hooks/redux";
 import { useStyles } from "./useStyles";
 
 interface CmsNodeProps {
@@ -13,8 +14,19 @@ export const ActiveNodeContext = createContext<string>("");
 export function CmsNode(props: CmsNodeProps) {
 
     const { node } = props;
+    const editNode = useCmsSelector(state => {
+        if(state.cmsObject.editNode?.id === node.id) {
+            return state.cmsObject.editNode;
+        }
+        return null;
+    });
     const objects = useFrontendConfig().objects;
     const object = objects[node.component];
+
+    const _node = useMemo(() => ({
+        ...node,
+        ...editNode,
+    }), [node, editNode]);
     
 
     if(!object) {
@@ -31,7 +43,7 @@ export function CmsNode(props: CmsNodeProps) {
     return ( 
         <ActiveNodeContext.Provider value={node.id}>
             <Suspense fallback={Fallback}>
-                <Component node={node} />
+                <Component node={_node} settings={_node.settings} />
             </Suspense>
         </ActiveNodeContext.Provider>
     );

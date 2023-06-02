@@ -13,6 +13,7 @@ export function ObjectEditorModal(props: ObjectEditorModalProps) {
             title={"Edit Object"}
             padding="md"
             size="md"
+            position="right"
             closeOnClickOutside={false}
             withOverlay={false}
             overlayOpacity={0}

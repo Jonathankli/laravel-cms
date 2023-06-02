@@ -18,7 +18,6 @@ export const createCms = (config: FrontendConfig) => {
       return module.default;
     },
     setup({ el, App, props }) {
-      console.log(props.initialPage.props);
       const root = ReactDOM.createRoot(el);
       root.render(
         <ConfigProviders frontendConfig={config} serverConfig={props.initialPage.props.config as ServerConfig}>

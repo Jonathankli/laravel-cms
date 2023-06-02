@@ -39,6 +39,23 @@ abstract class CmsObject
         return [];
     }
 
+
+    /**
+     * Gets the setting data from the node
+     * 
+     * @return array $settings 
+     */
+    public function settingData(): array
+    {
+        return collect($this->settings())->mapWithKeys(function($setting) {
+            $name = $setting->getName();
+            if(isset($this->node->settings[$name])) {
+                return [$name => $this->node->settings[$name]];
+            }
+            return [$name => $setting->getDefault()];
+        })->toArray();
+    }
+
     /**
      * -------------- GETTER --------------
      */

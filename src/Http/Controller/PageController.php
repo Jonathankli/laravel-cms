@@ -11,6 +11,7 @@ use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Resources\NodeResource;
 use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Models\Page;
+use Jkli\Cms\Services\CmsPagePropsService;
 
 class PageController extends Controller
 {
@@ -44,13 +45,14 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ShowPageAcion $action)
+    public function show(ShowPageAcion $action, CmsPagePropsService $propsService)
     {
         $page = $action->handle();
 
         return Inertia::render("Page/Show", [
             "page" => PageResource::make($page),
-            "nodes" => fn () => NodeResource::collection($page->nodes()->get())->all()
+            "nodes" => fn () => NodeResource::collection($page->nodes()->get())->all(),
+            ...$propsService->getPageProps(),
         ]);
     }
 

@@ -29,6 +29,9 @@ class ConfigResource extends JsonResource
                 'cms' => config('cms.cms_path', "/cms"),
                 'admin' => config('cms.cms_path', "/cms") . "/admin",
                 'api' => config('cms.cms_path', "/cms") . "/admin/api",
+            ],
+            'params' => [
+                'base' => config('cms.cms_param_base', '_cms'),
             ]
         ];
     }

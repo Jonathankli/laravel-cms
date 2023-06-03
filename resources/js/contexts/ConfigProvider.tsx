@@ -12,6 +12,9 @@ export interface ServerConfig {
         live: string;
         admin: string;
         api: string;
+    },
+    params: {
+        base: string;
     }
 }
 
@@ -70,6 +73,9 @@ export const defaultConfig: Config  = {
             live: "/",
             admin: "/cms/admin",
             api: "/cms/admin/api",
+        },
+        params: {
+            base: "_cms",
         }
     }
 };

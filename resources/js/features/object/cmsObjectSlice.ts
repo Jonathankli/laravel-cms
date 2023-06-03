@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 import axios from "axios";
+import { router } from "@inertiajs/react";
 
 // Define a type for the slice state
 interface CmsObjectState {
@@ -11,7 +12,6 @@ interface CmsObjectState {
     isEditorOpen: boolean;
     editNode: CmsNode | null;
     editNodeOrigial: CmsNode | null;
-    editNodeObject: CmsObject | null;
 }
 // Define a type for the slice state
 export interface UpdateNodePayload {
@@ -26,17 +26,8 @@ const initialState: CmsObjectState = {
     activeObjectPickerUuid: null,
     isEditorOpen: false,
     editNode: null,
-    editNodeObject: null,
     editNodeOrigial: null,
 };
-
-export const openEditor = createAsyncThunk(
-    'object/fetchObjectDetail',
-    async (node: CmsNode, thunkAPI) => {
-      const response = await axios.get(`/cms/admin/api/nodes/${node.id}/object`);
-      return response.data;
-    }
-)
 
 export const cmsObjectSlice = createSlice({
     name: "cmsObject",
@@ -67,6 +58,7 @@ export const cmsObjectSlice = createSlice({
             state.isSelectorOpen = false;
             state.prevSelectedObject = null;
             state.editNode = action.payload.node;
+            state.editNodeOrigial =  action.payload.node;
         },
         updateObject: (state, action: PayloadAction<UpdateNodePayload>) => {
             if(!state.editNode?.settings) {
@@ -86,16 +78,6 @@ export const cmsObjectSlice = createSlice({
             state.editNodeOrigial = null;
         },
     },
-    extraReducers: (builder) => {
-        builder.addCase(openEditor.fulfilled, (state, action) => {
-            state.isEditorOpen = true;
-            state.isSelectorOpen = false;
-            state.prevSelectedObject = null;
-            state.editNode = action.meta.arg;
-            state.editNodeObject = action.payload;
-            state.editNodeOrigial = action.payload;
-        });
-    }
 });
 
 export const {
@@ -105,14 +87,12 @@ export const {
     updateObject,
     saveObject,
     abortEdit,
+    openEditor,
 } = cmsObjectSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectIsSelectorOpen = (state: RootState) =>
     state.cmsObject.isSelectorOpen;
-
-export const selectEditNodeObject = (state: RootState) =>
-    state.cmsObject.editNodeObject;
 
 export const selectEditNode = (state: RootState) =>
     state.cmsObject.editNode;

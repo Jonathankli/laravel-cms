@@ -3,12 +3,13 @@ import { Button, Flex, Group, Text, Title } from "@mantine/core";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
+import { useServerConfig } from "../../../../hooks/config/useServerConfig";
+import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useCmsDispatch } from "../../../../hooks/redux";
 import {
     abortEdit,
     saveObject as saveObjectAction,
     selectEditNode,
-    selectEditNodeObject,
     selectEditNodeOriginal,
     updateObject,
 } from "../../cmsObjectSlice";
@@ -17,18 +18,29 @@ export interface ObjectEditorProps {}
 
 export function ObjectEditor(props: ObjectEditorProps) {
     const { objectSettings } = useFrontendConfig();
-    const editNodeObject = useSelector(selectEditNodeObject);
     const editNode = useSelector(selectEditNode);
     const editNodeOriginal = useSelector(selectEditNodeOriginal);
+    const editNodeMeta = useInertiaProps().editNodeMeta as CmsObject;
     const dispatch = useCmsDispatch();
+    const { params } = useServerConfig();
 
-    if (!editNodeObject || !editNode) {
+    if (!editNodeMeta || !editNode) {
         return <>Error!</>;
     }
 
     const saveObject = () => {
         //TODO
         dispatch(saveObjectAction());
+    }
+    const close = () => {
+        router.reload({
+            data: {
+                [params.base + "_enode"]: undefined
+            },
+            onSuccess: () => {
+                dispatch(abortEdit());
+            }
+        });
     }
 
     const update = (target: string, value: any) =>
@@ -39,7 +51,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
                 target,
                 value:
                     editNodeOriginal?.settings?.[target] ??
-                    editNodeObject.settings.find(
+                    editNodeMeta.settings.find(
                         (setting) => setting.name === target
                     )?.default,
             })
@@ -48,7 +60,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
         dispatch(
             updateObject({
                 target,
-                value: editNodeObject.settings.find(
+                value: editNodeMeta.settings.find(
                     (setting) => setting.name === target
                 )?.default,
             })
@@ -57,7 +69,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
     return (
         <>
             <div>
-                {editNodeObject.settings.map((setting) => {
+                {editNodeMeta.settings.map((setting) => {
                     const settingConfig = objectSettings[setting.component];
                     if (!settingConfig) {
                         console.error(
@@ -91,7 +103,9 @@ export function ObjectEditor(props: ObjectEditorProps) {
             </div>
             <Group position="apart" p={"sm"} style={{position: "absolute", bottom: 0, left: 0, right: 0, background: "white"}}>
                 <Button onClick={saveObject}>Save</Button>
-                <Button variant="default" onClick={() => dispatch(abortEdit())}>Cancel</Button>
+                <Button variant="default" onClick={close}>
+                    Cancel
+                </Button>
             </Group>
         </>
     );

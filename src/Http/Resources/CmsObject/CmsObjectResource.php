@@ -15,7 +15,6 @@ class CmsObjectResource extends StaticCmsObjectResource
     {
         return array_merge(parent::toArray($request), [
             'settings' => SettingResource::collection($this->settings()),
-            'data' => $this->getServersideData(),
         ]);
     }
 }

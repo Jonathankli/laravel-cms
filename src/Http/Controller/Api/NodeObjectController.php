@@ -2,14 +2,9 @@
 
 namespace Jkli\Cms\Http\Controller\Api;
 
-use Illuminate\Http\Request;
 use Jkli\Cms\Actions\Node\GetNodeObjectAction;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Resources\CmsObject\CmsObjectResource;
-use Jkli\Cms\Http\Resources\PagePathCheckResource;
-use Jkli\Cms\Models\Node;
-use Jkli\Cms\Models\Page;
-use Jkli\Cms\Services\PagePathService;
 
 class NodeObjectController extends Controller
 {

@@ -8,4 +8,6 @@ return [
     'cms_path' => '/cms',
     'live_path' => '/',
 
+    'cms_param_base' => '_cms',
+
 ];

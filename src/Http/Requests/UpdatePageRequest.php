@@ -3,7 +3,6 @@
 namespace Jkli\Cms\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdatePageRequest extends FormRequest
 {

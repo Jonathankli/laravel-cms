@@ -49,6 +49,7 @@ abstract class CmsObject
     {
         return collect($this->settings())->mapWithKeys(function($setting) {
             $name = $setting->getName();
+            // dd($this->node, $name);
             if(isset($this->node->settings[$name])) {
                 return [$name => $this->node->settings[$name]];
             }

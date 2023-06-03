@@ -22,15 +22,22 @@ export function ObjectEditor(props: ObjectEditorProps) {
     const editNodeOriginal = useSelector(selectEditNodeOriginal);
     const editNodeMeta = useInertiaProps().editNodeMeta as CmsObject;
     const dispatch = useCmsDispatch();
-    const { params } = useServerConfig();
+    const { params, paths } = useServerConfig();
 
-    if (!editNodeMeta || !editNode) {
+    if (!editNodeMeta || !editNode || !editNodeOriginal) {
         return <>Error!</>;
     }
 
     const saveObject = () => {
-        //TODO
-        dispatch(saveObjectAction());
+        router.patch(paths.admin+"/nodes/"+editNodeOriginal.id, {
+            settings: editNode.settings as any, //idk why typscrout is complaining
+        }, {
+            onSuccess: () => {
+                setTimeout(() => {
+                    dispatch(saveObjectAction());
+                }, 10);
+            }
+        });
     }
     const close = () => {
         router.reload({

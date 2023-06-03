@@ -9,19 +9,12 @@ use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAcion;
 use Jkli\Cms\Actions\Node\CreateNodeAction;
 use Jkli\Cms\Http\Controller\Controller;
+use Jkli\Cms\Http\Requests\UpdateNodeRequest;
 use Jkli\Cms\Http\Resources\NodeResource;
+use Jkli\Cms\Models\Node;
 
 class NodeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,26 +31,20 @@ class NodeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateNodeRequest $request, $id)
     {
-        //
+        $node = Node::findOrFail($id);
+        $node->settings = $request->input("settings");
+        $node->save();
+        $path = ltrim($node->rootAncestor->page->full_path, "/");
+        Session::put("lcms.updated_node", NodeResource::make($node));
+        return Redirect::route("page.show", ["path" => $path]);
     }
 
     /**

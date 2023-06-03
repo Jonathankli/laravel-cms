@@ -22,8 +22,8 @@ Route::middleware(['cms'])->group(function() {
             Route::post('/page', [PageController::class, "store"])
                 ->name('page.store');
     
-            Route::post('/nodes', [NodeController::class, "store"])
-                ->name('node.store');
+            Route::resource('/nodes', NodeController::class)
+                ->only(['store', 'update']);
     
             Route::get('/api/nodes/{nodeId}/object', [NodeObjectController::class, "show"])
                 ->name('api.nodes.object');

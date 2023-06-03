@@ -7,10 +7,11 @@ import { IconCheck, IconX } from "@tabler/icons";
 import { useStyles } from "./styles";
 import { router } from "@inertiajs/react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
+import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 
 interface NewPageFormProps {
     pageId?: string;
-    onSuccess?(): void
+    onSuccess?(): void;
 }
 
 export function NewPageForm(props: NewPageFormProps) {
@@ -23,7 +24,8 @@ export function NewPageForm(props: NewPageFormProps) {
             parent_id: props.pageId ?? null,
         },
     });
-    const pathInfo = usePathInfo(
+    
+    const availablePathData = usePathInfo(
         form.values.path,
         form.values.use_parent_path,
         props.pageId
@@ -34,16 +36,14 @@ export function NewPageForm(props: NewPageFormProps) {
     const config = useServerConfig();
 
     const handleSubmit = (data: typeof form.values) => {
-        router.post(config.paths.admin+"/page", data, {
+        router.post(config.paths.admin + "/page", data, {
             onSuccess: props.onSuccess,
-            onError: form.setErrors 
+            onError: form.setErrors,
         });
-    }
+    };
 
     return (
-        <form
-            onSubmit={form.onSubmit(handleSubmit)}
-        >
+        <form onSubmit={form.onSubmit(handleSubmit)}>
             <TextInput
                 {...form.getInputProps("name")}
                 label="Pagename"
@@ -67,19 +67,21 @@ export function NewPageForm(props: NewPageFormProps) {
                 mt="md"
                 label="Parentpath"
             />
-            {pathInfo && (
+            {availablePathData && (
                 <TextInput
                     classNames={{
                         input: cx(classes.input, {
-                            [classes.vaildPath]: pathInfo.is_available,
+                            [classes.vaildPath]: availablePathData.is_available,
                         }),
                     }}
-                    error={!pathInfo.is_available ? "Url is already Taken" : null}
+                    error={
+                        !availablePathData.is_available ? "Url is already Taken" : null
+                    }
                     label="Full URL"
-                    value={pathInfo.path}
+                    value={availablePathData.path}
                     variant="filled"
                     rightSection={
-                        pathInfo.is_available ? <IconCheck /> : <IconX />
+                        availablePathData.is_available ? <IconCheck /> : <IconX />
                     }
                 />
             )}
@@ -91,53 +93,52 @@ export function NewPageForm(props: NewPageFormProps) {
 }
 
 function usePrefillInputs<T>(form: any) {
-  useEffect(() => {
-    if (!form.isTouched("path")) {
-        form.setFieldValue(
-            "path",
-            form.values.name
-                .replace(/ /g, "-")
-                .replace(/(?![A-Za-z0-9_.\-~])/g, "")
-                .toLowerCase()
-        );
-        form.setTouched({ path: false });
-    }
-    if (!form.isTouched("title")) {
-        form.setFieldValue("title", form.values.name);
-        form.setTouched({ title: false });
-    }
-}, [form.values.name]);
+    useEffect(() => {
+        if (!form.isTouched("path")) {
+            form.setFieldValue(
+                "path",
+                form.values.name
+                    .replace(/ /g, "-")
+                    .replace(/(?![A-Za-z0-9_.\-~])/g, "")
+                    .toLowerCase()
+            );
+            form.setTouched({ path: false });
+        }
+        if (!form.isTouched("title")) {
+            form.setFieldValue("title", form.values.name);
+            form.setTouched({ title: false });
+        }
+    }, [form.values.name]);
 }
 
 function usePathInfo(path: string, use_parent_path: boolean, pageId?: string) {
-    const [pathInfo, setPathInfo] = useState<null | {
+
+    const [debouncedPath, setDebouncedPath] = useDebouncedState("", 400);
+    const { params } = useServerConfig();
+
+    const availablePathData = useInertiaProps().availablePathData as null | {
         path: string;
         is_available: boolean;
-    }>(null);
-    const [debouncedPath, setDebouncedPath] = useDebouncedState("", 400);
-    const config = useServerConfig();
+    };
 
     useEffect(() => {
         if (!debouncedPath) {
-            setPathInfo(null);
             return;
         }
-        const url = config.paths.api+"/pagePath/check" + (pageId ? "/" + pageId : "");
-        axios
-            .get(url, {
-                params: {
+        router.reload({
+            data: {
+                [params.base+"_pps"]: {
                     use_parent_path: use_parent_path ? 1 : 0,
                     path: debouncedPath,
-                },
-            })
-            .then((res) => {
-                setPathInfo(res.data);
-            });
+                    parent: pageId,
+                } as any //idk why typescript is complaining
+            },
+        });
     }, [debouncedPath, use_parent_path]);
 
     useEffect(() => {
         setDebouncedPath(path);
     }, [path]);
 
-    return pathInfo;
+    return availablePathData;
 }

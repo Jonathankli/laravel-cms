@@ -24,12 +24,6 @@ Route::middleware(['cms'])->group(function() {
     
             Route::resource('/nodes', NodeController::class)
                 ->only(['store', 'update']);
-    
-            Route::get('/api/nodes/{nodeId}/object', [NodeObjectController::class, "show"])
-                ->name('api.nodes.object');
-    
-            Route::get('/api/pagePath/check/{parentPage?}', [PagePathController::class, "check"])
-                ->name('pagePath.check');
         });
 
         Route::get('/{path?}', [PageController::class, "show"])

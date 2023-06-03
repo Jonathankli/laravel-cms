@@ -20,6 +20,7 @@ const NavigationModel = (props: NavigationModelProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const { classes } = useStyles();
     const config = useServerConfig();
+    const { params } = useServerConfig();
 
     useEffect(() => {
         router.reload({
@@ -38,6 +39,17 @@ const NavigationModel = (props: NavigationModelProps) => {
                 closeAllModals();
                 props.close();
             }}/>),
+            onClose: () => {
+                router.reload({
+                    data: {
+                        [params.base+"_pps"]: {
+                            use_parent_path: undefined,
+                            path: undefined,
+                            parent: undefined,
+                        } as any //idk why typescript is complaining
+                    },
+                });
+            }
           });
     }
 

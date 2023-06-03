@@ -21,7 +21,10 @@ class CmsEditorRequest extends FormRequest
             $base.'_media' => ['nullable', 'boolean'],
             $base.'_objects' => ['nullable', 'boolean'],
             $base.'_enode' => ['nullable', 'string', 'exists:nodes,id'],
-            $base.'_pagepath' => ['nullable', 'string'],
+            $base.'_pps' => ['nullable', 'array'],
+            $base.'_pps.path' => ['nullable', 'string'],
+            $base.'_pps.parent' => ['nullable', 'string'],
+            $base.'_pps.use_parent_path' => ['nullable', 'string'],
         ];
     }
 }

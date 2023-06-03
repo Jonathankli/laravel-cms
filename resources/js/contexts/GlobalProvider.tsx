@@ -13,9 +13,7 @@ const GlobalProviders = (props: GlobalProvidersProps) => {
     return (
         <ReduxProvider store={store}>
             <MantineProvider>
-                <ModalsProvider>
                     {props.children}
-                </ModalsProvider>
             </MantineProvider>
         </ReduxProvider>
     );

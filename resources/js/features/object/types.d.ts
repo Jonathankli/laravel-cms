@@ -5,8 +5,8 @@ interface StaticCmsObject {
 }
 
 interface CmsObject extends StaticCmsObject {
+    id: string;
     settings: Setting[];
-    data: Object;
 }
 
 interface CmsObjectGroup {

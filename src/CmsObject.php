@@ -113,5 +113,14 @@ abstract class CmsObject
         return static::$component;
     }
 
+    /**
+     * Get the node of the object
+     * 
+     * @return Node $node 
+     */
+    public function getNode(): Node
+    {
+        return $this->node;
+    }
   
 }

@@ -1,5 +1,5 @@
 import { router } from "@inertiajs/react";
-import { Button, Flex, Group, Text, Title } from "@mantine/core";
+import { Button, Group } from "@mantine/core";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
@@ -87,17 +87,14 @@ export function ObjectEditor(props: ObjectEditorProps) {
                         Component = Component.Component;
                     }
                     return (
-                        <>
-                            <Text>{setting.name}</Text>
-                            <Component
-                                {...setting}
-                                key={setting.name}
-                                value={value}
-                                update={update.bind(this, setting.name)}
-                                reset={reset.bind(this, setting.name)}
-                                resetDefault={resetDefault.bind(this, setting.name)}
-                            />
-                        </>
+                        <Component
+                            {...setting}
+                            key={setting.name}
+                            value={value}
+                            update={update.bind(this, setting.name)}
+                            reset={reset.bind(this, setting.name)}
+                            resetDefault={resetDefault.bind(this, setting.name)}
+                        />
                     );
                 })}
             </div>

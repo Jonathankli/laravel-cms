@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Header as MantineHeader, Group, Container, SegmentedControl, Center, Box, Text } from '@mantine/core';
-import { IconEye, IconPencil, IconDirections } from '@tabler/icons';
+import { Group, Text } from '@mantine/core';
+import { IconDirections } from '@tabler/icons';
 import { useStyles } from './styles';
 import NavigationModel from '../NavigationModel/NavigationModel';
 import useInertiaProps from '../../../../hooks/inertia/useInertiaProps';

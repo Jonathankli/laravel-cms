@@ -53,7 +53,7 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
     };
 
     return (
-        <div onMouseMove={onMouseMove}>
+        <div className={classes.outer} onMouseMove={onMouseMove}>
             {isActiveNode && <>
                 <InsertNode
                     openObjectPicker={openHandlerFactory("before")}

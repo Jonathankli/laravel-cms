@@ -13,6 +13,7 @@ import {
     selectEditNodeOriginal,
     updateObject,
 } from "../../cmsObjectSlice";
+import { SettingContainer } from "../SettingContainer/SettingContainer";
 
 export interface ObjectEditorProps {}
 
@@ -76,37 +77,14 @@ export function ObjectEditor(props: ObjectEditorProps) {
     return (
         <>
             <div>
-                {editNodeMeta.settings.map((setting) => {
-                    const settingConfig = objectSettings[setting.component];
-                    if (!settingConfig) {
-                        console.error(
-                            `Setting component ${setting.component} not found!`
-                        );
-                        return;
-                    }
-
-                    const value = editNode.settings?.[setting.name];
-
-                    let Component = settingConfig.Component;
-                    let Fallback: any = null;
-                    if (typeof Component === "object") {
-                        Fallback = Component.Fallback;
-                        Component = Component.Component;
-                    }
-                    return (
-                        <>
-                            <Component
-                                {...setting}
-                                key={setting.name}
-                                value={value}
-                                update={update.bind(this, setting.name)}
-                                reset={reset.bind(this, setting.name)}
-                                resetDefault={resetDefault.bind(this, setting.name)}
-                            />
-                            <Space h="sm" />
-                        </>
-                    );
-                })}
+                {editNodeMeta.settings.map((setting) => (
+                    <SettingContainer
+                        update={update}
+                        reset={reset}
+                        resetDefault={resetDefault}
+                        setting={setting}
+                    />
+                ))}
             </div>
             <Group position="apart" p={"sm"} style={{position: "absolute", bottom: 0, left: 0, right: 0, background: "white"}}>
                 <Button onClick={saveObject}>Save</Button>

@@ -72,6 +72,17 @@ abstract class Setting
         $this->default = $value;
         return $this;
     }
+ 
+    /**
+     * Allows the input to communicate with the server
+     *
+     * @param          $payload from client
+     * @return mixed   $response
+     */
+    public function serverData(mixed $payload)
+    {
+        return null;
+    }
 
     /**
      * -------------- GETTER --------------

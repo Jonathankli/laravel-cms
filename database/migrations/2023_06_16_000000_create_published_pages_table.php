@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Jkli\Cms\Models\Node;
 
 return new class extends Migration
 {
@@ -13,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('published_pages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('path');
             $table->string('full_path');
@@ -30,13 +31,16 @@ return new class extends Migration
 
             $table->foreignUuid('node_id')
                 ->references('id')
-                ->on('nodes')
-                ->onDelete('cascade');
+                ->on('published_nodes')
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });
-        Schema::table('pages', function (Blueprint $table) {
-            $table->foreignUuid('parent_id')->nullable()->references('id')->on('pages');
+        Schema::table('published_pages', function (Blueprint $table) {
+            $table->foreignUuid('parent_id')
+                ->nullable()
+                ->references('id')
+                ->on('published_pages');
         });
     }
 
@@ -47,6 +51,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('published_pages');
     }
 };

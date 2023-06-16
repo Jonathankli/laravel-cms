@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('nodes', function (Blueprint $table) {
+        Schema::create('published_nodes', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
             $table->string('type');
@@ -23,12 +23,12 @@ return new class extends Migration
 
             $table->timestamps();
         });
-        Schema::table('nodes', function (Blueprint $table) {
+        Schema::table('published_nodes', function (Blueprint $table) {
             $table->foreignUuid('parent_id')
                 ->nullable()
                 ->references('id')
-                ->on('nodes')
-                ->onDelete('cascade');
+                ->on('published_nodes')
+                ->cascadeOnDelete();
         });
     }
 
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nodes');
+        Schema::dropIfExists('published_nodes');
     }
 };

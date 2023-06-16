@@ -2,7 +2,7 @@
 
 namespace Jkli\Cms;
 
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\PublishedNode;
 
 abstract class CmsObject
 {
@@ -17,7 +17,7 @@ abstract class CmsObject
 
     protected static string $group = "General";
 
-    public function __construct(protected Node $node) { }
+    public function __construct(protected PublishedNode $node) { }
 
     /**
      * Defines the settings for the object
@@ -127,9 +127,9 @@ abstract class CmsObject
     /**
      * Get the node of the object
      * 
-     * @return Node $node 
+     * @return PublishedNode $node 
      */
-    public function getNode(): Node
+    public function getNode(): PublishedNode
     {
         return $this->node;
     }

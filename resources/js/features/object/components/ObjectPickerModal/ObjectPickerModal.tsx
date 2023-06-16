@@ -15,7 +15,6 @@ export function ObjectPickerModal(props: ObjectPickerModalProps) {
             size="md"
             closeOnClickOutside={false}
             withOverlay={false}
-            overlayOpacity={0}
             opened={props.isOpen}
             onClose={props.onClose}
         >

@@ -3,16 +3,20 @@
 namespace Jkli\Cms\Services;
 
 use Jkli\Cms\Actions\Node\GetNodeObjectAction;
+use Jkli\Cms\Actions\ShowPageAcion;
 use Jkli\Cms\Http\Requests\CmsEditorRequest;
 use Jkli\Cms\Http\Resources\CmsObject\CmsObjectResource;
+use Jkli\Cms\Http\Resources\NodeResource;
 use Jkli\Cms\Http\Resources\PagePathCheckResource;
+use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Models\Page;
 
 class CmsPagePropsService
 {
 
     function __construct(
-        protected CmsEditorRequest $request
+        protected CmsEditorRequest $request,
+        protected ShowPageAcion $action
     ) {}
 
     public function getPageProps(): array
@@ -21,8 +25,23 @@ class CmsPagePropsService
 
         $editNode = $this->request->input($base.'_enode', null);
         $pagePath = $this->request->has($base.'_pps.path');
+        $settings = request()->header('X-CMS-Node-Settings');
+        if($settings) {
+            $settings = json_decode($settings, true);
+        }
+        $page = $this->action->handle();
+        $nodes = $page->nodes()->get()->map(function ($node) use ($settings, $editNode) {
+            if(!$settings || !$editNode || $editNode !== $node->id) {
+                return $node;
+            }
+            $node->settings = $settings;
+            return $node;
+        });
 
-        $props = [];
+        $props = [
+            "page" => PageResource::make($page),
+            "nodes" => fn () => NodeResource::collection($nodes)->all(),
+        ];
 
         if ($editNode) {
             $props['editNodeMeta'] = CmsObjectResource::make((new GetNodeObjectAction())->handle($editNode));

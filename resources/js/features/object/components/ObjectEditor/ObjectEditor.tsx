@@ -1,5 +1,6 @@
 import { router } from "@inertiajs/react";
 import { Button, Group, Space } from "@mantine/core";
+import { useDebouncedState, useDebouncedValue, useDidUpdate } from "@mantine/hooks";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
@@ -15,7 +16,10 @@ import {
 } from "../../cmsObjectSlice";
 import { SettingContainer } from "../SettingContainer/SettingContainer";
 
-export interface ObjectEditorProps {}
+export interface ObjectEditorProps {
+    isLoadinng?: boolean;
+    setIsLoading?(isLoading: boolean): void;
+}
 
 export function ObjectEditor(props: ObjectEditorProps) {
     const { objectSettings } = useFrontendConfig();
@@ -24,6 +28,16 @@ export function ObjectEditor(props: ObjectEditorProps) {
     const editNodeMeta = useInertiaProps().editNodeMeta as CmsObject;
     const dispatch = useCmsDispatch();
     const { params, paths } = useServerConfig();
+    const [debouncedSettings] = useDebouncedValue(
+        editNodeMeta?.revalidateServerData 
+            ? editNode?.settings 
+            : null, 
+        500
+    );
+
+    useDidUpdate(() => {
+        reloadData();
+    }, [debouncedSettings]);
 
     if (!editNodeMeta || !editNode || !editNodeOriginal) {
         return <>Error!</>;
@@ -50,9 +64,22 @@ export function ObjectEditor(props: ObjectEditorProps) {
             }
         });
     }
+    const reloadData = () => {
+        props?.setIsLoading?.(true);
+        router.reload({
+            headers: {
+                "X-CMS-Node-Settings": JSON.stringify(debouncedSettings)
+            },
+            only: ["nodes"],
+            onFinish: () => {
+                props?.setIsLoading?.(false);
+            }
+        });
+    }
 
     const update = (target: string, value: any) =>
         dispatch(updateObject({ target, value }));
+    
     const reset = (target: string) =>
         dispatch(
             updateObject({
@@ -79,6 +106,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
             <div>
                 {editNodeMeta.settings.map((setting) => (
                     <SettingContainer
+                        key={setting.name}
                         update={update}
                         reset={reset}
                         resetDefault={resetDefault}

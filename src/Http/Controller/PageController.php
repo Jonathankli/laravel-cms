@@ -45,15 +45,9 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ShowPageAcion $action, CmsPagePropsService $propsService)
+    public function show(CmsPagePropsService $propsService)
     {
-        $page = $action->handle();
-
-        return Inertia::render("Page/Show", [
-            "page" => PageResource::make($page),
-            "nodes" => fn () => NodeResource::collection($page->nodes()->get())->all(),
-            ...$propsService->getPageProps(),
-        ]);
+        return Inertia::render("Page/Show", $propsService->getPageProps());
     }
 
     /**

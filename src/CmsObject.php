@@ -39,6 +39,17 @@ abstract class CmsObject
         return [];
     }
 
+    /**
+     * Detwermines if the object should be live requested on edit
+     * 
+     * @return mixed $data 
+     */
+    public function revalidateServerData(): bool
+    {
+        $reflector = new \ReflectionMethod($this, 'getServersideData');
+        return ($reflector->getDeclaringClass()->getName() === static::class);
+    }
+
 
     /**
      * Gets the setting data from the node
@@ -49,7 +60,6 @@ abstract class CmsObject
     {
         return collect($this->settings())->mapWithKeys(function($setting) {
             $name = $setting->getName();
-            // dd($this->node, $name);
             if(isset($this->node->settings[$name])) {
                 return [$name => $this->node->settings[$name]];
             }

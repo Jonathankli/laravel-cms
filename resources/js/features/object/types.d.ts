@@ -7,6 +7,7 @@ interface StaticCmsObject {
 interface CmsObject extends StaticCmsObject {
     id: string;
     settings: Setting[];
+    revalidateServerData: boolean;
 }
 
 interface CmsObjectGroup {

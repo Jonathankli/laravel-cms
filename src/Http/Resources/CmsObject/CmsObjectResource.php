@@ -16,6 +16,7 @@ class CmsObjectResource extends StaticCmsObjectResource
         return array_merge(parent::toArray($request), [
             'id' => $this->getNode()->id,
             'settings' => SettingResource::collection($this->settings()),
+            'revalidateServerData' => $this->revalidateServerData(),
         ]);
     }
 }

@@ -1,4 +1,4 @@
-import { Drawer } from "@mantine/core";
+import { Drawer, Group, Loader } from "@mantine/core";
 import * as React from "react";
 import { ObjectEditor, ObjectEditorProps } from "../ObjectEditor/ObjectEditor";
 
@@ -8,19 +8,24 @@ interface ObjectEditorModalProps extends ObjectEditorProps {
 }
 
 export function ObjectEditorModal(props: ObjectEditorModalProps) {
+    const [isLoading, setIsLoading] = React.useState(false);
     return (
         <Drawer
-            title={"Edit Object"}
+            title={
+               <Group>
+                     <p>Object Editor</p>
+                     {isLoading && <Loader size={"xs"} />}
+               </Group>
+            }
             padding="md"
             size="md"
             position="right"
             closeOnClickOutside={false}
             withOverlay={false}
-            overlayOpacity={0}
             opened={props.isOpen}
             onClose={props.onClose}
         >
-            <ObjectEditor {...props} />
+            <ObjectEditor {...props} isLoadinng={isLoading} setIsLoading={setIsLoading} />
         </Drawer>
     );
 }

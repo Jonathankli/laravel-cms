@@ -26,6 +26,7 @@ export function CmsNode(props: CmsNodeProps) {
     const _node = useMemo(() => ({
         ...node,
         ...editNode,
+        data: node.data,
     }), [node, editNode]);
     
 
@@ -43,7 +44,7 @@ export function CmsNode(props: CmsNodeProps) {
     return ( 
         <ActiveNodeContext.Provider value={node.id}>
             <Suspense fallback={Fallback}>
-                <Component node={_node} settings={_node.settings} />
+                <Component node={_node} settings={_node.settings} data={_node.data} />
             </Suspense>
         </ActiveNodeContext.Provider>
     );

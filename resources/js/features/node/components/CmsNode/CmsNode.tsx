@@ -3,13 +3,12 @@ import { Section } from "../../../../components/Section";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useCmsSelector } from "../../../../hooks/redux";
+import { ActiveNodeContext } from "../../contexts/ActiveNodeContext";
 import { useStyles } from "./useStyles";
 
 interface CmsNodeProps {
     node: CmsNode;
 }
-
-export const ActiveNodeContext = createContext<string>("");
 
 export function CmsNode(props: CmsNodeProps) {
 

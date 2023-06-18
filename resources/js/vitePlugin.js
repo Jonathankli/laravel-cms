@@ -7,16 +7,18 @@ module.exports = function laravelCms() {
     return [
         react(),
         laravel({
-            input: ["resources/js/cms.ts"],
+            input: ["resources/js/cms.ts", "resources/js/live.ts"],
         }),
         {
             name: "laravel-cms",
-            config: async () => ({
+            config: async () => {
+                console.log(await getWorkspaceAliases());
+                return {
                 resolve: {
                     preserveSymlinks: true,
                     alias: await getWorkspaceAliases()
                 },
-            }),
+            }},
         },
     ];
 }
@@ -49,6 +51,15 @@ async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "pa
     for (let i = 0; i < folderPaths.length; i++) {
         const folderPath = folderPaths[i];
         const packageJson = require(path.resolve(folderPath, "package.json"));
+
+        if(Object.keys(packageJson.exports ?? {}).length) {
+            //merge exports with package name
+            packages.push(...Object.entries(packageJson.exports).map(([name, _path]) => ({
+                find: packageJson.name + name.replace("./", "/"),
+                replacement: path.resolve(folderPath, _path)
+            })));
+        }
+        
         packages.push({
             find: packageJson.name,
             replacement: folderPath,

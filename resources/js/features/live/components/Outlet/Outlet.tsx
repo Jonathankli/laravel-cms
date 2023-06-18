@@ -1,10 +1,8 @@
 import React, { useMemo } from "react";
 import { OutletProps } from "../../../../components/Outlet/Outlet";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
-import { useNodeId } from "../../hooks/useNodeId";
-import { CmsNode } from "../CmsNode/CmsNode";
-import { EmptyOutlet } from "../EmptyOutlet/EmptyOutlet";
-import { NodeActionContainer } from "../NodeActionContainer/NodeActionContainer";
+import { useNodeId } from "../../../node/live";
+import { LiveNode } from "../LiveNode/LiveNode";
 
 export function Outlet(props: OutletProps) {
     const { index = 0, nodeId } = props;
@@ -20,15 +18,13 @@ export function Outlet(props: OutletProps) {
     }, [nodeId, dynamicNodeId, nodes, index]);
 
     if (!children.length) {
-        return <EmptyOutlet nodeId={id} index={index} />;
+        return <></>;
     }
 
     return (
         <>
             {children.map((node) => (
-                <NodeActionContainer key={node.id} node={node}>
-                    <CmsNode node={node} />
-                </NodeActionContainer>
+                <LiveNode key={node.id} node={node} />
             ))}
         </>
     );

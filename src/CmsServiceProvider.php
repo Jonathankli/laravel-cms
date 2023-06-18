@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Jkli\Cms\CmsObjects\Text;
 use Jkli\Cms\Console\PluginMapCommand;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
+use Jkli\Cms\Http\Middleware\HandleInertiaRequestsLive;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Observers\PageObserver;
 
@@ -25,6 +26,11 @@ class CmsServiceProvider extends ServiceProvider
         $router->middlewareGroup('cms', [
             StartSession::class,
             HandleInertiaRequests::class
+        ]);
+
+        $router->middlewareGroup('live', [
+            StartSession::class,
+            HandleInertiaRequestsLive::class
         ]);
 
         $this->registerObservers();

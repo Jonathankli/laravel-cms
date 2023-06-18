@@ -20,7 +20,8 @@
     "../../projects/react-finder/packages/react-finder"
   ],
   "exports": {
-    ".": "./resources/js/index.ts",
+    ".": "./resources/js/exports.ts",
+    "./cms": "./resources/js/exportsCms.ts",
     "./vite": "./resources/js/vitePlugin.js"
   },
   "dependencies": {

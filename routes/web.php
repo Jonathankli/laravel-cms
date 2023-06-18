@@ -6,6 +6,7 @@ use Jkli\Cms\Http\Controller\DashboardController;
 use Jkli\Cms\Http\Controller\NodeController;
 use Jkli\Cms\Http\Controller\PageController;
 use Jkli\Cms\Http\Controller\Api\PagePathController;
+use Jkli\Cms\Http\Controller\LivePageController;
 
 Route::middleware(['cms'])->group(function() {
 
@@ -30,5 +31,13 @@ Route::middleware(['cms'])->group(function() {
             ->where('path', '.*')
             ->name('page.show');
     });
+
+});
+
+Route::middleware(['live'])->prefix(config('cms.live_path', '/'))->group(function() {
+
+    Route::get('/{path?}', [LivePageController::class, "show"])
+        ->where('path', '.*')
+        ->name('live.page.show');
 
 });

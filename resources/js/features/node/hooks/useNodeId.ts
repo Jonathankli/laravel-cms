@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ActiveNodeContext } from "../components/CmsNode/CmsNode";
+import { ActiveNodeContext } from "../contexts/ActiveNodeContext";
 
 export function useNodeId() {
     return useContext(ActiveNodeContext);

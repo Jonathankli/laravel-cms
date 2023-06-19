@@ -87,7 +87,7 @@ async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "pa
             uniquePackages.push(pkg);
         }
     }
-console.log(uniquePackages);
+
     return uniquePackages;
 }
 

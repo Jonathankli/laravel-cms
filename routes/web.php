@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Jkli\Cms\Http\Controller\Api\NodeObjectController;
 use Jkli\Cms\Http\Controller\DashboardController;
 use Jkli\Cms\Http\Controller\NodeController;
 use Jkli\Cms\Http\Controller\PageController;
-use Jkli\Cms\Http\Controller\Api\PagePathController;
 use Jkli\Cms\Http\Controller\LivePageController;
+use Jkli\Cms\Http\Controller\PublishPageController;
 
 Route::middleware(['cms'])->group(function() {
 
@@ -25,6 +24,9 @@ Route::middleware(['cms'])->group(function() {
     
             Route::resource('/nodes', NodeController::class)
                 ->only(['store', 'update']);
+    
+            Route::post('/pages/{pageId}/publish', [PublishPageController::class, "store"])
+                ->name('page.publish');
         });
 
         Route::get('/{path?}', [PageController::class, "show"])

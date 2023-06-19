@@ -3,6 +3,7 @@ import { Header as MantineHeader, Group, Container, SegmentedControl, Center, Bo
 import { IconEye, IconPencil, IconDirections } from '@tabler/icons';
 import { useStyles } from './styles';
 import { NavigationTrigger } from '../../features/navigation';
+import { PublishButton } from '../../features/publisher';
 
 const viewControllOptions = [
     {
@@ -35,9 +36,10 @@ export function Header() {
 
           <NavigationTrigger />
 
-          <SegmentedControl
+          <PublishButton />
+          {/* <SegmentedControl
               data={viewControllOptions}
-          />
+          /> */}
         </Container>
       </MantineHeader>
     </>

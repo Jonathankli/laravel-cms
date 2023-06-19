@@ -135,7 +135,6 @@ function map(config: FrontendConfig): FrontendConfigMap {
         return ({...acc, [fullPlugin.name]: fullPlugin});
     }, {});
     configMap.plugins = plugins;
-console.log(plugins);
 
     const objects = (config?.objects || []).concat(Object.values(plugins).flatMap(p => (p?.objects || [])));
     configMap.objects = objects.reduce((acc, item) => ({...acc, [item.name]: item}), {});

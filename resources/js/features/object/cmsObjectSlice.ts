@@ -1,11 +1,9 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
-import axios from "axios";
-import { router } from "@inertiajs/react";
 
 // Define a type for the slice state
-interface CmsObjectState {
+export interface CmsObjectState {
     isSelectorOpen: boolean;
     prevSelectedObject: StaticCmsObject | null;
     activeObjectPickerUuid: string | null;

@@ -11,14 +11,12 @@ module.exports = function laravelCms() {
         }),
         {
             name: "laravel-cms",
-            config: async () => {
-                console.log(await getWorkspaceAliases());
-                return {
+            config: async () => ({
                 resolve: {
                     preserveSymlinks: true,
                     alias: await getWorkspaceAliases()
                 },
-            }},
+            }),
         },
     ];
 }
@@ -34,7 +32,7 @@ async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "pa
         if (workspace.includes("/*")) {
             const folderWithWorkspaces = workspace.replace("/*", "");
             const workspacesFolders = fs.readdirSync(
-                path.resolve(process.cwd(), folderWithWorkspaces)
+                path.resolve(path.dirname(rootPkgPath), folderWithWorkspaces)
             );
             return workspacesFolders.map((folderName) =>
                 path.join(folderWithWorkspaces, folderName)
@@ -44,7 +42,7 @@ async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "pa
     });
 
     const folderPaths = folders.map((folder) =>
-        path.resolve(process.cwd(), folder)
+        path.resolve(path.dirname(rootPkgPath), folder)
     );
 
     const packages = [];
@@ -54,22 +52,43 @@ async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "pa
 
         if(Object.keys(packageJson.exports ?? {}).length) {
             //merge exports with package name
-            packages.push(...Object.entries(packageJson.exports).map(([name, _path]) => ({
-                find: packageJson.name + name.replace("./", "/"),
-                replacement: path.resolve(folderPath, _path)
-            })));
+            packages.push(...Object.entries(packageJson.exports)
+                .map(([name, _path]) => {
+                    if(name === ".") {
+                        return {
+                            find: packageJson.name,
+                            replacement: path.resolve(folderPath, _path)
+                        }
+                    }
+                    return {
+                        find: packageJson.name + name.replace("./", "/").replace(".", ""),
+                        replacement: path.resolve(folderPath, _path)
+                    }
+                })
+                .sort((a, b) => b.find.length - a.find.length)
+            );
+        } else {
+            packages.push({
+                find: packageJson.name,
+                replacement: folderPath,
+            });
         }
         
-        packages.push({
-            find: packageJson.name,
-            replacement: folderPath,
-        });
-
         if(packageJson.workspaces?.length) {
             packages.push(...(await getWorkspaceAliases(path.resolve(folderPath, "package.json"))));
         }
     }
-    return packages;
+
+    //filter duplicates out of packages
+    const uniquePackages = [];
+    for (let i = 0; i < packages.length; i++) {
+        const pkg = packages[i];
+        if(!uniquePackages.find(p => p.find === pkg.find)) {
+            uniquePackages.push(pkg);
+        }
+    }
+console.log(uniquePackages);
+    return uniquePackages;
 }
 
 // async function resolveSymlink(folderPath) {

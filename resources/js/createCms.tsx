@@ -13,8 +13,8 @@ import { Outlet } from "./features/node";
 export const createCms = (config: FrontendConfig) => {
     createInertiaApp({
         resolve: async (name: string) => {
-            const pages = import.meta.glob("./pages/**/*.tsx");
-            const module: any = await pages[`./pages/cms/${name}.tsx`]();
+            const pages = import.meta.glob("./pages/**/*.js");
+            const module: any = await pages[`./pages/cms/${name}.js`]();
 
             if (module.default.layout || module.default.layout === null)
                 return module.default;

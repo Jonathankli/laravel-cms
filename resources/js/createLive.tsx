@@ -11,8 +11,8 @@ import { Outlet } from "./features/live/live";
 export const createLive = (config: FrontendConfigLive) => {
     createInertiaApp({
         resolve: async (name: string) => {
-            const pages = import.meta.glob("./pages/**/*.tsx");
-            return await pages[`./pages/live/${name}.tsx`]();
+            const pages = import.meta.glob("./pages/**/*.js");
+            return await pages[`./pages/live/${name}.js`]();
         },
         setup({ el, App, props }) {
             const root = ReactDOM.createRoot(el);

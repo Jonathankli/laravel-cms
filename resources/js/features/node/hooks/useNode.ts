@@ -1,6 +1,5 @@
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import useInertiaProps from "../../../hooks/inertia/useInertiaProps";
-import { ActiveNodeContext } from "../components/CmsNode/CmsNode";
 import { useNodeId } from "./useNodeId";
 
 export function useNode(): CmsNode {

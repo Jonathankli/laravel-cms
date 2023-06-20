@@ -7,7 +7,7 @@ module.exports = function laravelCms() {
     return [
         react(),
         laravel({
-            input: ["resources/js/cms.ts", "resources/js/live.ts"],
+            input: ["resources/js/cms.ts", "resources/js/live.ts", "resources/css/app.css"],
         }),
         {
             name: "laravel-cms",

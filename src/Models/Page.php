@@ -19,4 +19,9 @@ class Page extends PublishedPage
     {
         return $this->hasMany(Page::class);
     }
+
+    public function shell()
+    {
+        return $this->belongsTo(Shell::class);
+    }
 }

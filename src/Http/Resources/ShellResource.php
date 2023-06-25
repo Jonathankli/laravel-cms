@@ -4,7 +4,7 @@ namespace Jkli\Cms\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PageResource extends JsonResource
+class ShellResource extends JsonResource
 {
 
     /**
@@ -25,8 +25,6 @@ class PageResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'parent' => $this->parent_id,
-            'path' => $this->full_path,
             'node_id' => $this->node_id
         ];
     }

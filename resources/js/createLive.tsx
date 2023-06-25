@@ -7,6 +7,7 @@ import {
     ServerConfig,
 } from "./contexts/ConfigProvider";
 import { Outlet } from "./features/live/live";
+import core from "./core";
 
 export const createLive = (config: FrontendConfigLive) => {
     createInertiaApp({
@@ -16,10 +17,17 @@ export const createLive = (config: FrontendConfigLive) => {
         },
         setup({ el, App, props }) {
             const root = ReactDOM.createRoot(el);
+            const _config: FrontendConfigLive = {
+                ...config,
+                plugins: [
+                    ...(config?.plugins ?? []),
+                    core
+                ]
+            };
             root.render(
                 <ConfigProviders
                     outlet={Outlet}
-                    frontendConfig={config}
+                    frontendConfig={_config}
                     serverConfig={
                         props.initialPage.props.config as ServerConfig
                     }

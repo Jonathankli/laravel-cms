@@ -126,8 +126,6 @@ function map(config: FrontendConfig): FrontendConfigMap {
             fullPlugin.objects = item.objects;
         }
         if("extend" in item) {
-            console.log(item.extend.objects );
-            
             fullPlugin.name = item.extend.name;
             if(fullPlugin.objects?.length) fullPlugin.objects?.concat(item.extend.objects || []);
             else fullPlugin.objects = item.extend.objects;
@@ -144,7 +142,7 @@ function map(config: FrontendConfig): FrontendConfigMap {
     
     const objectSettings = (config?.objectSettings || []).concat(Object.values(plugins).flatMap(p => (p?.objectSettings || [])));
     configMap.objectSettings = objectSettings.reduce((acc, item) => ({...acc, [item.name]: item}), {});
- 
+
     return configMap;
 }
 

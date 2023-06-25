@@ -9,6 +9,7 @@ use Jkli\Cms\Http\Resources\CmsObject\CmsObjectResource;
 use Jkli\Cms\Http\Resources\NodeResource;
 use Jkli\Cms\Http\Resources\PagePathCheckResource;
 use Jkli\Cms\Http\Resources\PageResource;
+use Jkli\Cms\Http\Resources\ShellResource;
 use Jkli\Cms\Models\Page;
 
 class CmsPagePropsService
@@ -30,17 +31,19 @@ class CmsPagePropsService
             $settings = json_decode($settings, true);
         }
         $page = $this->action->handle();
-        $nodes = $page->nodes()->get()->map(function ($node) use ($settings, $editNode) {
+        $pageNodes = $page->nodes()->get()->map(function ($node) use ($settings, $editNode) {
             if(!$settings || !$editNode || $editNode !== $node->id) {
                 return $node;
             }
             $node->settings = $settings;
             return $node;
         });
+        $shellNodes = $page->shell?->nodes()->get() ?? [];
 
         $props = [
             "page" => PageResource::make($page),
-            "nodes" => fn () => NodeResource::collection($nodes)->all(),
+            "shell" => ShellResource::make($page->shell),
+            "nodes" => fn () => NodeResource::collection($pageNodes->concat($shellNodes))->all(),
         ];
 
         if ($editNode) {

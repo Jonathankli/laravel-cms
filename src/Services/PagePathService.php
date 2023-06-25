@@ -17,7 +17,9 @@ class PagePathService
         $path = array_filter(array_merge($path, explode('/', trim($page->path, '/'))));
         $path = '/' . implode('/', $path);
         $path = preg_replace(["/[^A-Za-z0-9\/. -]/", "/ /"], ["", "-"], $path);
-        $path = rtrim($path, "/");
+        if($path !== "/") {
+            $path = rtrim($path, "/");
+        }
         return $path;
     }
 

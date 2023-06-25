@@ -7,6 +7,7 @@ import { setActiveNode } from "../../nodeSlice";
 import { InsertNode } from "../InsertNode/InsertNode";
 import { useStyles } from "./useStyles";
 import { NodeActions } from "../NodeActions/NodeActions";
+import { useInShell } from "../../../shell/live";
 
 interface NodeActionContainerProps {
     node: CmsNode;
@@ -22,6 +23,7 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
     );
     const dispatch = useCmsDispatch();
     const openInsert = useRef("before");
+    const inShell = useInShell();
 
     const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -51,6 +53,7 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
         openInsert.current = insert;
         open();
     };
+    if(inShell) return children as JSX.Element;
 
     return (
         <div className={classes.outer} onMouseMove={onMouseMove}>

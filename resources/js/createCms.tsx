@@ -9,6 +9,7 @@ import {
     ServerConfig,
 } from "./contexts/ConfigProvider";
 import { Outlet } from "./features/node";
+import core from "./core";
 
 export const createCms = (config: FrontendConfig) => {
     createInertiaApp({
@@ -28,9 +29,18 @@ export const createCms = (config: FrontendConfig) => {
         },
         setup({ el, App, props }) {
             const root = ReactDOM.createRoot(el);
+            
+            const _config: FrontendConfig = {
+                ...config,
+                plugins: [
+                    ...(config?.plugins ?? []),
+                    core
+                ]
+            };
+
             root.render(
                 <ConfigProviders
-                    frontendConfig={config}
+                    frontendConfig={_config}
                     outlet={Outlet}
                     serverConfig={
                         props.initialPage.props.config as ServerConfig

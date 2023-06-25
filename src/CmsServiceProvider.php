@@ -5,8 +5,8 @@ namespace Jkli\Cms;
 use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\ServiceProvider;
-use Jkli\Cms\CmsObjects\Text;
 use Jkli\Cms\Console\PluginMapCommand;
+use Jkli\Cms\Facades\Cms as CmsFacade;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequestsLive;
 use Jkli\Cms\Models\Page;
@@ -34,6 +34,8 @@ class CmsServiceProvider extends ServiceProvider
         ]);
 
         $this->registerObservers();
+
+        CmsFacade::plugin(new CmsCorePlugin());
         
         if ($this->app->runningInConsole()) {
 

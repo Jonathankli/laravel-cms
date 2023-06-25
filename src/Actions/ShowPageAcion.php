@@ -15,7 +15,7 @@ class ShowPageAcion
      * Creates a new Page
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Jkli\Cms\Models\Page $page
      */
     public function handle(?string $path = null): Page
     {

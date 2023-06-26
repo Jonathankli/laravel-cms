@@ -13,20 +13,27 @@ interface CmsNodeProps {
 export function CmsNode(props: CmsNodeProps) {
 
     const { node } = props;
-    const editNode = useCmsSelector(state => {
+    const serverEditNode = useInertiaProps().editNode as CmsNode | undefined;
+    const localEditNode = useCmsSelector(state => {
         if(state.cmsObject.editNode?.id === node.id) {
             return state.cmsObject.editNode;
         }
         return null;
     });
+    const editNode = useMemo(() => {
+        if(localEditNode === null) return null;
+        return {
+            ...localEditNode,
+            data: serverEditNode?.data ?? localEditNode?.data,
+        }
+    }, [localEditNode, serverEditNode])
     const objects = useFrontendConfig().objects;
     const object = objects[node.component];
 
     const _node = useMemo(() => ({
         ...node,
         ...editNode,
-        data: node.data,
-    }), [node, editNode]);
+    }), [node, editNode, serverEditNode]);
     
 
     if(!object) {

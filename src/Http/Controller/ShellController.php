@@ -5,11 +5,8 @@ namespace Jkli\Cms\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Jkli\Cms\Actions\CreatePageAcion;
 use Jkli\Cms\Http\Controller\Controller;
-use Jkli\Cms\Models\Page;
 use Jkli\Cms\Models\Shell;
-use Jkli\Cms\Services\CmsPagePropsService;
 
 class ShellController extends Controller
 {

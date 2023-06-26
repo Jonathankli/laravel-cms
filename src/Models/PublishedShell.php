@@ -28,6 +28,6 @@ class PublishedShell extends Model
 
     public function nodes()
     {
-        return $this->rootNode->descendantsAndSelf();
+        return $this->rootNode->descendantsAndSelf;
     }
 }

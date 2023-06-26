@@ -20,7 +20,7 @@ class LivePageController extends Controller
     public function show(ShowPublishedPageAcion $action)
     {
         $page = $action->handle();
-        $nodes = $page->nodes()->get();
+        $nodes = $page->nodes();
         return Inertia::render("Page/Show", [
             "page" => PageResource::make($page),
             "nodes" => NodeResource::collection($nodes)->all(),

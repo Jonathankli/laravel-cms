@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAcion;
-use Jkli\Cms\Actions\ShowPageAcion;
 use Jkli\Cms\Http\Controller\Controller;
-use Jkli\Cms\Http\Resources\NodeResource;
-use Jkli\Cms\Http\Resources\PageResource;
+use Jkli\Cms\Http\Requests\CmsEditorRequest;
 use Jkli\Cms\Models\Page;
-use Jkli\Cms\Services\CmsPagePropsService;
+use Jkli\Cms\Props\AvailablePathProp;
+use Jkli\Cms\Props\EditNodeProp;
+use Jkli\Cms\Props\PageProp;
+use Jkli\Cms\Services\PropsPipelineService;
 
 class PageController extends Controller
 {
@@ -45,9 +46,13 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(CmsPagePropsService $propsService)
+    public function show(CmsEditorRequest $request)
     {
-        return Inertia::render("Page/Show", $propsService->getPageProps());
+        return Inertia::render("Page/Show", PropsPipelineService::run([
+            PageProp::class,
+            EditNodeProp::class,
+            AvailablePathProp::class,
+        ]));
     }
 
     /**

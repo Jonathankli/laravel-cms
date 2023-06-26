@@ -19,6 +19,7 @@ export function GlobalObjectEditor() {
             data: {
                 [params.base + "_enode"]: undefined
             },
+            only: ["editNodeMeta", "editNode"],
             onSuccess: () => {
                 dispatch(abortEdit());
             }

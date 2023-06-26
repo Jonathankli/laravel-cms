@@ -16,6 +16,7 @@ export function useObjectEditor(node?: CmsNode) {
             data: {
                 [params.base + "_enode"]: tempNode.id 
             },
+            only: ["editNode", "editNodeMeta"],
             onSuccess: () => {
                 if(!tempNode) throw new Error("No node provided!");
                 dispatch(openEditor({node: tempNode}))

@@ -133,6 +133,7 @@ function usePathInfo(path: string, use_parent_path: boolean, pageId?: string) {
                     parent: pageId,
                 } as any //idk why typescript is complaining
             },
+            only: ["availablePathData"],
         });
     }, [debouncedPath, use_parent_path]);
 

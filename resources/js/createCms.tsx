@@ -37,6 +37,7 @@ export const createCms = (config: FrontendConfig) => {
                     core
                 ]
             };
+console.log(props);
 
             root.render(
                 <ConfigProviders

@@ -70,7 +70,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
             headers: {
                 "X-CMS-Node-Settings": JSON.stringify(debouncedSettings)
             },
-            only: ["nodes"],
+            only: ["editNode"],
             onFinish: () => {
                 props?.setIsLoading?.(false);
             }

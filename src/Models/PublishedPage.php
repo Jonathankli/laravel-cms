@@ -30,7 +30,7 @@ class PublishedPage extends Model
 
     public function nodes()
     {
-        return $this->rootNode->descendantsAndSelf();
+        return $this->rootNode->descendantsAndSelf;
     }
 
     public function parent()

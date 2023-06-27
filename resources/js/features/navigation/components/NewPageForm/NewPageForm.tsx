@@ -36,7 +36,7 @@ export function NewPageForm(props: NewPageFormProps) {
     const config = useServerConfig();
 
     const handleSubmit = (data: typeof form.values) => {
-        router.post(config.paths.admin + "/page", data, {
+        router.post(config.paths.admin + "/pages", data, {
             onSuccess: props.onSuccess,
             onError: form.setErrors,
         });

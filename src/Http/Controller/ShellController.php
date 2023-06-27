@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Models\Shell;
+use Jkli\Cms\Props\CmsObjectSettingsProp;
+use Jkli\Cms\Props\EditNodeProp;
+use Jkli\Cms\Props\GroupedCmsObjectsProp;
+use Jkli\Cms\Props\ObjectSettingsProp;
+use Jkli\Cms\Props\ShellProp;
+use Jkli\Cms\Services\PropsPipelineService;
 
 class ShellController extends Controller
 {
@@ -43,7 +49,26 @@ class ShellController extends Controller
      */
     public function show()
     {
-        return Inertia::render("Shell/Show");
+        return Inertia::render("Shell/Show", PropsPipelineService::run([
+            ShellProp::class,
+        ]));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit()
+    {
+        return Inertia::render("Shell/Edit", PropsPipelineService::run([
+            ShellProp::class,
+            EditNodeProp::class,
+            CmsObjectSettingsProp::class,
+            GroupedCmsObjectsProp::class,
+            ObjectSettingsProp::class,
+        ]));
     }
 
     /**

@@ -55,11 +55,7 @@ class PageController extends Controller
     {
         return Inertia::render("Page/Show", PropsPipelineService::run([
             PageProp::class,
-            EditNodeProp::class,
             AvailablePathProp::class,
-            CmsObjectSettingsProp::class,
-            GroupedCmsObjectsProp::class,
-            ObjectSettingsProp::class,
             PagesProp::class,
         ]));
     }

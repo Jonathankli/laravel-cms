@@ -17,14 +17,9 @@ export const createCms = (config: FrontendConfig) => {
             const pages = import.meta.glob("./pages/**/*.js");
             const module: any = await pages[`./pages/cms/${name}.js`]();
 
-            if (module.default.layout || module.default.layout === null)
-                return module.default;
-            module.default.layout = (page) => (
-                <CmsLayout
-                    children={page}
-                    navigation={page?.props?.navigation}
-                />
-            );
+            // if (module.default.layout || module.default.layout === null)
+            //     return module.default;
+            
             return module.default;
         },
         setup({ el, App, props }) {
@@ -37,7 +32,6 @@ export const createCms = (config: FrontendConfig) => {
                     core
                 ]
             };
-console.log(props);
 
             root.render(
                 <ConfigProviders

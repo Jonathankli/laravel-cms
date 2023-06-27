@@ -6,6 +6,7 @@ use Jkli\Cms\Http\Controller\NodeController;
 use Jkli\Cms\Http\Controller\PageController;
 use Jkli\Cms\Http\Controller\LivePageController;
 use Jkli\Cms\Http\Controller\PublishPageController;
+use Jkli\Cms\Http\Controller\ShellController;
 
 Route::middleware(['cms'])->group(function() {
 
@@ -19,8 +20,11 @@ Route::middleware(['cms'])->group(function() {
             //Admindashboard
             Route::get('/', [DashboardController::class, "index"]);
 
-            Route::post('/page', [PageController::class, "store"])
-                ->name('page.store');
+            Route::resource('/pages', PageController::class)
+                ->only(['store']);
+
+            Route::resource('/shells', ShellController::class)
+                ->only(['show', 'edit']);
     
             Route::resource('/nodes', NodeController::class)
                 ->only(['store', 'update']);
@@ -29,7 +33,7 @@ Route::middleware(['cms'])->group(function() {
                 ->name('page.publish');
         });
 
-        Route::get('/{path?}', [PageController::class, "show"])
+        Route::get('/{path?}', [PageController::class, "edit"])
             ->where('path', '.*')
             ->name('page.show');
     });

@@ -10,8 +10,12 @@ use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\CmsEditorRequest;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Props\AvailablePathProp;
+use Jkli\Cms\Props\CmsObjectSettingsProp;
 use Jkli\Cms\Props\EditNodeProp;
+use Jkli\Cms\Props\GroupedCmsObjectsProp;
+use Jkli\Cms\Props\ObjectSettingsProp;
 use Jkli\Cms\Props\PageProp;
+use Jkli\Cms\Props\PagesProp;
 use Jkli\Cms\Services\PropsPipelineService;
 
 class PageController extends Controller
@@ -52,6 +56,10 @@ class PageController extends Controller
             PageProp::class,
             EditNodeProp::class,
             AvailablePathProp::class,
+            CmsObjectSettingsProp::class,
+            GroupedCmsObjectsProp::class,
+            ObjectSettingsProp::class,
+            PagesProp::class,
         ]));
     }
 

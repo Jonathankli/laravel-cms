@@ -16,6 +16,16 @@ use Jkli\Cms\Models\Node;
 class NodeController extends Controller
 {
 
+    public function redirectToParent(Node $node)
+    {
+        $shell = $node->rootAncestor->shell;
+        if($shell) {
+            return Redirect::route("shells.edit", ["shell" => $shell->id]);
+        }
+        $path = ltrim($node->rootAncestor->page->full_path, "/");
+        return Redirect::route("pages.show", ["path" => $path]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -25,9 +35,8 @@ class NodeController extends Controller
     public function store(CreateNodeAction $action)
     {
         $node = $action->handle();
-        $path = ltrim($node->rootAncestor->page->full_path, "/");
         Session::put("lcms.created_node", NodeResource::make($node));
-        return Redirect::route("page.show", ["path" => $path]);
+        return $this->redirectToParent($node);
     }
 
     /**
@@ -42,9 +51,9 @@ class NodeController extends Controller
         $node = Node::findOrFail($id);
         $node->settings = $request->input("settings");
         $node->save();
-        $path = ltrim($node->rootAncestor->page->full_path, "/");
         Session::put("lcms.updated_node", NodeResource::make($node));
-        return Redirect::route("page.show", ["path" => $path]);
+        return $this->redirectToParent($node);
+
     }
 
     /**

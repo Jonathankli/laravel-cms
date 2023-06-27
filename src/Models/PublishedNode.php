@@ -25,7 +25,12 @@ class PublishedNode extends Model
 
     public function page()
     {
-        return $this->hasOne(Page::class);
+        return $this->hasOne(PublishedPage::class);
+    }
+    
+    public function shell()
+    {
+        return $this->hasOne(PublishedShell::class);
     }
 
 }

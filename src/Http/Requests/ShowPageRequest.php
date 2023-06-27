@@ -4,7 +4,7 @@ namespace Jkli\Cms\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CmsEditorRequest extends FormRequest
+class ShowPageRequest extends FormRequest
 {
 
     /**
@@ -20,7 +20,6 @@ class CmsEditorRequest extends FormRequest
             $base.'_nav' => ['nullable', 'boolean'],
             $base.'_media' => ['nullable', 'boolean'],
             $base.'_objects' => ['nullable', 'boolean'],
-            $base.'_enode' => ['nullable', 'string', 'exists:nodes,id'],
             $base.'_pps' => ['nullable', 'array'],
             $base.'_pps.path' => ['nullable', 'string'],
             $base.'_pps.parent' => ['nullable', 'string'],

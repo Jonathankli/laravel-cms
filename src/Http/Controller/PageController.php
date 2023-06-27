@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAcion;
 use Jkli\Cms\Http\Controller\Controller;
-use Jkli\Cms\Http\Requests\CmsEditorRequest;
+use Jkli\Cms\Http\Requests\EditPageRequest;
+use Jkli\Cms\Http\Requests\ShowPageRequest;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Props\AvailablePathProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
@@ -50,9 +51,28 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(CmsEditorRequest $request)
+    public function show(EditPageRequest $request)
     {
         return Inertia::render("Page/Show", PropsPipelineService::run([
+            PageProp::class,
+            EditNodeProp::class,
+            AvailablePathProp::class,
+            CmsObjectSettingsProp::class,
+            GroupedCmsObjectsProp::class,
+            ObjectSettingsProp::class,
+            PagesProp::class,
+        ]));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(ShowPageRequest $request)
+    {
+        return Inertia::render("Page/Edit", PropsPipelineService::run([
             PageProp::class,
             EditNodeProp::class,
             AvailablePathProp::class,

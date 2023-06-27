@@ -2,7 +2,7 @@ import React from 'react';
 import { CurrentNodeTree } from '../../../features/node';
 import { CurrentShell } from '../../../features/shell/live';
 
-const ShowPage = (props: any) => {
+const EditPage = (props: any) => {
     return (
         <CurrentShell>
             <CurrentNodeTree />
@@ -10,4 +10,4 @@ const ShowPage = (props: any) => {
     )
 }
 
-export default ShowPage;
+export default EditPage;

@@ -21,7 +21,9 @@ class PageProp extends Prop
     public function handle(Collection $props, Closure $next)
     {
         $props->put('page', fn() => PageResource::make($this->getPage()));
-        $props->put('shell', fn() => ShellResource::make($this->getShell()));
+        if($this->getShell()) {
+            $props->put('shell', fn() => ShellResource::make($this->getShell()));
+        }
         $props->put('nodes', fn() => NodeResource::collection($this->getNodes())->all());
         $props->put('entityType', 'page');
         
@@ -52,7 +54,7 @@ class PageProp extends Prop
     public function getNodes()
     {
         $pageNodes = $this->getPage()->nodes();
-        $shellNodes = $this->getShell()->nodes();
+        $shellNodes = $this->getShell()?->nodes() ?? collect();
         $nodes = $shellNodes->concat($pageNodes);
         return $nodes;
     }

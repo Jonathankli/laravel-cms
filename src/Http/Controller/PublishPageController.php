@@ -22,7 +22,7 @@ class PublishPageController extends Controller
     {
         $page = Page::findOrFail($pageId);
         $service->publishPage($page);
-        return Redirect::route("pages.show", ["path" => ltrim($page->full_path, "/")]);
+        return Redirect::route("pages.edit", ["path" => ltrim($page->full_path, "/")]);
     }
 
 }

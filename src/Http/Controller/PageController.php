@@ -43,7 +43,7 @@ class PageController extends Controller
     public function store(CreatePageAcion $action)
     {
         $page = $action->handle();
-        return Redirect::route("pages.show", ["path" => ltrim($page->full_path, "/")]);
+        return Redirect::route("pages.edit", ["path" => ltrim($page->full_path, "/")]);
     }
 
     /**

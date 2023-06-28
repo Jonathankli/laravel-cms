@@ -4,6 +4,7 @@ import { IconEye, IconPencil, IconDirections } from '@tabler/icons';
 import { useStyles } from './styles';
 import { NavigationTrigger } from '../../features/navigation';
 import { PublishButton } from '../../features/publisher';
+import { ToShellButton } from '../../features/shell';
 
 const viewControllOptions = [
     {
@@ -36,6 +37,7 @@ export function Header() {
 
           <NavigationTrigger />
 
+          <ToShellButton />
           <PublishButton />
           {/* <SegmentedControl
               data={viewControllOptions}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Header as MantineHeader, Container, SegmentedControl, Center, Box } from '@mantine/core';
 import { IconEye, IconPencil } from '@tabler/icons';
 import { useStyles } from './styles';
-import { PublishButton } from '../../features/publisher';
+import { PublishButton } from '../../features/shell';
 
 const viewControllOptions = [
     {

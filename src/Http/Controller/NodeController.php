@@ -23,7 +23,7 @@ class NodeController extends Controller
             return Redirect::route("shells.edit", ["shell" => $shell->id]);
         }
         $path = ltrim($node->rootAncestor->page->full_path, "/");
-        return Redirect::route("pages.show", ["path" => $path]);
+        return Redirect::route("pages.edit", ["path" => $path]);
     }
 
     /**
@@ -64,6 +64,7 @@ class NodeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Node::destroy($id);
+        return Redirect::back();
     }
 }

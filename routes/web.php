@@ -31,7 +31,7 @@ Route::middleware(['cms'])->group(function() {
                 ->only(['show', 'edit']);
     
             Route::resource('/nodes', NodeController::class)
-                ->only(['store', 'update']);
+                ->only(['store', 'update', 'destroy']);
     
             Route::post('/pages/{pageId}/publish', [PublishPageController::class, "store"])
                 ->name('page.publish');
@@ -39,7 +39,7 @@ Route::middleware(['cms'])->group(function() {
 
         Route::get('/{path?}', [PageController::class, "edit"])
             ->where('path', '.*')
-            ->name('page.show');
+            ->name('pages.edit');
     });
 
 });
@@ -48,6 +48,6 @@ Route::middleware(['live'])->prefix(config('cms.live_path', '/'))->group(functio
 
     Route::get('/{path?}', [LivePageController::class, "show"])
         ->where('path', '.*')
-        ->name('live.page.show');
+        ->name('live.pages.show');
 
 });

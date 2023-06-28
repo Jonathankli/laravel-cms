@@ -5,6 +5,7 @@ use Jkli\Cms\Http\Controller\DashboardController;
 use Jkli\Cms\Http\Controller\NodeController;
 use Jkli\Cms\Http\Controller\PageController;
 use Jkli\Cms\Http\Controller\LivePageController;
+use Jkli\Cms\Http\Controller\PageShellController;
 use Jkli\Cms\Http\Controller\PublishPageController;
 use Jkli\Cms\Http\Controller\ShellController;
 
@@ -19,6 +20,9 @@ Route::middleware(['cms'])->group(function() {
         Route::prefix('admin')->group(function() {
             //Admindashboard
             Route::get('/', [DashboardController::class, "index"]);
+
+            Route::get('/pages/{page}/shell/edit', [PageShellController::class, "edit"]);
+            Route::get('/pages/{page}/shell', [PageShellController::class, "show"]);
 
             Route::resource('/pages', PageController::class)
                 ->only(['store']);

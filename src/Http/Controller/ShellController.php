@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Models\Shell;
+use Jkli\Cms\Props\BackToPageProp;
 use Jkli\Cms\Props\CmsEditModeProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
 use Jkli\Cms\Props\EditNodeProp;
@@ -63,6 +64,7 @@ class ShellController extends Controller
      */
     public function edit()
     {
+        
         return Inertia::render("Shell/Edit", PropsPipelineService::run([
             ShellProp::class,
             EditNodeProp::class,
@@ -70,6 +72,7 @@ class ShellController extends Controller
             GroupedCmsObjectsProp::class,
             ObjectSettingsProp::class,
             CmsEditModeProp::class,
+            BackToPageProp::class,
         ]));
     }
 

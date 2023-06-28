@@ -4,22 +4,21 @@ import React from "react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 
-export function ToShellButton() {
-    const shell = useInertiaProps().shell as Shell;
-    const page = useInertiaProps().page as Page;
+export function BackToPageButton() {
+    const path = useInertiaProps().backToPagePath as string | undefined;
     const config = useServerConfig();
 
-    if(!shell) {
+    if(!path) {
         return null;
     }
 
-    const toShell = () => {
-        router.get(config.paths.admin+"/pages/"+page.id+"/shell/edit");
+    const toPage = () => {
+        router.get(config.paths.cms + path);
     };
 
     return (
-        <Button onClick={toShell}>
-            Edit Shell
+        <Button onClick={toPage}>
+            Zurück
         </Button>
     );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Header as MantineHeader, Container, SegmentedControl, Center, Box } from '@mantine/core';
 import { IconEye, IconPencil } from '@tabler/icons';
 import { useStyles } from './styles';
-import { PublishButton } from '../../features/shell';
+import { BackToPageButton, PublishButton } from '../../features/shell';
 
 const viewControllOptions = [
     {
@@ -33,6 +33,7 @@ export function ShellHeader() {
       <Container className={classes.inner} >
 
         <PublishButton />
+        <BackToPageButton />
         <SegmentedControl
             data={viewControllOptions}
         />

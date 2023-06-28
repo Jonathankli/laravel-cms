@@ -4,7 +4,7 @@ import { IconEye, IconPencil, IconDirections } from '@tabler/icons';
 import { useStyles } from './styles';
 import { NavigationTrigger } from '../../features/navigation';
 import { PublishButton } from '../../features/publisher';
-import { ToShellButton } from '../../features/shell';
+import { ShellManagerTriger, ToShellButton } from '../../features/shell';
 
 const viewControllOptions = [
     {
@@ -35,9 +35,12 @@ export function Header() {
       <MantineHeader height={56}>
         <Container className={classes.inner} >
 
-          <NavigationTrigger />
+          <Group position='left'>
+            <NavigationTrigger />
+            <ShellManagerTriger />
+            <ToShellButton />
+          </Group>
 
-          <ToShellButton />
           <PublishButton />
           {/* <SegmentedControl
               data={viewControllOptions}

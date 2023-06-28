@@ -23,6 +23,7 @@ class PageProp extends Prop
         $props->put('page', fn() => PageResource::make($this->getPage()));
         $props->put('shell', fn() => ShellResource::make($this->getShell()));
         $props->put('nodes', fn() => NodeResource::collection($this->getNodes())->all());
+        $props->put('entityType', 'page');
         
         return $next($props);
     }

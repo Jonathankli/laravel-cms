@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Models\Shell;
+use Jkli\Cms\Props\CmsEditModeProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
 use Jkli\Cms\Props\EditNodeProp;
 use Jkli\Cms\Props\GroupedCmsObjectsProp;
@@ -68,6 +69,7 @@ class ShellController extends Controller
             CmsObjectSettingsProp::class,
             GroupedCmsObjectsProp::class,
             ObjectSettingsProp::class,
+            CmsEditModeProp::class,
         ]));
     }
 

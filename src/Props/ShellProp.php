@@ -23,6 +23,7 @@ class ShellProp extends Prop
     {
         $props->put('shell', fn() => ShellResource::make($this->getShell()));
         $props->put('nodes', fn() => NodeResource::collection($this->getNodes())->all());
+        $props->put('entityType', 'shell');
         
         return $next($props);
     }

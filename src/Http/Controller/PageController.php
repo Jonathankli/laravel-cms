@@ -11,6 +11,7 @@ use Jkli\Cms\Http\Requests\EditPageRequest;
 use Jkli\Cms\Http\Requests\ShowPageRequest;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Props\AvailablePathProp;
+use Jkli\Cms\Props\CmsEditModeProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
 use Jkli\Cms\Props\EditNodeProp;
 use Jkli\Cms\Props\GroupedCmsObjectsProp;
@@ -76,6 +77,7 @@ class PageController extends Controller
             GroupedCmsObjectsProp::class,
             ObjectSettingsProp::class,
             PagesProp::class,
+            CmsEditModeProp::class,
         ]));
     }
 

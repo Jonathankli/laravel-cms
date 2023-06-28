@@ -92,7 +92,7 @@ class PublishService
         if(PublishedShell::find($page->shell_id)) {
             $shellId = $page->shell_id;
         }
-        
+
         PublishedPage::updateOrCreate([
             'id' => $page->id
         ], [
@@ -118,6 +118,13 @@ class PublishService
             $node = Node::where('id', $node)
                 ->with(['descendants'])
                 ->firstOrFail();
+        }
+
+        $publishedDescendantIds = PublishedNode::find($node->id)?->descendants;
+
+        if($publishedDescendantIds) {
+            $deletedNodes = $node->descendants->pluck('id')->diff($publishedDescendantIds);
+            PublishedNode::destroy($deletedNodes);
         }
 
         $publishedNode = PublishedNode::updateOrCreate([

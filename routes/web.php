@@ -7,6 +7,7 @@ use Jkli\Cms\Http\Controller\PageController;
 use Jkli\Cms\Http\Controller\LivePageController;
 use Jkli\Cms\Http\Controller\PageShellController;
 use Jkli\Cms\Http\Controller\PublishPageController;
+use Jkli\Cms\Http\Controller\PublishShellController;
 use Jkli\Cms\Http\Controller\ShellController;
 
 Route::middleware(['cms'])->group(function() {
@@ -34,6 +35,9 @@ Route::middleware(['cms'])->group(function() {
                 ->only(['store', 'update', 'destroy']);
     
             Route::post('/pages/{pageId}/publish', [PublishPageController::class, "store"])
+                ->name('page.publish');
+    
+            Route::post('/shells/{shellId}/publish', [PublishShellController::class, "store"])
                 ->name('page.publish');
         });
 

@@ -6,18 +6,57 @@ use Jkli\Cms\Models\Node;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Models\PublishedNode;
 use Jkli\Cms\Models\PublishedPage;
+use Jkli\Cms\Models\PublishedShell;
+use Jkli\Cms\Models\Shell;
 
 class PublishService
 {
 
     public function publishAll()
     {
+        Shell::with(['rootNode', 'rootNode.descendants'])
+            ->chunk(10, function ($pages) {
+                foreach ($pages as $page) {
+                    $this->publishShell($page);
+                }
+            });
         Page::with(['rootNode', 'rootNode.descendants'])
             ->chunk(10, function ($pages) {
                 foreach ($pages as $page) {
                     $this->publishPage($page);
                 }
             });
+    }
+
+    public function publishShells(array $shells)
+    {
+        Shell::whereIn('id', $shells)
+            ->with(['rootNode', 'rootNode.descendants'])
+            ->chunk(10, function ($shells) {
+                foreach ($shells as $page) {
+                    $this->publishShell($page);
+                }
+            });
+    }
+
+    public function publishShell(Shell | string $shell)
+    {
+        if (is_string($shell)) {
+            $shell = Page::where('id', $shell)
+                ->with(['rootNode', 'rootNode.descendants'])
+                ->firstOrFail();
+        }
+
+        $this->publishNode($shell->rootNode);
+
+        PublishedShell::updateOrCreate([
+            'id' => $shell->id
+        ], [
+            'id' => $shell->id,
+            'name' => $shell->name,
+            'node_id' => $shell->node_id,
+        ]);
+        
     }
 
     public function publishPages(array $pages)
@@ -49,6 +88,11 @@ class PublishService
 
         $this->publishNode($page->rootNode);
 
+        $shellId = null;
+        if(PublishedShell::find($page->shell_id)) {
+            $shellId = $page->shell_id;
+        }
+        
         PublishedPage::updateOrCreate([
             'id' => $page->id
         ], [
@@ -63,6 +107,7 @@ class PublishService
             'use_parent_path' => $page->use_parent_path,
             'node_id' => $page->node_id,
             'parent_id' => $page->parent_id,
+            'shell_id' => $shellId,
         ]);
         
     }

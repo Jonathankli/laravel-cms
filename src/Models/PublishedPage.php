@@ -21,6 +21,7 @@ class PublishedPage extends Model
         'use_parent_path',
         'node_id',
         'id',
+        'shell_id',
     ];
     
     public function rootNode()

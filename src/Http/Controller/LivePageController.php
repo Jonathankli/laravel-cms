@@ -3,10 +3,9 @@
 namespace Jkli\Cms\Http\Controller;
 
 use Inertia\Inertia;
-use Jkli\Cms\Actions\ShowPublishedPageAcion;
 use Jkli\Cms\Http\Controller\Controller;
-use Jkli\Cms\Http\Resources\NodeResource;
-use Jkli\Cms\Http\Resources\PageResource;
+use Jkli\Cms\Props\PublishedPageProp;
+use Jkli\Cms\Services\PropsPipelineService;
 
 class LivePageController extends Controller
 {
@@ -17,14 +16,11 @@ class LivePageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ShowPublishedPageAcion $action)
+    public function show()
     {
-        $page = $action->handle();
-        $nodes = $page->nodes();
-        return Inertia::render("Page/Show", [
-            "page" => PageResource::make($page),
-            "nodes" => NodeResource::collection($nodes)->all(),
-        ]);
+        return Inertia::render("Page/Show", PropsPipelineService::run([
+            PublishedPageProp::class,
+        ]));
     }
 
 }

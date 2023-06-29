@@ -18,6 +18,7 @@ use Jkli\Cms\Props\GroupedCmsObjectsProp;
 use Jkli\Cms\Props\ObjectSettingsProp;
 use Jkli\Cms\Props\PageProp;
 use Jkli\Cms\Props\PagesProp;
+use Jkli\Cms\Props\ShellsProp;
 use Jkli\Cms\Services\PropsPipelineService;
 
 class PageController extends Controller
@@ -58,6 +59,7 @@ class PageController extends Controller
             PageProp::class,
             AvailablePathProp::class,
             PagesProp::class,
+            ShellsProp::class,
         ]));
     }
 
@@ -78,6 +80,7 @@ class PageController extends Controller
             ObjectSettingsProp::class,
             PagesProp::class,
             CmsEditModeProp::class,
+            ShellsProp::class,
         ]));
     }
 

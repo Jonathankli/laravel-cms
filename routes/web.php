@@ -29,7 +29,7 @@ Route::middleware(['cms'])->group(function() {
                 ->only(['store']);
 
             Route::resource('/shells', ShellController::class)
-                ->only(['show', 'edit']);
+                ->only(['show', 'edit', 'store', 'update', 'destroy']);
     
             Route::resource('/nodes', NodeController::class)
                 ->only(['store', 'update', 'destroy']);

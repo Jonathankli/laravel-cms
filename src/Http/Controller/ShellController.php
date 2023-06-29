@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Http\Controller\Controller;
+use Jkli\Cms\Http\Requests\Shell\CreateShellRequest;
+use Jkli\Cms\Http\Requests\UpdatePageRequest;
+use Jkli\Cms\Models\Node;
 use Jkli\Cms\Models\Shell;
 use Jkli\Cms\Props\BackToPageProp;
 use Jkli\Cms\Props\CmsEditModeProp;
@@ -14,6 +17,7 @@ use Jkli\Cms\Props\EditNodeProp;
 use Jkli\Cms\Props\GroupedCmsObjectsProp;
 use Jkli\Cms\Props\ObjectSettingsProp;
 use Jkli\Cms\Props\ShellProp;
+use Jkli\Cms\Props\ShellsProp;
 use Jkli\Cms\Services\PropsPipelineService;
 
 class ShellController extends Controller
@@ -37,10 +41,18 @@ class ShellController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(CreateShellRequest $request)
     {
-        //
-        return Redirect::route("shell.show", ["shell" => "id"]);
+        $rootNode = new Node();
+        $rootNode->type = "root";
+        $rootNode->save();
+
+        $shell = Shell::create([
+            "name" => $request->input("name"),
+            "node_id" => $rootNode->id,
+        ]);
+
+        return Redirect::route("shells.edit", ["shell" => $shell->id]);
     }
 
     /**
@@ -53,6 +65,7 @@ class ShellController extends Controller
     {
         return Inertia::render("Shell/Show", PropsPipelineService::run([
             ShellProp::class,
+            ShellsProp::class,
         ]));
     }
 
@@ -73,6 +86,7 @@ class ShellController extends Controller
             ObjectSettingsProp::class,
             CmsEditModeProp::class,
             BackToPageProp::class,
+            ShellsProp::class,
         ]));
     }
 
@@ -83,9 +97,11 @@ class ShellController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePageRequest $request, $id)
     {
-        //
+        $page = Shell::find($id);
+        $page->update($request->validated());
+        return Redirect::back();
     }
 
     /**
@@ -96,6 +112,7 @@ class ShellController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Shell::destroy($id);
+        return Redirect::back();
     }
 }

@@ -10,6 +10,7 @@ use Jkli\Cms\Http\Requests\Shell\CreateShellRequest;
 use Jkli\Cms\Http\Requests\UpdatePageRequest;
 use Jkli\Cms\Models\Node;
 use Jkli\Cms\Models\Shell;
+use Jkli\Cms\Objects\PageOutlet;
 use Jkli\Cms\Props\BackToPageProp;
 use Jkli\Cms\Props\CmsEditModeProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
@@ -46,6 +47,11 @@ class ShellController extends Controller
         $rootNode = new Node();
         $rootNode->type = "root";
         $rootNode->save();
+
+        $pageOutlet = new Node();
+        $pageOutlet->type = PageOutlet::type();
+        $pageOutlet->parent_id = $rootNode->id;
+        $pageOutlet->save();
 
         $shell = Shell::create([
             "name" => $request->input("name"),

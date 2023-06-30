@@ -24,6 +24,7 @@ Route::middleware(['cms'])->group(function() {
 
             Route::get('/pages/{page}/shell/edit', [PageShellController::class, "edit"]);
             Route::get('/pages/{page}/shell', [PageShellController::class, "show"]);
+            Route::delete('/pages/{page}/shell', [PageShellController::class, "destroy"]);
 
             Route::resource('/pages', PageController::class)
                 ->only(['store']);

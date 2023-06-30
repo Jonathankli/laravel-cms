@@ -73,6 +73,13 @@ class PageShellController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $page = Page::findOrFail($id);
+        if(!$page->shell) {
+            abort(404, "Shell not found");
+        }
+        $page->shell_id = null;
+        $page->save();
+
+        return Redirect::route("pages.edit", ["path" => $page->full_path]);
     }
 }

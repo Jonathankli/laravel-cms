@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { TextInput, Button, Checkbox, Text, Group } from "@mantine/core";
-import { useDebouncedState } from "@mantine/hooks";
+import React from "react";
+import { TextInput, Button, Checkbox } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import axios from "axios";
 import { IconCheck, IconX } from "@tabler/icons";
 import { useStyles } from "./styles";
 import { router } from "@inertiajs/react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
-import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
+import { usePathInfo } from "../../hooks/usePathInfo";
+import { usePrefillInputs } from "../../hooks/usePrefillValues";
 
 interface NewPageFormProps {
     pageId?: string;
@@ -90,56 +89,4 @@ export function NewPageForm(props: NewPageFormProps) {
             </Button>
         </form>
     );
-}
-
-function usePrefillInputs<T>(form: any) {
-    useEffect(() => {
-        if (!form.isTouched("path")) {
-            form.setFieldValue(
-                "path",
-                form.values.name
-                    .replace(/ /g, "-")
-                    .replace(/(?![A-Za-z0-9_.\-~])/g, "")
-                    .toLowerCase()
-            );
-            form.setTouched({ path: false });
-        }
-        if (!form.isTouched("title")) {
-            form.setFieldValue("title", form.values.name);
-            form.setTouched({ title: false });
-        }
-    }, [form.values.name]);
-}
-
-function usePathInfo(path: string, use_parent_path: boolean, pageId?: string) {
-
-    const [debouncedPath, setDebouncedPath] = useDebouncedState("", 400);
-    const { params } = useServerConfig();
-
-    const availablePathData = useInertiaProps().availablePathData as null | {
-        path: string;
-        is_available: boolean;
-    };
-
-    useEffect(() => {
-        if (!debouncedPath) {
-            return;
-        }
-        router.reload({
-            data: {
-                [params.base+"_pps"]: {
-                    use_parent_path: use_parent_path ? 1 : 0,
-                    path: debouncedPath,
-                    parent: pageId,
-                } as any //idk why typescript is complaining
-            },
-            only: ["availablePathData"],
-        });
-    }, [debouncedPath, use_parent_path]);
-
-    useEffect(() => {
-        setDebouncedPath(path);
-    }, [path]);
-
-    return availablePathData;
 }

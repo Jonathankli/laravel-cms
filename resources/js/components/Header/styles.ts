@@ -1,6 +1,9 @@
 import { createStyles } from "@mantine/core";
 
 export const useStyles = createStyles((theme) => ({
+    header: {
+      left: 56,
+    },
     inner: {
       display: 'flex',
       justifyContent: 'space-between',

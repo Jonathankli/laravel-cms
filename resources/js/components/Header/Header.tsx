@@ -31,22 +31,20 @@ export function Header() {
   const { classes } = useStyles();
 
   return (
-    <>
-      <MantineHeader height={56}>
-        <Container className={classes.inner} >
+    <MantineHeader height={56} className={classes.header}>
+      <Container className={classes.inner} >
 
-          <Group position='left'>
-            <NavigationTrigger />
-            <ShellManagerTriger />
-            <ToShellButton />
-          </Group>
+        <Group position='left'>
+          <NavigationTrigger />
+          <ShellManagerTriger />
+          <ToShellButton />
+        </Group>
 
-          <PublishButton />
-          {/* <SegmentedControl
-              data={viewControllOptions}
-          /> */}
-        </Container>
-      </MantineHeader>
-    </>
+        <PublishButton />
+        {/* <SegmentedControl
+            data={viewControllOptions}
+        /> */}
+      </Container>
+    </MantineHeader>
   );
 }

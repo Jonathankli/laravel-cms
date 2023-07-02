@@ -10,6 +10,7 @@ import {
 } from "./contexts/ConfigProvider";
 import { Outlet } from "./features/node";
 import core from "./core";
+import { MainLayot } from "./layouts/MainLayout";
 
 export const createCms = (config: FrontendConfig) => {
     createInertiaApp({
@@ -17,9 +18,10 @@ export const createCms = (config: FrontendConfig) => {
             const pages = import.meta.glob("./pages/**/*.js");
             const module: any = await pages[`./pages/cms/${name}.js`]();
 
-            // if (module.default.layout || module.default.layout === null)
-            //     return module.default;
+            if (module.default.layout || module.default.layout === null)
+                return module.default;
             
+            module.default.layout = MainLayot;
             return module.default;
         },
         setup({ el, App, props }) {

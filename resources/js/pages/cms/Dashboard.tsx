@@ -1,11 +1,5 @@
-import React from 'react';
+import React from "react";
 
-const Dashboard = (props: any) => {
-    return (
-        <>
-            <h1>Gastro!!!!</h1>
-        </>
-    )
+export default function Dashboard() {
+    return <div style={{ height: 2000 }}>Tes121212t</div>;
 }
-
-export default Dashboard;

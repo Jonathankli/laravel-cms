@@ -9,6 +9,7 @@ use Jkli\Cms\Http\Controller\PageShellController;
 use Jkli\Cms\Http\Controller\PublishPageController;
 use Jkli\Cms\Http\Controller\PublishShellController;
 use Jkli\Cms\Http\Controller\ShellController;
+use Jkli\Cms\Http\Controller\UserController;
 
 Route::middleware(['cms'])->group(function() {
 
@@ -25,6 +26,8 @@ Route::middleware(['cms'])->group(function() {
             Route::get('/pages/{page}/shell/edit', [PageShellController::class, "edit"]);
             Route::get('/pages/{page}/shell', [PageShellController::class, "show"]);
             Route::delete('/pages/{page}/shell', [PageShellController::class, "destroy"]);
+
+            Route::resource('/users', UserController::class);
 
             Route::resource('/pages', PageController::class)
                 ->only(['store']);

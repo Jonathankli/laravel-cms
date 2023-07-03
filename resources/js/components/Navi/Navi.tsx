@@ -14,6 +14,7 @@ import {
     IconPencil,
     IconBoxMargin,
     IconBrowser,
+    IconUsers,
 } from "@tabler/icons";
 import { useClickOutside } from "@mantine/hooks";
 import { useStyles } from "./styles";
@@ -25,6 +26,7 @@ const mainLinksMockdata = [
     { icon: IconPencil, label: "Page Editor", link: "/cms/" },
     { icon: IconBrowser, label: "Pages", link: "/cms/admin/pages" },
     { icon: IconBoxMargin, label: "Shells", link: "/cms/admin/shells" },
+    { icon: IconUsers, label: "Users", link: "/cms/admin/users" },
 ];
 
 const bottomLinksMockdata = [

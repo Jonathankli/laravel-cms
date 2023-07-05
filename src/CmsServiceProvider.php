@@ -19,9 +19,13 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
+        CmsFacade::plugin(new CmsCorePlugin());
+
+
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'cms');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->registerModuleRoutes();
 
         $router->middlewareGroup('cms', [
             StartSession::class,
@@ -34,8 +38,6 @@ class CmsServiceProvider extends ServiceProvider
         ]);
 
         $this->registerObservers();
-
-        CmsFacade::plugin(new CmsCorePlugin());
         
         if ($this->app->runningInConsole()) {
 
@@ -48,6 +50,13 @@ class CmsServiceProvider extends ServiceProvider
             ]);
         }
         
+    }
+
+    public function registerModuleRoutes()
+    {
+        CmsFacade::getCmsModules()->each(function($module) {
+            $module::routes();
+        });
     }
 
     public function registerObservers()

@@ -11,51 +11,31 @@ use Jkli\Cms\Http\Controller\PublishShellController;
 use Jkli\Cms\Http\Controller\ShellController;
 use Jkli\Cms\Http\Controller\UserController;
 
-Route::middleware(['cms'])->group(function() {
-
-    // Route::get('/', [LiveController::class, "index"]);
+Route::middleware(['cms'])->group(function () {
 
     //cms routes
-    Route::prefix(config('cms.cms_path', '/cms'))->group(function() {
+    Route::prefix(config('cms.admin_path', '/cms/admin'))->group(function () {
+        //Admindashboard
+        Route::get('/', [DashboardController::class, "index"]);
 
-        //administration routes
-        Route::prefix('admin')->group(function() {
-            //Admindashboard
-            Route::get('/', [DashboardController::class, "index"]);
+        Route::get('/pages/{page}/shell/edit', [PageShellController::class, "edit"]);
+        Route::get('/pages/{page}/shell', [PageShellController::class, "show"]);
+        Route::delete('/pages/{page}/shell', [PageShellController::class, "destroy"]);
 
-            Route::get('/pages/{page}/shell/edit', [PageShellController::class, "edit"]);
-            Route::get('/pages/{page}/shell', [PageShellController::class, "show"]);
-            Route::delete('/pages/{page}/shell', [PageShellController::class, "destroy"]);
+        Route::resource('/pages', PageController::class)
+            ->only(['store']);
 
-            Route::resource('/users', UserController::class);
+        Route::resource('/shells', ShellController::class)
+            ->only(['show', 'edit', 'store', 'update', 'destroy']);
 
-            Route::resource('/pages', PageController::class)
-                ->only(['store']);
+        Route::resource('/nodes', NodeController::class)
+            ->only(['store', 'update', 'destroy']);
 
-            Route::resource('/shells', ShellController::class)
-                ->only(['show', 'edit', 'store', 'update', 'destroy']);
-    
-            Route::resource('/nodes', NodeController::class)
-                ->only(['store', 'update', 'destroy']);
-    
-            Route::post('/pages/{pageId}/publish', [PublishPageController::class, "store"])
-                ->name('page.publish');
-    
-            Route::post('/shells/{shellId}/publish', [PublishShellController::class, "store"])
-                ->name('page.publish');
-        });
+        Route::post('/pages/{pageId}/publish', [PublishPageController::class, "store"])
+            ->name('page.publish');
 
-        Route::get('/{path?}', [PageController::class, "edit"])
-            ->where('path', '.*')
-            ->name('pages.edit');
+        Route::post('/shells/{shellId}/publish', [PublishShellController::class, "store"])
+            ->name('page.publish');
     });
-
-});
-
-Route::middleware(['live'])->prefix(config('cms.live_path', '/'))->group(function() {
-
-    Route::get('/{path?}', [LivePageController::class, "show"])
-        ->where('path', '.*')
-        ->name('live.pages.show');
 
 });

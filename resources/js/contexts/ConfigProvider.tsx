@@ -28,12 +28,14 @@ export interface FrontendConfig {
     extend?: FrontendConfigLive;
     plugins?: PluginConfig[];
     objects?: ObjectConfig[];
+    modules?: ModuleConfig[];
     objectSettings?: ObjectSettingConfig[];
     actions?: ActionConfig[];
 }
 
 export interface FrontendConfigMap {
     plugins: {[key: string]: FullPluginConfig};
+    modules: {[key: string]: ModuleConfig};
     objects: {[key: string]: ObjectConfig};
     objectSettings: {[key: string]: ObjectSettingConfig};
     actions: {[key: string]: ActionConfig};
@@ -55,11 +57,13 @@ export interface PluginConfigLive {
 export interface ExtendedPluginConfig {
     extend: PluginConfigLive;
     actions?: ActionConfig[];
+    modules?: ModuleConfig[];
     objectSettings?: ObjectSettingConfig[];
 }
 export interface CmsPluginConfig {
     name: string;
     actions?: ActionConfig[];
+    modules?: ModuleConfig[];
     objectSettings?: ObjectSettingConfig[];
 }
 
@@ -74,6 +78,11 @@ export interface ComponentWithFallback {
 export interface ObjectConfig {
     name: string;
     Component: ComponentWithFallback | ReactComponent
+}
+export interface ModuleConfig {
+    type: string;
+    icon?: ReactComponent;
+    resolvePage(name: string): ReactComponent;
 }
 export interface ObjectSettingConfig {
     name: string;
@@ -91,6 +100,7 @@ export const defaultConfig: Config  = {
     frontendConfig: {
         plugins: {},
         objects: {},
+        modules: {},
         objectSettings: {},
         actions: {},
     },
@@ -125,6 +135,9 @@ function map(config: FrontendConfig): FrontendConfigMap {
         if("objects" in item) {
             fullPlugin.objects = item.objects;
         }
+        if("modules" in item) {
+            fullPlugin.modules = item.modules;
+        }
         if("extend" in item) {
             fullPlugin.name = item.extend.name;
             if(fullPlugin.objects?.length) fullPlugin.objects?.concat(item.extend.objects || []);
@@ -139,6 +152,9 @@ function map(config: FrontendConfig): FrontendConfigMap {
     
     const actions = (config?.actions || []).concat(Object.values(plugins).flatMap(p => (p?.actions || [])));
     configMap.actions = actions.reduce((acc, item) => ({...acc, [item.name]: item}), {});
+
+    const modules = (config?.modules || []).concat(Object.values(plugins).flatMap(p => (p?.modules || [])));
+    configMap.modules = modules.reduce((acc, item) => ({...acc, [item.type]: item}), {});
     
     const objectSettings = (config?.objectSettings || []).concat(Object.values(plugins).flatMap(p => (p?.objectSettings || [])));
     configMap.objectSettings = objectSettings.reduce((acc, item) => ({...acc, [item.name]: item}), {});

@@ -9,6 +9,7 @@ interface Pluginable
      */
     public function getName(): string;
     public function getCmsObjects(): array;
+    public function getCmsModules(): array;
     public function getNpmPackageName(): string | null;
     public function getCmsPluginExport(): string | null;
 }

@@ -3,6 +3,9 @@
 namespace Jkli\Cms;
 
 use Jkli\Cms\Contracts\Pluginable;
+use Jkli\Cms\Modules\Editor;
+use Jkli\Cms\Modules\LiveServer;
+use Jkli\Cms\Modules\Users;
 use Jkli\Cms\Objects\PageOutlet;
 
 class CmsCorePlugin implements Pluginable
@@ -17,6 +20,15 @@ class CmsCorePlugin implements Pluginable
         {
             return [
                 PageOutlet::class
+            ];
+        }
+    
+        public function getCmsModules(): array 
+        {
+            return [
+                Users::class,
+                Editor::class,
+                LiveServer::class,
             ];
         }
     

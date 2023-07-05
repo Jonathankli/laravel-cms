@@ -12,11 +12,39 @@ import { Outlet } from "./features/node";
 import core from "./core";
 import { MainLayot } from "./layouts/MainLayout";
 
+function getModules(config: FrontendConfig) {
+    const pluginModules = config.plugins?.flatMap((p) => {
+        if ("modules" in p) return p.modules ?? [];
+        return [];
+    });
+    return (config?.modules ?? []).concat(pluginModules ?? []);
+}
+
 export const createCms = (config: FrontendConfig) => {
+    const _config: FrontendConfig = {
+        ...config,
+        plugins: [
+            ...(config?.plugins ?? []),
+            core
+        ]
+    };
+
+    const modules = getModules(_config);
+
     createInertiaApp({
         resolve: async (name: string) => {
-            const pages = import.meta.glob("./pages/**/*.js");
-            const module: any = await pages[`./pages/cms/${name}.js`]();
+            let module: any;
+            const [moduleType, path] = name.split("::");
+            if(path) {
+                const moduleConfig = modules.find(m => m.type === moduleType);
+                if(!moduleConfig) {
+                    throw new Error("Module not found!");
+                }
+                module = await moduleConfig.resolvePage(path);
+            } else {
+                const pages = import.meta.glob("./pages/**/*.js");
+                module = await pages[`./pages/cms/${name}.js`]();
+            }
 
             if (module.default.layout || module.default.layout === null)
                 return module.default;
@@ -26,14 +54,6 @@ export const createCms = (config: FrontendConfig) => {
         },
         setup({ el, App, props }) {
             const root = ReactDOM.createRoot(el);
-            
-            const _config: FrontendConfig = {
-                ...config,
-                plugins: [
-                    ...(config?.plugins ?? []),
-                    core
-                ]
-            };
 
             root.render(
                 <ConfigProviders

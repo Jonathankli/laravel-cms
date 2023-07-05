@@ -10,6 +10,7 @@ use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\EditPageRequest;
 use Jkli\Cms\Http\Requests\ShowPageRequest;
 use Jkli\Cms\Models\Page;
+use Jkli\Cms\Modules\Editor;
 use Jkli\Cms\Props\AvailablePathProp;
 use Jkli\Cms\Props\CmsEditModeProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
@@ -30,9 +31,7 @@ class PageController extends Controller
      */
     public function index()
     {
-        return Inertia::render("Navi/Show", [
-            'pages' => Page::all()
-        ]);
+
     }
 
     /**
@@ -55,7 +54,7 @@ class PageController extends Controller
      */
     public function show(EditPageRequest $request)
     {
-        return Inertia::render("Page/Show", PropsPipelineService::run([
+        return Inertia::render(Editor::view("Show"), PropsPipelineService::run([
             PageProp::class,
             AvailablePathProp::class,
             PagesProp::class,
@@ -71,7 +70,7 @@ class PageController extends Controller
      */
     public function edit(ShowPageRequest $request)
     {
-        return Inertia::render("Page/Edit", PropsPipelineService::run([
+        return Inertia::render(Editor::view("Edit"), PropsPipelineService::run([
             PageProp::class,
             EditNodeProp::class,
             AvailablePathProp::class,

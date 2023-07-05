@@ -9,6 +9,7 @@ use Jkli\Cms\Http\Requests\ResourceFilterRequest;
 use Jkli\Cms\Http\Requests\User\UserUpdateRequest;
 use Jkli\Cms\Http\Resources\UserResource;
 use Jkli\Cms\Models\User;
+use Jkli\Cms\Modules\Users;
 
 class UserController extends Controller
 {
@@ -20,7 +21,7 @@ class UserController extends Controller
     public function index(ResourceFilterRequest $request)
     {
         $users = User::filter();
-        return Inertia::render('User/Index', [
+        return Inertia::render(Users::view('Index'), [
             'users' => $users
         ]);
     }
@@ -32,7 +33,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('User/Create');
+        return Inertia::render(Users::view('Create'));
     }
 
     /**

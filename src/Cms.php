@@ -29,6 +29,15 @@ class Cms
         return $this->plugins;
     }
 
+    public function getCmsModules(): Collection
+    {
+        return $this->plugins->flatMap(
+            fn ($plugin) => collect($plugin->getCmsModules())->mapWithKeys(
+                fn ($module) => [$module::type() => $module]
+            )
+        );
+    }
+
     public function getCmsObjects(): Collection
     {
         return $this->plugins->flatMap(
@@ -42,7 +51,7 @@ class Cms
     {
         return $this->plugins->flatMap(
             fn ($plugin) => collect($plugin->getCmsObjectSettings())->mapWithKeys(
-                fn ($object) => [$object::type() => $object]
+                fn ($setting) => [$setting::type() => $setting]
             )
         );
     }

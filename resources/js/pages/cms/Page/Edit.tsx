@@ -5,6 +5,8 @@ import { CurrentShell } from '../../../features/shell/live';
 import CmsLayout from '../../../layouts/CmsLayout';
 
 const EditPage = (props: any) => {
+    console.log(props);
+    
     return (
         <CmsLayout
             navigation={props?.navigation}

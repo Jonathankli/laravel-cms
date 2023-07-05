@@ -5,7 +5,9 @@ namespace Jkli\Cms\Http\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
+use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Http\Resources\ConfigResource;
+use Jkli\Cms\Http\Resources\ModuleResource;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -40,6 +42,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'config' => ConfigResource::make(null),
+            'modules' => fn() => ModuleResource::collection(Cms::getCmsModules())->all(),
             'session_data' => Session::get('lcms'),
         ]);
     }

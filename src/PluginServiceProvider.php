@@ -13,6 +13,8 @@ abstract class PluginServiceProvider extends ServiceProvider implements Pluginab
     protected $name;
 
     protected array $cmsObjects;
+    
+    protected array $cmsModules;
 
     protected array $cmsObjectSettings;
 
@@ -28,6 +30,7 @@ abstract class PluginServiceProvider extends ServiceProvider implements Pluginab
     {
         parent::__construct($app);
         $this->cmsObjects = array();
+        $this->cmsModules = array();
         $this->cmsObjectSettings = array();
         $this->booted(fn() => Cms::plugin($this));
     }
@@ -40,6 +43,11 @@ abstract class PluginServiceProvider extends ServiceProvider implements Pluginab
     public function getCmsObjects(): array 
     {
         return $this->cmsObjects;
+    }
+
+    public function getCmsModules(): array 
+    {
+        return $this->cmsModules;
     }
 
     public function getCmsObjectSettings(): array 

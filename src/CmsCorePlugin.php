@@ -26,9 +26,9 @@ class CmsCorePlugin implements Pluginable
         public function getCmsModules(): array 
         {
             return [
-                Users::class,
-                Editor::class,
                 LiveServer::class,
+                Editor::class,
+                Users::class,
             ];
         }
     

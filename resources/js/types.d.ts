@@ -8,3 +8,10 @@ interface User {
     permissions?: string[]
     roles?: string[]
 }
+
+interface Module {
+    type: string;
+    name: string;
+    slug: string
+    full_slug: string;
+}

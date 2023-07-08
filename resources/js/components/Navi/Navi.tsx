@@ -20,6 +20,8 @@ import { useClickOutside } from "@mantine/hooks";
 import { useStyles } from "./styles";
 import { spotlight } from "@mantine/spotlight";
 import { Link } from '@inertiajs/react'
+import useInertiaProps from "../../hooks/inertia/useInertiaProps";
+import useFrontendConfig from "../../hooks/config/useFrontendConfig";
 
 const mainLinksMockdata = [
     { icon: IconHome2, label: "Home", link: "/cms/admin" },
@@ -39,8 +41,14 @@ export default function Navi() {
     const [activeLink, setActiveLink] = useState("Settings");
     const [open, setOpen] = useState(false);
     const ref = useClickOutside(() => setOpen(false));
-
-    const mainLinks = mainLinksMockdata;
+    const modules = useInertiaProps().modules as Module[];
+    const { modules: moduleConfigs } = useFrontendConfig();
+    
+    const mainLinks = Object.entries(modules).map(([type, module]) => {
+        const config = moduleConfigs[type];
+        if(!config) throw new Error("Module config not found!");
+        return { icon: config.icon, label: module.name, link: module.full_slug };
+    });
     const bottomLinks = bottomLinksMockdata;
 
     return (
@@ -127,8 +135,6 @@ function NaviLink({ setActiveLink, activeLink, link }) {
             })}
             href={link.link}
             onClick={(event) => {
-                console.log(123);
-                
                 if(!link.onClick) return;
                 event.preventDefault();
                 link.onClick?.();
@@ -151,8 +157,6 @@ function IconLink({ link, open, setActiveLink, activeLink }) {
             component={Link}
             href={link.link}
             onClick={(event) => {
-                console.log(123);
-                
                 if(!link.onClick) return;
                 event.preventDefault();
                 link.onClick?.();

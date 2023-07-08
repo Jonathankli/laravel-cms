@@ -2,7 +2,6 @@
 
 namespace Jkli\Cms\Modules;
 
-use Illuminate\Support\Facades\Route;
 use Jkli\Cms\Module;
 
 class LiveServer extends Module
@@ -17,16 +16,11 @@ class LiveServer extends Module
      *
      * @return void
      */
-    public static function routes()
-    {
-        if (app()->routesAreCached()) {
-            return;
-        }
+    public static function routes() { }
 
-        Route::middleware(['live'])
-            ->prefix(config('cms.live_path', '/'))
-            ->group(static::getRoutsFile());
-        
+    public static function getRoutePrefix()
+    {
+        return "/";
     }
 
 }

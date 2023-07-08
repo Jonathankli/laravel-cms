@@ -31,6 +31,16 @@ abstract class Module
      *
      * @return void
      */
+    public static function getRoutePrefix()
+    {
+        return config('cms.admin_path') . '/' . static::type();
+    }
+
+    /**
+     * Register the modules's routes.
+     *
+     * @return void
+     */
     public static function routes()
     {
         if (app()->routesAreCached()) {
@@ -38,7 +48,7 @@ abstract class Module
         }
 
         Route::middleware(['cms'])
-            ->prefix(config('cms.admin_path').'/'.static::type())
+            ->prefix(static::getRoutePrefix())
             ->group(static::getRoutsFile());
     }
 

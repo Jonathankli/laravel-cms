@@ -21,11 +21,11 @@ class CmsServiceProvider extends ServiceProvider
     {
         CmsFacade::plugin(new CmsCorePlugin());
 
+        $this->registerModuleRoutes();
 
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'cms');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->registerModuleRoutes();
 
         $router->middlewareGroup('cms', [
             StartSession::class,

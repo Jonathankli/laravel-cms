@@ -26,6 +26,7 @@ class ModuleResource extends JsonResource
             'type' => $this->resource::type(),
             'name' => $this->resource::name(),
             'slug' => $this->resource::slug(),
+            'full_slug' => $this->resource::getRoutePrefix()
         ];
     }
 }

@@ -38,4 +38,19 @@ Route::middleware(['cms'])->group(function () {
             ->name('page.publish');
     });
 
+     //cms routes
+     Route::prefix(config('cms.cms_path', '/cms'))->group(function() {
+        Route::get('/{path?}', [PageController::class, "edit"])
+            ->where('path', '.*')
+            ->name('pages.edit');
+     });
+
+});
+
+Route::middleware(['live'])->prefix(config('cms.live_path', '/'))->group(function() {
+
+    Route::get('/{path?}', [LivePageController::class, "show"])
+        ->where('path', '.*')
+        ->name('live.pages.show');
+
 });

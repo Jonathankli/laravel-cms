@@ -2,14 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import GlobalProviders from "./contexts/GlobalProvider";
-import CmsLayout from "./layouts/CmsLayout";
 import {
     ConfigProviders,
     FrontendConfig,
     ServerConfig,
 } from "./contexts/ConfigProvider";
 import { Outlet } from "./features/node";
-import core from "./core";
+import core from "./coreCmsPlugin";
 import { MainLayot } from "./layouts/MainLayout";
 
 function getModules(config: FrontendConfig) {
@@ -37,7 +36,7 @@ export const createCms = (config: FrontendConfig) => {
             const [moduleType, path] = name.split("::");
             if(path) {
                 const moduleConfig = modules.find(m => m.type === moduleType);
-                if(!moduleConfig) {
+                if(!moduleConfig || !moduleConfig?.resolvePage) {
                     throw new Error("Module not found!");
                 }
                 module = await moduleConfig.resolvePage(path);

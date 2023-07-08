@@ -81,8 +81,8 @@ export interface ObjectConfig {
 }
 export interface ModuleConfig {
     type: string;
-    icon?: ReactComponent;
-    resolvePage(name: string): ReactComponent;
+    icon?: any;
+    resolvePage?(name: string): any;
 }
 export interface ObjectSettingConfig {
     name: string;

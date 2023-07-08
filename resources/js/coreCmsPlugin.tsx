@@ -1,9 +1,9 @@
 import { IconBrowser, IconPencil, IconUser } from "@tabler/icons";
-import { PluginConfigLive } from "./contexts/ConfigProvider";
-import { PageOutlet } from "./features/shell/live";
+import { ExtendedPluginConfig } from "./contexts/ConfigProvider";
+import coreConfig from "./corePlugin";
 
-export default {
-    name: "core",
+const coreCmsConfig: ExtendedPluginConfig= {
+    extend: coreConfig,
     modules: [
         {
             type: "live_server",
@@ -26,10 +26,6 @@ export default {
             icon: IconUser
         },
     ],
-    objects: [
-        {
-            name: "pageOutlet",
-            Component: PageOutlet
-        }
-    ]
-} as PluginConfigLive;
+}
+
+export default coreCmsConfig;

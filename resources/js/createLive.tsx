@@ -7,7 +7,7 @@ import {
     ServerConfig,
 } from "./contexts/ConfigProvider";
 import { Outlet } from "./features/live/live";
-import core from "./core";
+import core from "./corePlugin";
 
 export const createLive = (config: FrontendConfigLive) => {
     createInertiaApp({

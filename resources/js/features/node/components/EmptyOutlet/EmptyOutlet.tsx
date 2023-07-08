@@ -3,6 +3,7 @@ import { Button } from "@mantine/core";
 import React from "react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import { useObjectPicker, useObjectEditor } from "../../../object";
+import { useInShell } from "../../../shell/live";
 
 interface EmptyOutletProps {
     nodeId: string;
@@ -12,6 +13,7 @@ interface EmptyOutletProps {
 export function EmptyOutlet(props: EmptyOutletProps) {
     const config = useServerConfig();
     const { open: openEditor } = useObjectEditor();
+    const inShell = useInShell();
     const onObjectSelect = (obj: StaticCmsObject) => {
         router.post(config.paths.admin+"/nodes", {
             ref_node: props.nodeId,
@@ -29,6 +31,8 @@ export function EmptyOutlet(props: EmptyOutletProps) {
     };
 
     const { open } = useObjectPicker(onObjectSelect);
+
+    if(inShell) return null;
 
     return (
         <>

@@ -38,7 +38,6 @@ Route::middleware(['cms'])->group(function () {
         Route::post('/shells/{shellId}/publish', [PublishShellController::class, "store"])
             ->name('page.publish');
 
-        Route::get('/test', [TestController::class, 'index']);
     });
 
      //cms routes

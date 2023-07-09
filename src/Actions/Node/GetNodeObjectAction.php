@@ -1,17 +1,17 @@
 <?php
 
-namespace Jkli\Cms\Actions\Node;
+namespace Jkli\Cms\Actions\CmsNode;
 
 use Jkli\Cms\CmsObject;
 use Jkli\Cms\Facades\Cms;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 
 class GetNodeObjectAction
 {
 
     public function handle(string $nodeId): CmsObject
     {
-        $node = Node::findOrFail($nodeId);
+        $node = CmsNode::findOrFail($nodeId);
         $class = Cms::getCmsObject($node->type);
         return new $class($node);
     }

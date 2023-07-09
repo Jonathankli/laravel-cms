@@ -11,7 +11,7 @@ use Jkli\Cms\Http\Resources\CmsObject\CmsObjectResource;
 use Jkli\Cms\Http\Resources\NodeResource;
 use Jkli\Cms\Http\Resources\PagePathCheckResource;
 use Jkli\Cms\Http\Resources\PageResource;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Services\PagePathService;
 

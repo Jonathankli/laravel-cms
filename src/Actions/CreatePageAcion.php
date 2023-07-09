@@ -4,7 +4,7 @@ namespace Jkli\Cms\Actions;
 
 use Illuminate\Validation\ValidationException;
 use Jkli\Cms\Http\Requests\CreatePageRequest;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Services\PagePathService;
 
@@ -21,7 +21,7 @@ class CreatePageAcion
      */
     public function handle()
     {
-        $rootNode = new Node();
+        $rootNode = new CmsNode();
         $rootNode->type = "root";
         $rootNode->save();
 

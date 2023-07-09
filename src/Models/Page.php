@@ -7,7 +7,7 @@ class Page extends PublishedPage
 
     public function rootNode()
     {
-        return $this->belongsTo(Node::class, 'node_id');
+        return $this->belongsTo(CmsNode::class, 'node_id');
     }
 
     public function parent()

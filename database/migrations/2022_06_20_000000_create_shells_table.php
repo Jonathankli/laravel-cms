@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 
 return new class extends Migration
 {

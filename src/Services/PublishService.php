@@ -2,7 +2,7 @@
 
 namespace Jkli\Cms\Services;
 
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Models\PublishedNode;
 use Jkli\Cms\Models\PublishedPage;
@@ -112,10 +112,10 @@ class PublishService
         
     }
 
-    public function publishNode(Node | string $node): PublishedNode
+    public function publishNode(CmsNode | string $node): PublishedNode
     {
         if (is_string($node)) {
-            $node = Node::where('id', $node)
+            $node = CmsNode::where('id', $node)
                 ->with(['descendants'])
                 ->firstOrFail();
         }

@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAcion;
-use Jkli\Cms\Actions\Node\CreateNodeAction;
+use Jkli\Cms\Actions\CmsNode\CreateNodeAction;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\UpdateNodeRequest;
 use Jkli\Cms\Http\Resources\NodeResource;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 
 class NodeController extends Controller
 {
 
-    public function redirectToParent(Node $node)
+    public function redirectToParent(CmsNode $node)
     {
         $shell = $node->rootAncestor->shell;
         if($shell) {
@@ -29,7 +29,7 @@ class NodeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Jkli\Cms\Actions\Node\CreateNodeAction  $action
+     * @param  \Jkli\Cms\Actions\CmsNode\CreateNodeAction  $action
      * @return \Illuminate\Http\Response
      */
     public function store(CreateNodeAction $action)
@@ -48,7 +48,7 @@ class NodeController extends Controller
      */
     public function update(UpdateNodeRequest $request, $id)
     {
-        $node = Node::findOrFail($id);
+        $node = CmsNode::findOrFail($id);
         $node->settings = $request->input("settings");
         $node->save();
         Session::put("lcms.updated_node", NodeResource::make($node));
@@ -64,7 +64,7 @@ class NodeController extends Controller
      */
     public function destroy($id)
     {
-        Node::destroy($id);
+        CmsNode::destroy($id);
         return Redirect::back();
     }
 }

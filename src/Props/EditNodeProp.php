@@ -9,13 +9,13 @@ use Inertia\Inertia;
 use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Http\Resources\CmsObject\CmsObjectResource;
 use Jkli\Cms\Http\Resources\NodeResource;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 
 class EditNodeProp extends Prop
 {
 
     protected ?string $editNodeId;
-    protected ?Node $node;
+    protected ?CmsNode $node;
 
     function __construct(
         protected Request $request
@@ -36,7 +36,7 @@ class EditNodeProp extends Prop
 
     public function getEditNode()
     {
-        $settings = request()->header('X-CMS-Node-Settings');
+        $settings = request()->header('X-CMS-CmsNode-Settings');
         $settings = json_decode($settings, true);
         $node = $this->getNode();
         if(!$settings) {
@@ -52,10 +52,10 @@ class EditNodeProp extends Prop
         return new $class($node);
     }
 
-    private function getNode(): Node
+    private function getNode(): CmsNode
     {
         if(!isset($this->node)) {
-            $this->node = Node::findOrFail($this->editNodeId);
+            $this->node = CmsNode::findOrFail($this->editNodeId);
         }
         return $this->node;
     }

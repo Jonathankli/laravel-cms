@@ -4,9 +4,10 @@ namespace Jkli\Cms\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Jkli\Cms\Contracts\Node;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
-class PublishedNode extends Model
+class PublishedNode extends Model implements Node
 {
     use HasUuids, HasRecursiveRelationships;
 

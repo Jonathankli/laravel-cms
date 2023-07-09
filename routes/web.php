@@ -9,6 +9,7 @@ use Jkli\Cms\Http\Controller\PageShellController;
 use Jkli\Cms\Http\Controller\PublishPageController;
 use Jkli\Cms\Http\Controller\PublishShellController;
 use Jkli\Cms\Http\Controller\ShellController;
+use Jkli\Cms\Http\Controller\TestController;
 use Jkli\Cms\Http\Controller\UserController;
 
 Route::middleware(['cms'])->group(function () {
@@ -36,6 +37,8 @@ Route::middleware(['cms'])->group(function () {
 
         Route::post('/shells/{shellId}/publish', [PublishShellController::class, "store"])
             ->name('page.publish');
+
+        Route::get('/test', [TestController::class, 'index']);
     });
 
      //cms routes

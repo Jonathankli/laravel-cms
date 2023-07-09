@@ -3,7 +3,7 @@
 namespace Jkli\Cms;
 
 use Illuminate\Database\Seeder;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Models\Shell;
 
@@ -16,43 +16,43 @@ class CmsSeeder extends Seeder
      */
     public function run()
     {
-        $rootNode = Node::create([
+        $rootNode = CmsNode::create([
             "type" => "root"
         ]);
-        $sec1 = Node::create([
+        $sec1 = CmsNode::create([
             "type" => "Jkli\CmsObjects\CmsObjects\Section",
             "index" => 1,
             "parent_id" => $rootNode->id,
             'settings' => "{}",
         ]);
-        Node::create([
+        CmsNode::create([
             "type" => "Jkli\CmsObjects\CmsObjects\Section",
             "index" => 2,
             "parent_id" => $rootNode->id,
             'settings' => "{}",
         ]);
-        Node::create([
+        CmsNode::create([
             "type" => "Jkli\CmsObjects\CmsObjects\Text",
             "index" => 1,
             "parent_id" => $sec1->id,
             'settings' => "{}",
         ]);
-        Node::create([
+        CmsNode::create([
             "type" => "Jkli\CmsObjects\CmsObjects\Text",
             "index" => 2,
             "parent_id" => $sec1->id,
             'settings' => "{}",
         ]);
-        $shellRoot = Node::create([
+        $shellRoot = CmsNode::create([
             "type" => "root",
         ]);
-        $shellSec = Node::create([
+        $shellSec = CmsNode::create([
             "type" => "Jkli\CmsObjects\CmsObjects\Section",
             "index" => 1,
             "parent_id" => $shellRoot->id,
             'settings' => "{}",
         ]);
-        Node::create([
+        CmsNode::create([
             "type" => "pageOutlet",
             "index" => 1,
             "parent_id" => $shellSec->id,
@@ -71,16 +71,16 @@ class CmsSeeder extends Seeder
             "shell_id" => $shell->id,
         ]);
 
-        $rootNode = Node::create([
+        $rootNode = CmsNode::create([
             "type" => "root"
         ]);
-        $sec1 = Node::create([
+        $sec1 = CmsNode::create([
             "type" => "Jkli\CmsObjects\CmsObjects\Section",
             "index" => 1,
             "parent_id" => $rootNode->id,
             'settings' => "{}",
         ]);
-        Node::create([
+        CmsNode::create([
             "type" => "Jkli\CmsObjects\CmsObjects\Text",
             "index" => 1,
             "parent_id" => $sec1->id,

@@ -8,7 +8,7 @@ use Inertia\Inertia;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\Shell\CreateShellRequest;
 use Jkli\Cms\Http\Requests\UpdatePageRequest;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Shell;
 use Jkli\Cms\Objects\PageOutlet;
 use Jkli\Cms\Props\BackToPageProp;
@@ -44,11 +44,11 @@ class ShellController extends Controller
      */
     public function store(CreateShellRequest $request)
     {
-        $rootNode = new Node();
+        $rootNode = new CmsNode();
         $rootNode->type = "root";
         $rootNode->save();
 
-        $pageOutlet = new Node();
+        $pageOutlet = new CmsNode();
         $pageOutlet->type = PageOutlet::type();
         $pageOutlet->parent_id = $rootNode->id;
         $pageOutlet->save();

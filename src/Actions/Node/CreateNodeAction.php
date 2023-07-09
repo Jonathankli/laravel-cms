@@ -1,9 +1,9 @@
 <?php
 
-namespace Jkli\Cms\Actions\Node;
+namespace Jkli\Cms\Actions\CmsNode;
 
 use Jkli\Cms\Http\Requests\CreateNodeRequest;
-use Jkli\Cms\Models\Node;
+use Jkli\Cms\Models\CmsNode;
 
 class CreateNodeAction
 {
@@ -13,9 +13,9 @@ class CreateNodeAction
     ) {}
 
     /**
-     * Creates a new Node
+     * Creates a new CmsNode
      *
-     * @return \Jkli\Cms\Models\Node
+     * @return \Jkli\Cms\Models\CmsNode
      */
     public function handle()
     {
@@ -26,24 +26,24 @@ class CreateNodeAction
     }
     
     /**
-     * Creates a new Node
+     * Creates a new CmsNode
      *
-     * @return \Jkli\Cms\Models\Node
+     * @return \Jkli\Cms\Models\CmsNode
      */
     public function insert() 
     {
-        $refNode = Node::findOrFail($this->req->input("ref_node")); // will be handled as sibling
+        $refNode = CmsNode::findOrFail($this->req->input("ref_node")); // will be handled as sibling
         $index = $refNode->index;
         if($this->req->input("insert") === "after") {
             $index++;
         }
 
-        Node::where("parent_id", $refNode->parent_id)
+        CmsNode::where("parent_id", $refNode->parent_id)
             ->where("outlet", $refNode->outlet)
             ->where("index", ">=", $index)
             ->increment("index", 1);
         
-        $node = new Node();
+        $node = new CmsNode();
         $node->parent_id = $refNode->parent_id;
         $node->outlet = $refNode->outlet;
         $node->index = $index;
@@ -55,20 +55,20 @@ class CreateNodeAction
     }
 
     /**
-     * Creates a new Node
+     * Creates a new CmsNode
      *
-     * @return \Jkli\Cms\Models\Node
+     * @return \Jkli\Cms\Models\CmsNode
      */
     public function insertInOutlet() 
     {
-        $parentNode = Node::findOrFail($this->req->input("ref_node")); // will be handled as parent
+        $parentNode = CmsNode::findOrFail($this->req->input("ref_node")); // will be handled as parent
         $outlet = $this->req->input("outlet", 0);
-        $lastNode = Node::where("parent_id", $parentNode->id)
+        $lastNode = CmsNode::where("parent_id", $parentNode->id)
             ->where("outlet", $outlet)
             ->orderBy("index", "desc")
             ->first();
 
-        $node = new Node();
+        $node = new CmsNode();
         $node->parent_id = $parentNode->id;
         $node->outlet = $outlet;
         $node->index = 0;

@@ -2,8 +2,17 @@
 
 namespace Jkli\Cms\Models;
 
-class Node extends PublishedNode
+use Jkli\Cms\Contracts\Node;
+
+class CmsNode extends PublishedNode implements Node
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = "nodes";
 
     public function page()
     {

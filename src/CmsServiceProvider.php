@@ -6,11 +6,14 @@ use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\ServiceProvider;
 use Jkli\Cms\Console\PluginMapCommand;
+use Jkli\Cms\Contracts\Node;
 use Jkli\Cms\Facades\Cms as CmsFacade;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequestsLive;
 use Jkli\Cms\Models\Page;
+use Jkli\Cms\Models\PublishedNode;
 use Jkli\Cms\Observers\PageObserver;
+use Jkli\Cms\Services\ResolveNodeService;
 
 class CmsServiceProvider extends ServiceProvider
 {
@@ -74,6 +77,16 @@ class CmsServiceProvider extends ServiceProvider
 
         $this->app->singleton('jkli-cms', function () {
             return new Cms;
+        });
+
+        $this->app->bindIf(CmsNode::class, function () {
+            return (new ResolveNodeService)->resloveCmsNode();
+        });
+        $this->app->bindIf(PublishedNode::class, function () {
+            return (new ResolveNodeService)->reslovePublishedNode();
+        });
+        $this->app->bindIf(Node::class, function () {
+            return (new ResolveNodeService)->resloveNode();
         });
 
     }

@@ -2,11 +2,16 @@ import { router } from "@inertiajs/react";
 
 type CmsVisitOptions<T> = T & {
     useModuleScope?: boolean;
-    usePagePath?: boolean; //TODO
+    prefix?: "cms" | "live" | "admin";
 }
 type CmsRouterState = {
     node?: CmsNode | null;
     module?: Module | null
+    paths?: {
+        cms: string;
+        live: string;
+        admin: string;
+    },
 }
 
 type InertiaVisitArgs = Parameters<typeof router.visit>;
@@ -21,7 +26,13 @@ export class CmsRouter {
 
     #state: CmsRouterState; 
 
-    constructor(state: CmsRouterState = {}) {
+    constructor(state: CmsRouterState = {
+        paths: {
+            cms: "/cms",
+            live: "/",
+            admin: "/cms/admin"
+        }
+    }) {
         this.#state = state;
     }
 
@@ -30,7 +41,19 @@ export class CmsRouter {
     {
         const visit = options ?? {};
         const useModuleScope = visit.useModuleScope === undefined ? true : visit.useModuleScope; 
-        if(useModuleScope && this.#state.module) {
+        if(visit.prefix && this.#state.paths) {
+            let path = href;
+            if(typeof path !== "string") {
+                path = path.hostname;
+            }
+            let prefix = this.#state.paths[visit.prefix];
+            if(!path.startsWith(prefix)) {
+                if(path.startsWith("/")) path = path.substring(1, path.length)
+                path = prefix + "/" + path;
+            }
+            return path;
+        }
+        else if(useModuleScope && this.#state.module) {
             let path = href;
             if(typeof path !== "string") {
                 path = path.hostname;

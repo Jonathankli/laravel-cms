@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Button, Flex, Group, LoadingOverlay, Popover, Table, Text, TextInput } from "@mantine/core";
+import { Button, Flex, Group, LoadingOverlay, Popover, ScrollArea, Table, Text, TextInput } from "@mantine/core";
 import { IconDirections, IconEdit, IconSearch } from "@tabler/icons";
 import { useStyles } from "./styles";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
@@ -46,7 +46,7 @@ export function NavigationTrigger() {
                     </div>
                 </Group>
             </Popover.Target>
-            <Popover.Dropdown p="xs" style={{height: 400}}>
+            <Popover.Dropdown p="xs" style={{height: 400, display: "flex", flexDirection: "column"}}>
                 <LoadingOverlay visible={isLoading} />
                 <TextInput
                   placeholder="Suche"
@@ -55,27 +55,29 @@ export function NavigationTrigger() {
                   pb={"sm"}
                   onChange={(e) => setTerm(e.target.value)}
                 />
-                <Table highlightOnHover>
-                    <tbody>
-                      {filteredPages.map(page => (
-                        <tr key={page.id} onClick={() => router.get(page.path)} style={{cursor: "pointer"}}>
-                            <td>
-                              <Flex>
-                                <Text style={{flex: 1, userSelect: "none"}}>{page.name}</Text>
-                                <Group>
-                                  <IconEdit size={16} onClick={(e) => {
-                                    e.stopPropagation();
-                                    router.get(`pages/${page.id}`, {}, {
-                                      prefix: "admin",
-                                    })
-                                  }}/>
-                                </Group>
-                              </Flex>
-                            </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                </Table>
+                <ScrollArea style={{flex: 1}}>
+                  <Table highlightOnHover>
+                      <tbody>
+                        {filteredPages.map(page => (
+                          <tr key={page.id} onClick={() => router.get(page.path)} style={{cursor: "pointer"}}>
+                              <td>
+                                <Flex>
+                                  <Text style={{flex: 1, userSelect: "none"}}>{page.name}</Text>
+                                  <Group>
+                                    <IconEdit size={16} onClick={(e) => {
+                                      e.stopPropagation();
+                                      router.get(`pages/${page.id}`, {}, {
+                                        prefix: "admin",
+                                      })
+                                    }}/>
+                                  </Group>
+                                </Flex>
+                              </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                  </Table>
+                </ScrollArea>
                 {!filteredPages.length && (
                   <Flex justify={"center"} align={"center"} direction={"column"}>
                     <Text>No results</Text>

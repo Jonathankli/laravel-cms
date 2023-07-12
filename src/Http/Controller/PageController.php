@@ -9,8 +9,10 @@ use Jkli\Cms\Actions\CreatePageAcion;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\EditPageRequest;
 use Jkli\Cms\Http\Requests\ShowPageRequest;
+use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Modules\Editor;
+use Jkli\Cms\Modules\Pages;
 use Jkli\Cms\Props\AvailablePathProp;
 use Jkli\Cms\Props\CmsEditModeProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
@@ -31,7 +33,10 @@ class PageController extends Controller
      */
     public function index()
     {
-
+        $pages = Page::all();
+        return Inertia::render(Pages::view("Index"), [
+            "pages" => PageResource::collection($pages)->all(),
+        ]);
     }
 
     /**

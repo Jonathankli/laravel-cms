@@ -40,13 +40,13 @@ class CmsSeeder extends Seeder
             "title" => $name,
             "description" => fake()->text(50),
             "node_id" => $rootNode->id,
-            "parent_id" => $parentId,
+            "parentId" => $parentId,
             "shell_id" => $shellId,
         ]);
 
         if($depth > 0) {
             for($i = 0; $i < fake()->numberBetween(3, 10); $i++) {
-                $this->createPage($page->id, $shellId, $depth - fake()->numberBetween(1, 3));
+                $this->createPage($page->id, $shellId, $depth - fake()->numberBetween(0, 2));
             }
         }
     }

@@ -1,4 +1,4 @@
-import { IconBrowser, IconPencil, IconUser } from "@tabler/icons";
+import { IconBrowser, IconPencil, IconSitemap, IconUser } from "@tabler/icons";
 import { ExtendedPluginConfig } from "./contexts/ConfigProvider";
 import coreConfig from "./corePlugin";
 
@@ -16,6 +16,14 @@ const coreCmsConfig: ExtendedPluginConfig= {
                 return await pages[`./pages/cms/Editor/${name}.js`]();
             },
             icon: IconPencil,
+        },
+        {
+            type: "pages",
+            resolvePage: async (name: string) => {
+                const pages = import.meta.glob("./pages/cms/Page/**/*.js");
+                return await pages[`./pages/cms/Page/${name}.js`]();
+            },
+            icon: IconSitemap
         },
         {
             type: "users",

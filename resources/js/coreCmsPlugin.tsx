@@ -12,16 +12,16 @@ const coreCmsConfig: ExtendedPluginConfig= {
         {
             type: "editor",
             resolvePage: async (name: string) => {
-                const pages = import.meta.glob("./pages/cms/page/**/*.js");
-                return await pages[`./pages/cms/page/${name}.js`]();
+                const pages = import.meta.glob("./pages/cms/Editor/**/*.js");
+                return await pages[`./pages/cms/Editor/${name}.js`]();
             },
             icon: IconPencil,
         },
         {
             type: "users",
             resolvePage: async (name: string) => {
-                const pages = import.meta.glob("./pages/cms/user/**/*.js");
-                return await pages[`./pages/cms/user/${name}.js`]();
+                const pages = import.meta.glob("./pages/cms/User/**/*.js");
+                return await pages[`./pages/cms/User/${name}.js`]();
             },
             icon: IconUser
         },

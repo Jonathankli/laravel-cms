@@ -32,7 +32,7 @@ class NodeResource extends JsonResource
             'id' => $this->id,
             'type' => $this->type,
             'component' => $object ? $object::component() : null,
-            'parent' => $this->parent_id,
+            'parent_id' => $this->parent_id,
             'outlet' => $this->outlet,
             'index' => $this->index,
             'settings' => $object ? $object->settingData() : null,

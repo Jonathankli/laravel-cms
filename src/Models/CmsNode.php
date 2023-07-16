@@ -16,12 +16,12 @@ class CmsNode extends PublishedNode implements Node
 
     public function page()
     {
-        return $this->hasOne(Page::class);
+        return $this->hasOne(Page::class, 'node_id');
     }
     
     public function shell()
     {
-        return $this->hasOne(Shell::class);
+        return $this->hasOne(Shell::class, 'node_id');
     }
 
 }

@@ -7,35 +7,48 @@ import { router } from "@inertiajs/react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import { usePathInfo } from "../../hooks/usePathInfo";
 import { usePrefillInputs } from "../../hooks/usePrefillValues";
+import { useRouter } from "../../../../exports";
 
-interface NewPageFormProps {
-    pageId?: string;
+interface PageFormProps {
+    page?: Page;
+    parent?: string;
     onSuccess?(): void;
 }
 
-export function NewPageForm(props: NewPageFormProps) {
+export function PageForm(props: PageFormProps) {
+
+    const {page, parent} = props;
+    const router = useRouter();
+
     const form = useForm({
         initialValues: {
             name: "",
             path: "",
             title: "",
             use_parent_path: true,
-            parent_id: props.pageId ?? null,
+            parent_id: parent ?? null,
+            ...(page ?? {})
         },
     });
     
     const availablePathData = usePathInfo(
         form.values.path,
         form.values.use_parent_path,
-        props.pageId
+        parent
     );
     usePrefillInputs(form);
 
     const { classes, cx } = useStyles();
-    const config = useServerConfig();
 
     const handleSubmit = (data: typeof form.values) => {
-        router.post(config.paths.admin + "/pages", data, {
+        if(page) {
+            router.patch(`/${page.id}`, data, {
+                onSuccess: props.onSuccess,
+                onError: form.setErrors,
+            });
+            return;    
+        }
+        router.post("/", data, {
             onSuccess: props.onSuccess,
             onError: form.setErrors,
         });

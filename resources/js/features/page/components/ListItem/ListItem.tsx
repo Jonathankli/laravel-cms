@@ -95,7 +95,7 @@ const ListItem = (props: ListItemProps) => {
                     <ActionIcon color="blue" size="sm" variant="outline" onClick={() => router.get(`${page.path}`, {}, { prefix: "cms" })}>
                         <IconEdit size={14} />
                     </ActionIcon>
-                    <ActionIcon color="blue" size="sm" variant="outline" onClick={() => router.get(`${page.id}/edit`)}>
+                    <ActionIcon color="blue" size="sm" variant="outline" onClick={() => router.get(`${page.id}/edit`, {}, { preserveState: true })}>
                         <IconSettings size={14} />
                     </ActionIcon>
                     <ActionIcon color="red" size="sm" variant="outline" onClick={onDelete}>

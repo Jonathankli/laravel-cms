@@ -15,7 +15,7 @@ export function Outlet(props: OutletProps) {
     //get children of current node
     const children = useMemo(() => {
         return (nodes as CmsNode[])
-            .filter((n) => n.parent === id && index === n.outlet)
+            .filter((n) => n.parent_id === id && index === n.outlet)
             .sort((a, b) => a.index - b.index);
     }, [nodeId, dynamicNodeId, nodes, index]);
 

@@ -13,7 +13,7 @@ class PagesProp extends Prop
 
     public function handle(Collection $props, Closure $next)
     {
-        $props->put('pages', Inertia::lazy(fn() => PageResource::collection(Page::all())->all()));
+        $props->put('pages', fn() => PageResource::collection(Page::all())->all());
         return $next($props);
     }
 }

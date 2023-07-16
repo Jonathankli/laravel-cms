@@ -1,6 +1,6 @@
 <?php
 
-namespace Jkli\Cms\Actions\CmsNode;
+namespace Jkli\Cms\Actions\Node;
 
 use Jkli\Cms\Http\Requests\CreateNodeRequest;
 use Jkli\Cms\Models\CmsNode;

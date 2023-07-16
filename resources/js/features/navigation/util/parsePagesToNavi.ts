@@ -4,7 +4,7 @@ export function parsePagesToNavi(pages: Page[]): FinderItem[] {
     return pages.map(page => ({
         id: page.id,
         name: page.name,
-        parent: page.parent,
+        parent: page.parent_id,
         data: page
     }))
 }

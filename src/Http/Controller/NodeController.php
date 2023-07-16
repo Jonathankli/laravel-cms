@@ -2,12 +2,9 @@
 
 namespace Jkli\Cms\Http\Controller;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use Inertia\Inertia;
-use Jkli\Cms\Actions\CreatePageAcion;
-use Jkli\Cms\Actions\CmsNode\CreateNodeAction;
+use Jkli\Cms\Actions\Node\CreateNodeAction;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\UpdateNodeRequest;
 use Jkli\Cms\Http\Resources\NodeResource;
@@ -29,7 +26,7 @@ class NodeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Jkli\Cms\Actions\CmsNode\CreateNodeAction  $action
+     * @param  \Jkli\Cms\Actions\Node\CreateNodeAction  $action
      * @return \Illuminate\Http\Response
      */
     public function store(CreateNodeAction $action)

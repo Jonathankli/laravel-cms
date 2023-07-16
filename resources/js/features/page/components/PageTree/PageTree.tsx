@@ -37,7 +37,7 @@ const PageTree = (props: PageTreeProps) => {
     const treeData: NodeModel<Page>[] = useMemo(() => {
         return pages.map((page) => ({
             id: page.id,
-            parent: page.parent ?? 0,
+            parent: page.parent_id ?? 0,
             text: page.name,
             droppable: true,
             data: page,
@@ -50,6 +50,7 @@ const PageTree = (props: PageTreeProps) => {
 
     return (
         <DndProvider backend={MultiBackend} options={getBackendOptions()}>
+            <Divider />
             <Tree
                 ref={ref}
                 tree={treeData}

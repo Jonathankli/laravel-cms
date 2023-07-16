@@ -6,5 +6,5 @@ interface CmsNode {
     data: Object;
     index: number;
     outlet: number;
-    parent?: string;
+    parent_id?: string;
 }

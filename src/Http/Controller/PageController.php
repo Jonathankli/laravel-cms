@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAcion;
+use Jkli\Cms\Actions\UpdatePageAction;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Modules\Pages;
 use Jkli\Cms\Props\AvailablePathProp;
@@ -48,10 +49,10 @@ class PageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreatePageAcion $action)
+    public function store(UpdatePageAction $action, string $page)
     {
-        $page = $action->handle();
-        return Redirect::route("pages.edit", ["path" => ltrim($page->full_path, "/")]);
+        $page = $action->handle($page);
+        return Redirect::route("page.show", ["page" => $page->id]);
     }
 
     /**

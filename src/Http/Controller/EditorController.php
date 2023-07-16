@@ -19,7 +19,7 @@ use Jkli\Cms\Props\CmsObjectSettingsProp;
 use Jkli\Cms\Props\EditNodeProp;
 use Jkli\Cms\Props\GroupedCmsObjectsProp;
 use Jkli\Cms\Props\ObjectSettingsProp;
-use Jkli\Cms\Props\PageProp;
+use Jkli\Cms\Props\EditorPageProp;
 use Jkli\Cms\Props\PagesProp;
 use Jkli\Cms\Props\ShellsProp;
 use Jkli\Cms\Services\PropsPipelineService;
@@ -36,7 +36,7 @@ class EditorController extends Controller
     public function show(EditPageRequest $request)
     {
         return Inertia::render(Editor::view("Show"), PropsPipelineService::run([
-            PageProp::class,
+            EditorPageProp::class,
             AvailablePathProp::class,
             PagesProp::class,
             ShellsProp::class,
@@ -52,7 +52,7 @@ class EditorController extends Controller
     public function edit(ShowPageRequest $request)
     {
         return Inertia::render(Editor::view("Edit"), PropsPipelineService::run([
-            PageProp::class,
+            EditorPageProp::class,
             EditNodeProp::class,
             AvailablePathProp::class,
             CmsObjectSettingsProp::class,

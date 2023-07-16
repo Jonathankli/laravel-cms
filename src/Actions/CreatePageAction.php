@@ -8,7 +8,7 @@ use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Services\PagePathService;
 
-class CreatePageAcion
+class CreatePageAction
 {
 
     public function __construct(protected CreatePageRequest $request, protected PagePathService $pagePathService) {}

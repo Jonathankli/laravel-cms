@@ -18,3 +18,6 @@ Route::patch('/{page}', [PageController::class, "store"])
 
 Route::get('/{page}/edit', [PageController::class, "edit"])
     ->name('page.edit');
+
+Route::get('/{parent}/create', [PageController::class, "create"])
+    ->name('page.parent.create');

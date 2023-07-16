@@ -20,6 +20,7 @@ import {
     IconChevronRight,
     IconEdit,
     IconNavigation,
+    IconPlus,
     IconSettings,
     IconTrash,
 } from "@tabler/icons";
@@ -97,6 +98,9 @@ const ListItem = (props: ListItemProps) => {
                     </ActionIcon>
                     <ActionIcon color="blue" size="sm" variant="outline" onClick={() => router.get(`${page.id}/edit`, {}, { preserveState: true })}>
                         <IconSettings size={14} />
+                    </ActionIcon>
+                    <ActionIcon color="blue" size="sm" variant="outline" onClick={() => router.get(`${page.id}/create`, {}, { preserveState: true })}>
+                        <IconPlus size={14} />
                     </ActionIcon>
                     <ActionIcon color="red" size="sm" variant="outline" onClick={onDelete}>
                         <IconTrash size={14} />

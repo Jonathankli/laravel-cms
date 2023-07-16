@@ -9,6 +9,7 @@ interface IndexPageProps {
     pages: Page[];
     edit?: boolean;
     newPage?: boolean;
+    createParentId?: string;
 }
 
 const Index = (props: IndexPageProps) => {
@@ -39,7 +40,7 @@ const Index = (props: IndexPageProps) => {
 
             {/* New Page */}
             <Drawer opened={!!props.newPage} onClose={navigateIndex}>
-                <PageForm onCancel={navigateIndex} />
+                <PageForm onCancel={navigateIndex} parent={props.createParentId} />
             </Drawer>
         </Container>
     );

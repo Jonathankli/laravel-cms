@@ -5,7 +5,7 @@ namespace Jkli\Cms\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Jkli\Cms\Actions\CreatePageAcion;
+use Jkli\Cms\Actions\CreatePageAction;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\EditPageRequest;
 use Jkli\Cms\Http\Requests\ShowPageRequest;

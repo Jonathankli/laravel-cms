@@ -37,7 +37,7 @@ export function PageForm(props: PageFormProps) {
         form.values.use_parent_path,
         parent
     );
-    usePrefillInputs(form);
+    usePrefillInputs(form, !page);
 
     const { classes, cx } = useStyles();
 

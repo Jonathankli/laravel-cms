@@ -5,7 +5,7 @@ namespace Jkli\Cms\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Jkli\Cms\Actions\CreatePageAcion;
+use Jkli\Cms\Actions\CreatePageAction;
 use Jkli\Cms\Actions\UpdatePageAction;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Modules\Pages;
@@ -33,13 +33,14 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(?string $parent = null)
     {
         return Inertia::render(Pages::view("Index"), PropsPipelineService::run([
             PagesProp::class,
             AvailablePathProp::class,
         ], [
-            'newPage' => true
+            'newPage' => true,
+            'createParentId' => $parent
         ]));
     }
 
@@ -49,9 +50,9 @@ class PageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UpdatePageAction $action, string $page)
+    public function store(CreatePageAction $action)
     {
-        $page = $action->handle($page);
+        $page = $action->handle();
         return Redirect::route("page.show", ["page" => $page->id]);
     }
 
@@ -93,9 +94,10 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePageAction $action, string $page)
     {
-
+        $page = $action->handle($page);
+        return Redirect::route("page.show", ["page" => $page->id]);
     }
 
     /**

@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput, Button, Checkbox } from "@mantine/core";
+import { TextInput, Button, Checkbox, Group } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCheck, IconX } from "@tabler/icons";
 import { useStyles } from "./styles";
@@ -13,11 +13,12 @@ interface PageFormProps {
     page?: Page;
     parent?: string;
     onSuccess?(): void;
+    onCancel?(): void;
 }
 
 export function PageForm(props: PageFormProps) {
 
-    const {page, parent} = props;
+    const {page, parent, onCancel} = props;
     const router = useRouter();
 
     const form = useForm({
@@ -97,9 +98,16 @@ export function PageForm(props: PageFormProps) {
                     }
                 />
             )}
-            <Button fullWidth mt="md" type="submit">
-                Add
-            </Button>
+            <Group position="apart">
+                <Button mt="md" type="submit">
+                    { page ? "Update" : "Add" }
+                </Button>
+                {onCancel && (
+                    <Button mt="md" onClick={onCancel} variant="outline">
+                        Cancel
+                    </Button>
+                )}
+            </Group>
         </form>
     );
 }

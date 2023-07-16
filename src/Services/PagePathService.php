@@ -35,8 +35,13 @@ class PagePathService
             return false;
         }
 
+        $ids = $updates->keys();
+        if($page->id) {
+            $ids->push($page->id);
+        }
+
         $pagesCount = Page::whereIn('full_path', $updates->values())
-            ->whereNotIn('id', $updates->keys())
+            ->whereNotIn('id', $ids)
             ->count();
 
         return $pagesCount === 0;

@@ -4,10 +4,11 @@ namespace Jkli\Cms\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\Traits\HasAdjacencyList;
 
 class PublishedPage extends Model
 {
-    use HasUuids;
+    use HasUuids, HasAdjacencyList;
 
     protected $fillable = [
         'name',
@@ -32,16 +33,6 @@ class PublishedPage extends Model
     public function nodes()
     {
         return $this->rootNode->descendantsAndSelf;
-    }
-
-    public function parent()
-    {
-        return $this->belongsTo(PublishedPage::class);
-    }
-
-    public function children()
-    {
-        return $this->hasMany(PublishedPage::class);
     }
 
     public function shell()

@@ -18,6 +18,7 @@ use Jkli\Cms\Services\PagePathService;
 class AvailablePathProp extends Prop
 {
 
+    protected ?string $pageId;
     protected ?string $pagePath;
     protected ?string $parentPage;
     protected bool $useParentPath;
@@ -26,6 +27,7 @@ class AvailablePathProp extends Prop
         protected Request $request
     ) {
         $base = config('cms.cms_param_base', '_cms');
+        $this->pageId = $this->request->route('page');
         $this->pagePath = $this->request->input($base.'_pps.path');
         $this->parentPage = $this->request->input($base.'_pps.parent');
         $this->useParentPath = $this->request->input($base.'_pps.use_parent_path', true);
@@ -44,6 +46,9 @@ class AvailablePathProp extends Prop
             return null;
         }
         $page = new Page();
+        if($this->pageId) {
+            $page = Page::findOrFail($this->pageId);
+        }
         $page->path = $this->pagePath;
         $page->use_parent_path = $this->useParentPath;
         if($this->parentPage) {

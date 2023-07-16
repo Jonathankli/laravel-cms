@@ -34,12 +34,12 @@ const Index = (props: IndexPageProps) => {
 
             {/* Edit Page */}
             <Drawer opened={!!props.page && !!props.edit} onClose={navigateIndex}>
-                <PageForm page={props.page} />
+                <PageForm page={props.page} onCancel={navigateIndex} />
             </Drawer>
 
             {/* New Page */}
             <Drawer opened={!!props.newPage} onClose={navigateIndex}>
-                <PageForm />
+                <PageForm onCancel={navigateIndex} />
             </Drawer>
         </Container>
     );

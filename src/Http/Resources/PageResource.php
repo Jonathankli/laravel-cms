@@ -25,9 +25,13 @@ class PageResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'title' => $this->title,
             'parent_id' => $this->parent_id,
+            'parent' => $this->whenLoaded('parent', PageResource::make($this->parent)),
             'path' => $this->full_path,
-            'node_id' => $this->node_id
+            'node_id' => $this->node_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

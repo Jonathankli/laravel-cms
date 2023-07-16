@@ -1,15 +1,10 @@
-import React, { useMemo, useRef } from "react";
+import React from "react";
 import {
-    DndProvider,
-    getBackendOptions,
-    MultiBackend,
     NodeModel,
     RenderParams,
-    Tree,
 } from "@minoru/react-dnd-treeview";
 import {
     ActionIcon,
-    Container,
     Divider,
     Flex,
     Group,
@@ -60,7 +55,7 @@ const ListItem = (props: ListItemProps) => {
     }
 
     return (
-        <div onClick={() => router.get(`${page.id}`)}>
+        <div onClick={() => router.get(`${page.id}`, {}, { preserveState: true })}>
             <Flex justify={"space-between"} align={"center"}>
                 <Flex
                     className={classes.pageNameContainer}
@@ -69,7 +64,10 @@ const ListItem = (props: ListItemProps) => {
                 >
                     {hasChild && (
                         <span
-                            onClick={onToggle}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onToggle();
+                            }}
                             style={{
                                 display: "inline-block",
                                 cursor: "pointer",

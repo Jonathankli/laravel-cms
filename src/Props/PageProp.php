@@ -24,7 +24,9 @@ class PageProp extends Prop
     {
         $pageId = $this->request->route('page');
         
-        $page = Page::findOrFail($pageId);
+        $page = Page::where('id', $pageId)
+            ->with('parent')
+            ->firstOrFail();
 
         return $page;
     }

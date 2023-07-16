@@ -26,7 +26,7 @@ export function PageView(props: PageViewProps) {
                 </tr>
                 <tr>
                     <td>Parent</td>
-                    <td>{page.parent?.path ?? "---"}</td>
+                    <td>{page.parent?.name ?? "---"}</td>
                 </tr>
                 <tr>
                     <td>Created At</td>

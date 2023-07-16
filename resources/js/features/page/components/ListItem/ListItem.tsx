@@ -60,7 +60,7 @@ const ListItem = (props: ListItemProps) => {
     }
 
     return (
-        <div onClick={() => null}>
+        <div onClick={() => router.get(`${page.id}`)}>
             <Flex justify={"space-between"} align={"center"}>
                 <Flex
                     className={classes.pageNameContainer}
@@ -89,20 +89,35 @@ const ListItem = (props: ListItemProps) => {
                         </span>
                     </Text>
                 </Flex>
-                <Group spacing={"sm"}>
-                    <ActionIcon color="green" size="sm" variant="outline" onClick={() => router.get(`${page.path}`, {}, { prefix: "live" })}>
+                <Group spacing={6}>
+                    <ActionIcon color="green" size="sm" variant="outline" onClick={(e) => {
+                        e.stopPropagation();
+                        router.get(`${page.path}`, {}, { prefix: "live" })
+                    }}>
                         <IconNavigation size={14} />
                     </ActionIcon>
-                    <ActionIcon color="blue" size="sm" variant="outline" onClick={() => router.get(`${page.path}`, {}, { prefix: "cms" })}>
+                    <ActionIcon color="blue" size="sm" variant="outline" onClick={(e) => {
+                        e.stopPropagation();
+                        router.get(`${page.path}`, {}, { prefix: "cms" })
+                    }}>
                         <IconEdit size={14} />
                     </ActionIcon>
-                    <ActionIcon color="blue" size="sm" variant="outline" onClick={() => router.get(`${page.id}/edit`, {}, { preserveState: true })}>
+                    <ActionIcon color="blue" size="sm" variant="outline" onClick={(e) => {
+                        e.stopPropagation();
+                        router.get(`${page.id}/edit`, {}, { preserveState: true })
+                    }}>
                         <IconSettings size={14} />
                     </ActionIcon>
-                    <ActionIcon color="blue" size="sm" variant="outline" onClick={() => router.get(`${page.id}/create`, {}, { preserveState: true })}>
+                    <ActionIcon color="blue" size="sm" variant="outline" onClick={(e) => {
+                        e.stopPropagation();
+                        router.get(`${page.id}/create`, {}, { preserveState: true })
+                    }}>
                         <IconPlus size={14} />
                     </ActionIcon>
-                    <ActionIcon color="red" size="sm" variant="outline" onClick={onDelete}>
+                    <ActionIcon color="red" size="sm" variant="outline" onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete()
+                    }}>
                         <IconTrash size={14} />
                     </ActionIcon>
                 </Group>

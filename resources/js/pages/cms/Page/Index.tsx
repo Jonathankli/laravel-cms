@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Container, Drawer, Group, Title } from "@mantine/core";
 import PageTree from "../../../features/page/components/PageTree/PageTree";
 import { useRouter } from "../../../exports";
-import { PageForm } from "../../../features/page";
+import { PageForm, PageView } from "../../../features/page";
 
 interface IndexPageProps {
     page?: Page;
@@ -30,7 +30,7 @@ const Index = (props: IndexPageProps) => {
 
             {/* Show Page */}
             <Drawer opened={!!props.page && !props.edit} onClose={navigateIndex}>
-                
+                {props.page && <PageView page={props.page} />}
             </Drawer>
 
             {/* Edit Page */}

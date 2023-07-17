@@ -43,15 +43,17 @@ export function PageForm(props: PageFormProps) {
 
     const handleSubmit = (data: typeof form.values) => {
         if(page) {
-            router.patch(`/${page.id}`, data as any, {
+            router.patch(`/pages/${page.id}`, data as any, {
                 onSuccess: props.onSuccess,
                 onError: form.setErrors,
+                prefix: "admin"
             });
             return;    
         }
-        router.post("/", data as any, {
+        router.post("/pages", data as any, {
             onSuccess: props.onSuccess,
             onError: form.setErrors,
+            prefix: "admin",
         });
     };
 

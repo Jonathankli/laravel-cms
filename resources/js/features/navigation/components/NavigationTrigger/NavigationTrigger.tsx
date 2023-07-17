@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { Button, Flex, Group, LoadingOverlay, Popover, ScrollArea, Table, Text, TextInput } from "@mantine/core";
-import { IconDirections, IconEdit, IconSearch } from "@tabler/icons";
+import { ActionIcon, Button, Drawer, Flex, Group, LoadingOverlay, Popover, ScrollArea, Table, Text, TextInput } from "@mantine/core";
+import { IconDirections, IconEdit, IconSearch, IconSettings } from "@tabler/icons";
 import { useStyles } from "./styles";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useRouter } from "../../../../exports";
 import { useDebouncedState } from "@mantine/hooks";
+import { PageForm } from "../../../page";
+import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 
 export function NavigationTrigger() {
     const { classes } = useStyles();
@@ -12,7 +14,9 @@ export function NavigationTrigger() {
     const pages = useInertiaProps().pages as Page[] ?? [];
     const [term, setTerm] = useDebouncedState("", 200);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [editPageOpen, setEditPageOpen] = useState<boolean>(false);
     const router = useRouter();
+    const { params } = useServerConfig();
 
     const filteredPages = useMemo(() => {
       return pages.filter(page => page.name.toLowerCase().includes(term.toLowerCase()));
@@ -26,7 +30,21 @@ export function NavigationTrigger() {
         });
     };
 
+    const closePageEdit = () => {
+      router.reload({
+        data: {
+            [params.base+"_pps"]: {
+                use_parent_path: undefined,
+                path: undefined,
+                parent: undefined,
+            } as any
+        },
+        onFinish: setEditPageOpen.bind(this, false),
+      });
+    };
+
     return (
+      <>
         <Popover width={260} position="bottom" withArrow shadow="md" onOpen={onOpen}>
             <Popover.Target>
                 <Group
@@ -44,6 +62,9 @@ export function NavigationTrigger() {
                             {(page as Page).name}
                         </Text>
                     </div>
+                    <ActionIcon onClick={setEditPageOpen.bind(this, true)}>
+                      <IconSettings color="grey" />
+                    </ActionIcon>
                 </Group>
             </Popover.Target>
             <Popover.Dropdown p="xs" style={{height: 400, display: "flex", flexDirection: "column"}}>
@@ -85,5 +106,9 @@ export function NavigationTrigger() {
                 )}
             </Popover.Dropdown>
         </Popover>
+        <Drawer opened={editPageOpen} onClose={closePageEdit}>
+            <PageForm page={page} onCancel={closePageEdit} />
+        </Drawer>
+      </>
     );
 }

@@ -21,7 +21,8 @@ export const useStyles = createStyles((theme) => ({
       lineHeight: 1,
     },
     navigationText: {
-      paddingLeft: theme.spacing.xs
+      paddingLeft: theme.spacing.xs,
+      flex: 1,
     },
 
   }));

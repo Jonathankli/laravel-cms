@@ -28,6 +28,14 @@ class AvailablePathProp extends Prop
     ) {
         $base = config('cms.cms_param_base', '_cms');
         $this->pageId = $this->request->route('page');
+        if(!$this->pageId) {
+            $path = $this->request->route('path');
+            $path = rtrim($path, "/");
+            $path = "/".$path;
+            $this->pageId = Page::where('full_path', $path)
+                ->firstOrFail()
+                ->id; 
+        }
         $this->pagePath = $this->request->input($base.'_pps.path');
         $this->parentPage = $this->request->input($base.'_pps.parent');
         $this->useParentPath = $this->request->input($base.'_pps.use_parent_path', true);

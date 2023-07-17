@@ -6,6 +6,7 @@ interface Page {
     path: string;
     node_id: string;
     parent?: Page;
+    shell_id?: string;
     updated_at?: string;
     created_at?: string;
 }

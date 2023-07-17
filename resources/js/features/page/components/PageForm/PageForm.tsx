@@ -1,5 +1,5 @@
-import React from "react";
-import { TextInput, Button, Checkbox, Group } from "@mantine/core";
+import React, { useEffect } from "react";
+import { TextInput, Button, Checkbox, Group, Autocomplete, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCheck, IconX } from "@tabler/icons";
 import { useStyles } from "./styles";
@@ -8,6 +8,7 @@ import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import { usePathInfo } from "../../hooks/usePathInfo";
 import { usePrefillInputs } from "../../hooks/usePrefillValues";
 import { useRouter } from "../../../../exports";
+import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 
 interface PageFormProps {
     page?: Page;
@@ -20,6 +21,13 @@ export function PageForm(props: PageFormProps) {
 
     const {page, parent, onCancel} = props;
     const router = useRouter();
+    const shells = useInertiaProps().shells as Shell[] ?? [];
+
+    useEffect(() => {
+        router.reload({
+            only: ["shells"],
+        });
+    }, []);
 
     const form = useForm({
         initialValues: {
@@ -100,6 +108,11 @@ export function PageForm(props: PageFormProps) {
                     }
                 />
             )}
+            <Select 
+                label="Shell"
+                data={shells.map(shell => ({value: shell.id, label: shell.name}))}
+                {...form.getInputProps("shell_id")}
+            />
             <Group position="apart">
                 <Button mt="md" type="submit">
                     { page ? "Update" : "Add" }

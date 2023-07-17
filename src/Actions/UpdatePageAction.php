@@ -32,6 +32,7 @@ class UpdatePageAction
         // $page->no_follow = $this->request->input('no_follow');
         $page->path = $this->request->input('path');
         $page->use_parent_path = $this->request->input('use_parent_path');
+        $page->shell_id = $this->request->input('shell_id');
 
         if(!$this->pathService->preUpdateCheck($page)) {
             throw ValidationException::withMessages([

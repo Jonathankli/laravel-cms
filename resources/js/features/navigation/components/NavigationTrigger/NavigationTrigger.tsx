@@ -107,7 +107,7 @@ export function NavigationTrigger() {
             </Popover.Dropdown>
         </Popover>
         <Drawer opened={editPageOpen} onClose={closePageEdit}>
-            <PageForm page={page} onCancel={closePageEdit} />
+            <PageForm page={page} onCancel={closePageEdit} onSuccess={closePageEdit}/>
         </Drawer>
       </>
     );

@@ -97,7 +97,7 @@ class PageController extends Controller
     public function update(UpdatePageAction $action, string $page)
     {
         $page = $action->handle($page);
-        return Redirect::route("page.show", ["page" => $page->id]);
+        return Redirect::back();
     }
 
     /**

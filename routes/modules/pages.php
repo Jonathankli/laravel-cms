@@ -13,7 +13,7 @@ Route::get('/create', [PageController::class, "create"])
 Route::get('/{page}', [PageController::class, "show"])
     ->name('page.show');
 
-Route::patch('/{page}', [PageController::class, "store"])
+Route::patch('/{page}', [PageController::class, "update"])
     ->name('page.store');
 
 Route::get('/{page}/edit', [PageController::class, "edit"])

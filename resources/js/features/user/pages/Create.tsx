@@ -1,9 +1,8 @@
 import React from "react";
-import UserForm from "../../../components/UserForm/UserForm";
+import UserForm from "../components/UserForm/UserForm";
 import { Container } from "@mantine/core";
 
 interface UserIndexProps {
-    plugins: Plugin[]
 }
 
 const Show = (props: UserIndexProps) => {

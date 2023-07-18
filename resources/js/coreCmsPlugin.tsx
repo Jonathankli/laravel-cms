@@ -36,8 +36,8 @@ const coreCmsConfig: ExtendedPluginConfig= {
         {
             type: "users",
             resolvePage: async (name: string) => {
-                const pages = import.meta.glob("./pages/cms/User/**/*.js");
-                return await pages[`./pages/cms/User/${name}.js`]();
+                const pages = import.meta.glob("./features/user/pages/**/*.js");
+                return await pages[`./features/user/pages/${name}.js`]();
             },
             icon: IconUser
         },

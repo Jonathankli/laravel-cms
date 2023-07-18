@@ -6,8 +6,6 @@ import useActions, { Action } from "../../../hooks/useActions";
 
 interface UserIndexProps {
     user: User;
-    plugins: Plugin[];
-    roles: string[];
 }
 
 const rows: Row<User>[] = [

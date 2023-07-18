@@ -1,9 +1,9 @@
 import React from 'react';
-import { Header as MantineHeader, Group, Container, SegmentedControl, Center, Box, Text } from '@mantine/core';
-import { IconEye, IconPencil, IconDirections } from '@tabler/icons';
+import { Header as MantineHeader, Group, Container, Center, Box } from '@mantine/core';
+import { IconEye, IconPencil } from '@tabler/icons';
 import { useStyles } from './styles';
-import { NavigationTrigger } from '../../features/navigation';
 import { PublishButton } from '../../features/publisher';
+import { PageListTrigger } from '../../features/page';
 
 const viewControllOptions = [
     {
@@ -34,13 +34,10 @@ export function Header() {
       <Container className={classes.inner} >
 
         <Group position='left'>
-          <NavigationTrigger />
+          <PageListTrigger />
         </Group>
 
         <PublishButton />
-        {/* <SegmentedControl
-            data={viewControllOptions}
-        /> */}
       </Container>
     </MantineHeader>
   );

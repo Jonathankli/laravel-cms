@@ -1,5 +1,5 @@
-import { PluginConfigLive } from "./contexts/ConfigProvider";
-import { PageOutlet } from "./features/shell/live";
+import { PluginConfigLive } from "./../contexts/ConfigProvider";
+import { PageOutlet } from "./../features/shell/live";
 
 const coreConfig: PluginConfigLive = {
     name: "core",

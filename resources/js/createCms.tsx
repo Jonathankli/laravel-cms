@@ -8,7 +8,7 @@ import {
     ServerConfig,
 } from "./contexts/ConfigProvider";
 import { Outlet } from "./features/editor";
-import core from "./coreCmsPlugin";
+import core from "./plugin/coreCms";
 import { MainLayot } from "./layouts/MainLayout";
 
 function getModules(config: FrontendConfig) {

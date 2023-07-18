@@ -9,4 +9,4 @@ export * from "./components/Outlet/Outlet";
 
 //router
 export * from "./hooks/useRouter";
-export * from "./CmsRouter";
+export * from "./utils/CmsRouter";

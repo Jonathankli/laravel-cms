@@ -1,6 +1,6 @@
 import { router } from "@inertiajs/react";
 import { useMemo } from "react";
-import { CmsRouter } from "../CmsRouter";
+import { CmsRouter } from "../utils/CmsRouter";
 import { useNode } from "../exports";
 import { useServerConfig } from "./config/useServerConfig";
 import { useModule } from "./useModule";

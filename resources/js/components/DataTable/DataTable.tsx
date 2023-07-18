@@ -35,7 +35,7 @@ export interface Column<T> {
 
 interface TableSelectionProps<T> {
     data: T[];
-    headline: string;
+    headline?: string;
     columns: Column<T>[];
     actions?: Action<T>[];
     pirmaryKey?: string;
@@ -50,9 +50,7 @@ function DataTable<T>(props: TableSelectionProps<T>) {
         pirmaryKey = "id",
         actions = [],
         columns,
-        headline,
         totalPages,
-        createLink,
     } = props;
 
     const { classes, cx } = useStyles();
@@ -122,20 +120,7 @@ function DataTable<T>(props: TableSelectionProps<T>) {
     ));
 
     return (
-        <Container px={"md"} size="lg">
-            <Title order={1} py={"lg"}>
-                <Group position="apart">
-                    <Title>{headline}</Title>
-                    {createLink && (
-                        <Button<typeof Link>
-                            component={Link}
-                            href={createLink}
-                        >
-                            Neu
-                        </Button>
-                    )}
-                </Group>
-            </Title>
+        <>
             <Input
                 placeholder="Suche"
                 rightSection={
@@ -176,7 +161,7 @@ function DataTable<T>(props: TableSelectionProps<T>) {
                 position="center"
                 py={"lg"}
             />
-        </Container>
+        </>
     );
 }
 

@@ -1,11 +1,12 @@
 import React from "react";
-import { TextInput, Button } from "@mantine/core";
+import { TextInput, Button, Group } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { router } from "@inertiajs/react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 
 interface ShellFormProps {
     onSuccess?(): void;
+    onCancel?(): void;
     shell?: Shell;
 }
 
@@ -36,9 +37,16 @@ export function ShellForm(props: ShellFormProps) {
                 placeholder="Name"
                 data-autofocus
             />
-            <Button fullWidth mt="md" type="submit">
-                {props.shell ? "Update" : "Add"}
-            </Button>
+            <Group position="apart" mt="sm">
+                <Button type="submit">
+                    {props.shell ? "Update" : "Add"}
+                </Button>
+                {props.onCancel && (
+                    <Button variant={"outline"} onClick={props.onCancel}>
+                        Cancel
+                    </Button>
+                )}
+            </Group>
         </form>
     );
 }

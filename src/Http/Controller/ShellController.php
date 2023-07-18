@@ -10,11 +10,14 @@ use Jkli\Cms\Http\Requests\Shell\CreateShellRequest;
 use Jkli\Cms\Http\Requests\UpdatePageRequest;
 use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Shell;
+use Jkli\Cms\Modules\Shells;
 use Jkli\Cms\Objects\PageOutlet;
 use Jkli\Cms\Props\BackToPageProp;
 use Jkli\Cms\Props\CmsEditModeProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
 use Jkli\Cms\Props\EditNodeProp;
+use Jkli\Cms\Props\EditorShellProp;
+use Jkli\Cms\Props\FilteredShellsProp;
 use Jkli\Cms\Props\GroupedCmsObjectsProp;
 use Jkli\Cms\Props\ObjectSettingsProp;
 use Jkli\Cms\Props\ShellProp;
@@ -31,9 +34,9 @@ class ShellController extends Controller
      */
     public function index()
     {
-        return Inertia::render("Shell/Index", [
-            'shells' => Shell::all()
-        ]);
+        return Inertia::render(Shells::view("Index"), PropsPipelineService::run([
+            FilteredShellsProp::class,
+        ]));
     }
 
     /**
@@ -69,9 +72,9 @@ class ShellController extends Controller
      */
     public function show()
     {
-        return Inertia::render("Shell/Show", PropsPipelineService::run([
+        return Inertia::render(Shells::view("Index"), PropsPipelineService::run([
             ShellProp::class,
-            ShellsProp::class,
+            FilteredShellsProp::class,
         ]));
     }
 
@@ -83,9 +86,24 @@ class ShellController extends Controller
      */
     public function edit()
     {
-        
-        return Inertia::render("Shell/Edit", PropsPipelineService::run([
+        return Inertia::render(Shells::view("Index"), PropsPipelineService::run([
             ShellProp::class,
+            FilteredShellsProp::class,
+        ], [
+            "edit" => true
+        ]));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editor()
+    {
+        return Inertia::render(Shells::view("Edit"), PropsPipelineService::run([
+            EditorShellProp::class,
             EditNodeProp::class,
             CmsObjectSettingsProp::class,
             GroupedCmsObjectsProp::class,

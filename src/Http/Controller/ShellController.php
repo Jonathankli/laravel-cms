@@ -40,6 +40,20 @@ class ShellController extends Controller
     }
 
     /**
+     * Creates a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return Inertia::render(Shells::view("Index"), PropsPipelineService::run([
+            FilteredShellsProp::class,
+        ], [
+            'newShell' => true,
+        ]));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

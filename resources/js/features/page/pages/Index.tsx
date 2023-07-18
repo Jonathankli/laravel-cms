@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Container, Drawer, Group, Title } from "@mantine/core";
-import PageTree from "../../../features/page/components/PageTree/PageTree";
+import PageTree from "../components/PageTree/PageTree";
 import { useRouter } from "../../../exports";
-import { PageForm, PageView } from "../../../features/page";
+import { PageForm, PageView } from "..";
 
 interface IndexPageProps {
     page?: Page;

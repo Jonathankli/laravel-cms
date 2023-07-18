@@ -20,8 +20,8 @@ const coreCmsConfig: ExtendedPluginConfig= {
         {
             type: "pages",
             resolvePage: async (name: string) => {
-                const pages = import.meta.glob("./pages/cms/Page/**/*.js");
-                return await pages[`./pages/cms/Page/${name}.js`]();
+                const pages = import.meta.glob("./features/page/pages/**/*.js");
+                return await pages[`./features/page/pages/${name}.js`]();
             },
             icon: IconSitemap
         },

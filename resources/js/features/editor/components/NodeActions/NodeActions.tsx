@@ -3,7 +3,7 @@ import { ActionIcon, Group } from "@mantine/core";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons";
 import React from "react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
-import { useObjectEditor } from "../../../object";
+import { useObjectEditor } from "../../hooks/useObjectEditor";
 import { useStyles } from "./useStyles";
 
 interface InsertNodeProps {

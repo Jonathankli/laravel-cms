@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
-import { Outlet } from "../../../node";
+import { Outlet } from "../../../editor";
 
 export function EditShellNodes(props) {
 

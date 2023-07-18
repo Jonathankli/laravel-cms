@@ -1,5 +1,5 @@
 import React from 'react';
-import { CurrentNodeTree } from '../../../features/node';
+import { CurrentNodeTree } from '../../../features/editor';
 import { ShellActionContainer } from '../../../features/shell';
 import { CurrentShell } from '../../../features/shell/live';
 import CmsLayout from '../../../layouts/CmsLayout';

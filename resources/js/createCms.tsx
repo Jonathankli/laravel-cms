@@ -7,7 +7,7 @@ import {
     FrontendConfig,
     ServerConfig,
 } from "./contexts/ConfigProvider";
-import { Outlet } from "./features/node";
+import { Outlet } from "./features/editor";
 import core from "./coreCmsPlugin";
 import { MainLayot } from "./layouts/MainLayout";
 

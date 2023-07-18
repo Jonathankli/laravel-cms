@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
-import { ActiveNodeContext } from "../../../node/live";
+import { ActiveNodeContext } from "../../../editor/live";
 
 interface LiveNodeProps {
     node: CmsNode;

@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import nodeSlice from './features/node/nodeSlice'
-import cmsObjectSlice from './features/object/cmsObjectSlice'
+import editorSlice from './features/editor/editorSlice'
 
 export const store = configureStore({
   reducer: {
-    node: nodeSlice,
-    cmsObject: cmsObjectSlice,
+    editor: editorSlice,
   },
 })
 

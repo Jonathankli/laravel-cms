@@ -3,12 +3,11 @@ import * as React from "react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
-import { abortEdit, openEditor } from "../../cmsObjectSlice";
-import { useObjectEditor } from "../../hooks/useObjectEditor";
+import { abortEdit, openEditor } from "../../editorSlice";
 import { ObjectEditorModal } from "../ObjectEditorModal/ObjectEditorModal";
 
 export function GlobalObjectEditor() {
-    const isOpen = useCmsSelector(state => state.cmsObject.isEditorOpen);
+    const isOpen = useCmsSelector(state => state.editor.isEditorOpen);
     const dispatch = useCmsDispatch();
     const { params } = useServerConfig();
     const editNodeMeta = useInertiaProps().editNodeMeta as CmsObject | undefined;

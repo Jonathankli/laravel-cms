@@ -3,7 +3,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 
 // Define a type for the slice state
-export interface CmsObjectState {
+export interface NodeState {
+    activeNodeId?: string | null;
     isSelectorOpen: boolean;
     prevSelectedObject: StaticCmsObject | null;
     activeObjectPickerUuid: string | null;
@@ -11,14 +12,10 @@ export interface CmsObjectState {
     editNode: CmsNode | null;
     editNodeOrigial: CmsNode | null;
 }
-// Define a type for the slice state
-export interface UpdateNodePayload {
-    target: string;
-    value: any;
-}
 
 // Define the initial state using that type
-const initialState: CmsObjectState = {
+const initialState: NodeState = {
+    activeNodeId: null,
     isSelectorOpen: false,
     prevSelectedObject: null,
     activeObjectPickerUuid: null,
@@ -27,10 +24,18 @@ const initialState: CmsObjectState = {
     editNodeOrigial: null,
 };
 
-export const cmsObjectSlice = createSlice({
-    name: "cmsObject",
+export interface UpdateNodePayload {
+  target: string;
+  value: any;
+}
+
+export const editorSlice = createSlice({
+    name: "editor",
     initialState,
     reducers: {
+        setActiveNode: (state, action: PayloadAction<string>) => {
+            state.activeNodeId = action.payload;
+        },
         //Selector
         openSelector: (
             state,
@@ -56,14 +61,15 @@ export const cmsObjectSlice = createSlice({
             state.isSelectorOpen = false;
             state.prevSelectedObject = null;
             state.editNode = action.payload.node;
-            state.editNodeOrigial =  action.payload.node;
+            state.editNodeOrigial = action.payload.node;
         },
         updateObject: (state, action: PayloadAction<UpdateNodePayload>) => {
-            if(!state.editNode?.settings) {
+            if (!state.editNode?.settings) {
                 console.error("No node in edit mode.");
                 return;
             }
-            state.editNode.settings[action.payload.target] = action.payload.value;
+            state.editNode.settings[action.payload.target] =
+                action.payload.value;
         },
         saveObject: (state, action: PayloadAction) => {
             state.isEditorOpen = false;
@@ -78,24 +84,27 @@ export const cmsObjectSlice = createSlice({
     },
 });
 
-export const {
-    openSelector,
-    selectObject,
-    abortSelection,
-    updateObject,
-    saveObject,
-    abortEdit,
-    openEditor,
-} = cmsObjectSlice.actions;
+export const { 
+  setActiveNode,
+  openSelector,
+  selectObject,
+  abortSelection,
+  updateObject,
+  saveObject,
+  abortEdit,
+  openEditor, 
+} = editorSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
+export const selectAvtiveNodeId = (state: RootState) => state.editor.activeNodeId;
+
 export const selectIsSelectorOpen = (state: RootState) =>
-    state.cmsObject.isSelectorOpen;
+    state.editor.isSelectorOpen;
 
 export const selectEditNode = (state: RootState) =>
-    state.cmsObject.editNode;
+    state.editor.editNode;
 
 export const selectEditNodeOriginal = (state: RootState) =>
-    state.cmsObject.editNodeOrigial;
+    state.editor.editNodeOrigial;
 
-export default cmsObjectSlice.reducer;
+export default editorSlice.reducer;

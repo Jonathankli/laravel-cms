@@ -4,9 +4,7 @@ import { useDebouncedState, useDidUpdate } from "@mantine/hooks";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
-import {
-    selectEditNode,
-} from "../../cmsObjectSlice";
+import { selectEditNode } from "../../editorSlice";
 
 export interface SettingContainerProps {
     setting: Setting

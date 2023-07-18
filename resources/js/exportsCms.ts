@@ -2,9 +2,7 @@
 export * from "./createCms";
 
 //features
-export * from "./features/node";
-export * from "./features/object";
-export * from "./features/navigation";
+export * from "./features/editor";
 
 //contexts
 export * from "./contexts/ConfigProvider";

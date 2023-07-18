@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 } from "uuid";
 import { useCmsDispatch, useCmsStore } from "../../../hooks/redux";
-import { abortSelection, openSelector } from "../cmsObjectSlice";
+import { abortSelection, openSelector } from "../editorSlice";
 
 export function useObjectPicker(onSelect: (object: StaticCmsObject) => void) {
 
@@ -11,12 +11,12 @@ export function useObjectPicker(onSelect: (object: StaticCmsObject) => void) {
 
 
     useEffect(() => {
-        if(store.getState().cmsObject.prevSelectedObject) {
+        if(store.getState().editor.prevSelectedObject) {
             return;
         }
         const unsubscribe = store.subscribe(() => {
-            const obj = store.getState().cmsObject.prevSelectedObject;
-            const activeUUid = store.getState().cmsObject.activeObjectPickerUuid;
+            const obj = store.getState().editor.prevSelectedObject;
+            const activeUUid = store.getState().editor.activeObjectPickerUuid;
             if(obj && activeUUid === uuid) {
                 onSelect(obj);
                 unsubscribe();

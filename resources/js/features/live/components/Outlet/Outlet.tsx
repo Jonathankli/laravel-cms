@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { OutletProps } from "../../../../components/Outlet/Outlet";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
-import { useNodeId } from "../../../node/live";
+import { useNodeId } from "../../../editor/live";
 import { LiveNode } from "../LiveNode/LiveNode";
 
 export function Outlet(props: OutletProps) {

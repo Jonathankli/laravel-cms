@@ -2,8 +2,9 @@ import { router } from "@inertiajs/react";
 import { Button } from "@mantine/core";
 import React from "react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
-import { useObjectPicker, useObjectEditor } from "../../../object";
 import { useInShell } from "../../../shell/live";
+import { useObjectEditor } from "../../hooks/useObjectEditor";
+import { useObjectPicker } from "../../hooks/useObjectPicker";
 
 interface EmptyOutletProps {
     nodeId: string;

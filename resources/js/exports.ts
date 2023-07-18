@@ -2,7 +2,7 @@
 export * from "./createLive";
 
 //features
-export * from "./features/node/live";
+export * from "./features/editor/live";
 
 //components
 export * from "./components/Outlet/Outlet";

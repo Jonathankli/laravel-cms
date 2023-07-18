@@ -1,10 +1,8 @@
-import React, { createContext, Suspense, useEffect, useMemo } from "react";
-import { Section } from "../../../../components/Section";
+import React, { Suspense, useMemo } from "react";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useCmsSelector } from "../../../../hooks/redux";
 import { ActiveNodeContext } from "../../contexts/ActiveNodeContext";
-import { useStyles } from "./useStyles";
 
 interface CmsNodeProps {
     node: CmsNode;
@@ -15,8 +13,8 @@ export function CmsNode(props: CmsNodeProps) {
     const { node } = props;
     const serverEditNode = useInertiaProps().editNode as CmsNode | undefined;
     const localEditNode = useCmsSelector(state => {
-        if(state.cmsObject.editNode?.id === node.id) {
-            return state.cmsObject.editNode;
+        if(state.editor.editNode?.id === node.id) {
+            return state.editor.editNode;
         }
         return null;
     });

@@ -1,7 +1,7 @@
 import { router } from "@inertiajs/react";
 import { useServerConfig } from "../../../hooks/config/useServerConfig";
 import { useCmsDispatch } from "../../../hooks/redux";
-import { abortEdit, openEditor } from "../cmsObjectSlice";
+import { abortEdit, openEditor } from "../editorSlice";
 
 export function useObjectEditor(node?: CmsNode) {
 

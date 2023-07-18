@@ -1,8 +1,7 @@
 import React, { MouseEvent } from "react";
-import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
-import { setActiveNode } from "../../../node";
+import { setActiveNode } from "../../../editor";
 import { ShellActions } from "../ShellActions/ShellActions";
 import { useStyles } from "./useStyles";
 
@@ -17,10 +16,9 @@ export function ShellActionContainer(props: ShellActionContainerProps) {
 
     const { classes, cx } = useStyles();
     const isActiveNode = useCmsSelector(
-        (state) => state.node.activeNodeId === "shell"
+        (state) => state.editor.activeNodeId === "shell"
     );
     const dispatch = useCmsDispatch();
-    const config = useServerConfig();
 
     if(!shell) return children;
 

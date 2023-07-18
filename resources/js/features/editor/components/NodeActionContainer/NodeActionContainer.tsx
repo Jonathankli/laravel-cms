@@ -2,12 +2,13 @@ import { router } from "@inertiajs/react";
 import React, { MouseEvent, useRef } from "react";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
-import { useObjectPicker, useObjectEditor } from "../../../object";
-import { setActiveNode } from "../../nodeSlice";
+import { setActiveNode } from "../../editorSlice";
 import { InsertNode } from "../InsertNode/InsertNode";
 import { useStyles } from "./useStyles";
 import { NodeActions } from "../NodeActions/NodeActions";
 import { useInShell } from "../../../shell/live";
+import { useObjectEditor } from "../../hooks/useObjectEditor";
+import { useObjectPicker } from "../../hooks/useObjectPicker";
 
 interface NodeActionContainerProps {
     node: CmsNode;
@@ -19,7 +20,7 @@ export function NodeActionContainer(props: NodeActionContainerProps) {
 
     const { classes, cx } = useStyles();
     const isActiveNode = useCmsSelector(
-        (state) => state.node.activeNodeId === node.id
+        (state) => state.editor.activeNodeId === node.id
     );
     const dispatch = useCmsDispatch();
     const openInsert = useRef("before");

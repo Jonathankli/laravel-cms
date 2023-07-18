@@ -28,8 +28,8 @@ const coreCmsConfig: ExtendedPluginConfig= {
         {
             type: "shells",
             resolvePage: async (name: string) => {
-                const pages = import.meta.glob("./pages/cms/Shell/**/*.js");
-                return await pages[`./pages/cms/Shell/${name}.js`]();
+                const pages = import.meta.glob("./features/shell/pages/**/*.js");
+                return await pages[`./features/shell/pages/${name}.js`]();
             },
             icon: IconBoxMargin
         },

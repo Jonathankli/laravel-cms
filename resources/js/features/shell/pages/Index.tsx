@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Container, Drawer, Group, Title } from "@mantine/core";
-import PageTree from "../../../features/page/components/PageTree/PageTree";
 import { useRouter } from "../../../exports";
-import { PageForm, PageView } from "../../../features/page";
 import DataTable, { Column } from "../../../components/DataTable/DataTable";
 import { IconEdit, IconEye, IconNavigation, IconTrash } from "@tabler/icons";
 import { Action } from "../../../hooks/useActions";
-import { ShellForm } from "../../../features/shell/components/ShellForm/ShellForm";
-import { ShellView } from "../../../features/shell";
+import { ShellForm } from "../components/ShellForm/ShellForm";
+import { ShellView } from "..";
 
 interface Paginated<T> {
     data: T[];

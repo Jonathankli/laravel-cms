@@ -5,18 +5,8 @@ namespace Jkli\Cms\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use Inertia\Inertia;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Models\Page;
-use Jkli\Cms\Models\Shell;
-use Jkli\Cms\Props\BackToPageProp;
-use Jkli\Cms\Props\CmsEditModeProp;
-use Jkli\Cms\Props\CmsObjectSettingsProp;
-use Jkli\Cms\Props\EditNodeProp;
-use Jkli\Cms\Props\GroupedCmsObjectsProp;
-use Jkli\Cms\Props\ObjectSettingsProp;
-use Jkli\Cms\Props\ShellProp;
-use Jkli\Cms\Services\PropsPipelineService;
 
 class PageShellController extends Controller
 {
@@ -34,7 +24,7 @@ class PageShellController extends Controller
             abort(404, "Shell not found");
         }
         Session::put('backToPagePath', $page->full_path);
-        return Redirect::route("shells.show", ["shell" => $page->shell->id]);
+        return Redirect::route("shell.show", ["shell" => $page->shell->id]);
     }
 
     /**
@@ -50,7 +40,7 @@ class PageShellController extends Controller
             abort(404, "Shell not found");
         }
         Session::put('backToPagePath', $page->full_path);
-        return Redirect::route("shells.edit", ["shell" => $page->shell->id]);
+        return Redirect::route("shell.editor", ["shell" => $page->shell->id]);
     }
 
     /**

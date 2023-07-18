@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Jkli\Cms\Http\Controller\PublishShellController;
 use Jkli\Cms\Http\Controller\ShellController;
 
 Route::get('/', [ShellController::class, "index"])
@@ -24,3 +25,7 @@ Route::get('/{shell}/editor', [ShellController::class, "editor"])
 
 Route::get('/{parent}/create', [ShellController::class, "create"])
     ->name('shell.parent.create');
+
+
+Route::post('/{shellId}/publish', [PublishShellController::class, "store"])
+    ->name('page.publish');

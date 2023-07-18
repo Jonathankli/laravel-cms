@@ -20,24 +20,8 @@ Route::middleware(['cms'])->group(function () {
         //Admindashboard
         Route::get('/', [DashboardController::class, "index"]);
 
-        Route::get('/pages/{page}/shell/edit', [PageShellController::class, "edit"]);
-        Route::get('/pages/{page}/shell', [PageShellController::class, "show"]);
-        Route::delete('/pages/{page}/shell', [PageShellController::class, "destroy"]);
-
-        Route::resource('/pages', PageController::class)
-            ->only(['store']);
-
-        Route::resource('/shells', ShellController::class)
-            ->only(['show', 'edit', 'store', 'update', 'destroy']);
-
         Route::resource('/nodes', NodeController::class)
             ->only(['store', 'update', 'destroy']);
-
-        Route::post('/pages/{pageId}/publish', [PublishPageController::class, "store"])
-            ->name('page.publish');
-
-        Route::post('/shells/{shellId}/publish', [PublishShellController::class, "store"])
-            ->name('page.publish');
 
     });
 

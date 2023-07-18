@@ -4,7 +4,7 @@ import PageTree from "../../../features/page/components/PageTree/PageTree";
 import { useRouter } from "../../../exports";
 import { PageForm, PageView } from "../../../features/page";
 import DataTable, { Column } from "../../../components/DataTable/DataTable";
-import { IconEdit, IconEye, IconTrash } from "@tabler/icons";
+import { IconEdit, IconEye, IconNavigation, IconTrash } from "@tabler/icons";
 import { Action } from "../../../hooks/useActions";
 import { ShellForm } from "../../../features/shell/components/ShellForm/ShellForm";
 import { ShellView } from "../../../features/shell";
@@ -38,6 +38,10 @@ const actions: Action<Shell>[] = [
     {
         Icon: IconEdit,
         route: shell => `/cms/admin/shells/${shell.id}/edit`
+    },
+    {
+        Icon: IconNavigation,
+        route: shell => `/cms/admin/shells/${shell.id}/editor`
     },
     {
         Icon: IconTrash,

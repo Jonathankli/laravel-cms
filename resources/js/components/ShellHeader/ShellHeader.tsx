@@ -29,7 +29,7 @@ export function ShellHeader() {
   const { classes } = useStyles();
 
   return (
-    <MantineHeader height={56}>
+    <MantineHeader height={56} className={classes.header}>
       <Container className={classes.inner} >
 
         <PublishButton />

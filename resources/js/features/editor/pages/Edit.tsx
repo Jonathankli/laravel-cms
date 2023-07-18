@@ -1,22 +1,23 @@
 import React from 'react';
-import { CurrentNodeTree } from '../../../features/editor';
+import { Header } from '../../../components/Header/Header';
+import { CurrentNodeTree, GlobalObjectEditor, GlobalObjectPicker } from '../../../features/editor';
 import { ShellActionContainer } from '../../../features/shell';
 import { CurrentShell } from '../../../features/shell/live';
-import CmsLayout from '../../../layouts/CmsLayout';
 
 const EditPage = (props: any) => {
     console.log(props);
     
     return (
-        <CmsLayout
-            navigation={props?.navigation}
-        >
+        <>
+            <Header />
+            <GlobalObjectPicker />
+            <GlobalObjectEditor />
             <ShellActionContainer>
                 <CurrentShell>
                     <CurrentNodeTree />
                 </CurrentShell>
             </ShellActionContainer>
-        </CmsLayout>
+        </>
     )
 }
 

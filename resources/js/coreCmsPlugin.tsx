@@ -12,8 +12,8 @@ const coreCmsConfig: ExtendedPluginConfig= {
         {
             type: "editor",
             resolvePage: async (name: string) => {
-                const pages = import.meta.glob("./pages/cms/Editor/**/*.js");
-                return await pages[`./pages/cms/Editor/${name}.js`]();
+                const pages = import.meta.glob("./features/editor/pages/**/*.js");
+                return await pages[`./features/editor/pages/${name}.js`]();
             },
             icon: IconPencil,
         },

@@ -4,7 +4,6 @@ import { IconEye, IconPencil, IconDirections } from '@tabler/icons';
 import { useStyles } from './styles';
 import { NavigationTrigger } from '../../features/navigation';
 import { PublishButton } from '../../features/publisher';
-import { ShellManagerTriger, ToShellButton } from '../../features/shell';
 
 const viewControllOptions = [
     {
@@ -36,8 +35,6 @@ export function Header() {
 
         <Group position='left'>
           <NavigationTrigger />
-          <ShellManagerTriger />
-          <ToShellButton />
         </Group>
 
         <PublishButton />

@@ -1,17 +1,13 @@
 import { router } from "@inertiajs/react";
 
 type CmsVisitOptions<T> = T & {
-    useModuleScope?: boolean;
-    prefix?: "cms" | "live" | "admin";
+    noPrefix?: boolean;
+    module?: string;
 }
 type CmsRouterState = {
     node?: CmsNode | null;
     module?: Module | null
-    paths?: {
-        cms: string;
-        live: string;
-        admin: string;
-    },
+    modules: {[key:string]: Module};
 }
 
 type InertiaVisitArgs = Parameters<typeof router.visit>;
@@ -26,27 +22,25 @@ export class CmsRouter {
 
     #state: CmsRouterState; 
 
-    constructor(state: CmsRouterState = {
-        paths: {
-            cms: "/cms",
-            live: "/",
-            admin: "/cms/admin"
-        }
-    }) {
+    constructor(state: CmsRouterState) {
         this.#state = state;
     }
 
 
-    #modifyHref(href: Parameters<typeof router.visit>[0], options?: CmsVisitOptions<InertiaVisitArgs[1]>): InertiaVisitArgs[0]
+    modifyHref(href: Parameters<typeof router.visit>[0], options?: CmsVisitOptions<InertiaVisitArgs[1]>): InertiaVisitArgs[0]
     {
         const visit = options ?? {};
-        const useModuleScope = visit.useModuleScope === undefined ? true : visit.useModuleScope; 
-        if(visit.prefix && this.#state.paths) {
+        const useModuleScope = !visit.noPrefix; 
+        
+        if(visit.module) {
             let path = href;
             if(typeof path !== "string") {
                 path = path.hostname;
             }
-            let prefix = this.#state.paths[visit.prefix];
+            let prefix = this.#state.modules[visit.module]?.full_slug;
+            if(!prefix) {
+                throw new Error("Module not found");
+            }
             if(!path.startsWith(prefix)) {
                 if(path.startsWith("/")) path = path.substring(1, path.length)
                 path = prefix + "/" + path;
@@ -67,7 +61,7 @@ export class CmsRouter {
         return href;
     }
 
-    #modifyVisitOptions(options?: CmsVisitOptions<InertiaVisitArgs[1]>): InertiaVisitArgs[1]
+    modifyVisitOptions(options?: CmsVisitOptions<InertiaVisitArgs[1]>): InertiaVisitArgs[1]
     {
         const visit:  CmsVisitOptions<InertiaVisitArgs[1]> = options ?? {};
         if(this.#state.node) {
@@ -88,31 +82,31 @@ export class CmsRouter {
     get(href: InertiaGetArgs[0], data?: InertiaGetArgs[1], options?: CmsVisitOptions<InertiaGetArgs[2]>) {
         console.log(this);
         
-        router.get(this.#modifyHref(href, options), data, this.#modifyVisitOptions(options))
+        router.get(this.modifyHref(href, options), data, this.modifyVisitOptions(options))
     }
 
     post(href: InertiaPostArgs[0], data?: InertiaPostArgs[1], options?: CmsVisitOptions<InertiaPostArgs[2]>) {
-        router.post(this.#modifyHref(href, options), data, this.#modifyVisitOptions(options))
+        router.post(this.modifyHref(href, options), data, this.modifyVisitOptions(options))
     }
 
     patch(href: InertiaPatchArgs[0], data?: InertiaPatchArgs[1], options?: CmsVisitOptions<InertiaPatchArgs[2]>) {
-        router.patch(this.#modifyHref(href, options), data, this.#modifyVisitOptions(options))
+        router.patch(this.modifyHref(href, options), data, this.modifyVisitOptions(options))
     }
 
     put(href: InertiaPutArgs[0], data?: InertiaPutArgs[1], options?: CmsVisitOptions<InertiaPutArgs[2]>) {
-        router.put(this.#modifyHref(href, options), data, this.#modifyVisitOptions(options))
+        router.put(this.modifyHref(href, options), data, this.modifyVisitOptions(options))
     }
 
     visit(href: InertiaVisitArgs[0], options?: CmsVisitOptions<InertiaVisitArgs[1]>) {
-        router.visit(this.#modifyHref(href, options), this.#modifyVisitOptions(options))
+        router.visit(this.modifyHref(href, options), this.modifyVisitOptions(options))
     }
 
     delete(href: InertiaDeleteArgs[0], options?: CmsVisitOptions<InertiaDeleteArgs[1]>) {
-        router.delete(this.#modifyHref(href, options), this.#modifyVisitOptions(options))
+        router.delete(this.modifyHref(href, options), this.modifyVisitOptions(options))
     }
 
     reload(options?: CmsVisitOptions<InertiaReloadArgs[0]>) {
-        router.reload(this.#modifyVisitOptions(options))
+        router.reload(this.modifyVisitOptions(options))
     }
 
 };

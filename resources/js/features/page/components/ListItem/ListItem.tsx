@@ -90,13 +90,13 @@ const ListItem = (props: ListItemProps) => {
                 <Group spacing={6}>
                     <ActionIcon color="green" size="sm" variant="outline" onClick={(e) => {
                         e.stopPropagation();
-                        router.get(`${page.path}`, {}, { prefix: "live" })
+                        router.get(`${page.path}`, {}, { module: "live" })
                     }}>
                         <IconNavigation size={14} />
                     </ActionIcon>
                     <ActionIcon color="blue" size="sm" variant="outline" onClick={(e) => {
                         e.stopPropagation();
-                        router.get(`${page.path}`, {}, { prefix: "cms" })
+                        router.get(`${page.path}`, {}, { module: "cms" })
                     }}>
                         <IconEdit size={14} />
                     </ActionIcon>

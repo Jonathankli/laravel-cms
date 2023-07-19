@@ -1,10 +1,14 @@
-import { IconBoxMargin, IconBrowser, IconPencil, IconSitemap, IconUser } from "@tabler/icons";
+import { IconBoxMargin, IconBrowser, IconDashboard, IconPencil, IconSitemap, IconUser } from "@tabler/icons";
 import { ExtendedPluginConfig } from "../contexts/ConfigProvider";
 import coreConfig from "./core";
 
 const coreCmsConfig: ExtendedPluginConfig= {
     extend: coreConfig,
     modules: [
+        {
+            type: "admin",
+            icon: IconDashboard,
+        },
         {
             type: "live_server",
             icon: IconBrowser

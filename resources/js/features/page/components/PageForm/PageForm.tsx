@@ -54,14 +54,14 @@ export function PageForm(props: PageFormProps) {
             router.patch(`/pages/${page.id}`, data as any, {
                 onSuccess: props.onSuccess,
                 onError: form.setErrors,
-                prefix: "admin"
+                module: "admin"
             });
             return;    
         }
         router.post("/pages", data as any, {
             onSuccess: props.onSuccess,
             onError: form.setErrors,
-            prefix: "admin",
+            module: "admin",
         });
     };
 

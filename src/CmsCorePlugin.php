@@ -3,6 +3,7 @@
 namespace Jkli\Cms;
 
 use Jkli\Cms\Contracts\Pluginable;
+use Jkli\Cms\Modules\Admin;
 use Jkli\Cms\Modules\Editor;
 use Jkli\Cms\Modules\LiveServer;
 use Jkli\Cms\Modules\Pages;
@@ -28,6 +29,7 @@ class CmsCorePlugin implements Pluginable
         public function getCmsModules(): array 
         {
             return [
+                Admin::class,
                 LiveServer::class,
                 Editor::class,
                 Pages::class,

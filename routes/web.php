@@ -17,8 +17,6 @@ Route::middleware(['cms'])->group(function () {
 
     //cms routes
     Route::prefix(config('cms.admin_path', '/cms/admin'))->group(function () {
-        //Admindashboard
-        Route::get('/', [DashboardController::class, "index"]);
 
         Route::resource('/nodes', NodeController::class)
             ->only(['store', 'update', 'destroy']);

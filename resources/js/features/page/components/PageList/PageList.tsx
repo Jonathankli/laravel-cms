@@ -45,7 +45,7 @@ export function PageList() {
                             <IconEdit size={16} onClick={(e) => {
                               e.stopPropagation();
                               router.get(`pages/${page.id}`, {}, {
-                                prefix: "admin",
+                                module: "admin",
                               })
                             }}/>
                           </Group>

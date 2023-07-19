@@ -80,8 +80,6 @@ export class CmsRouter {
     }
 
     get(href: InertiaGetArgs[0], data?: InertiaGetArgs[1], options?: CmsVisitOptions<InertiaGetArgs[2]>) {
-        console.log(this);
-        
         router.get(this.modifyHref(href, options), data, this.modifyVisitOptions(options))
     }
 

@@ -5,7 +5,6 @@ namespace Jkli\Cms\Services;
 use Exception;
 use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Models\CmsNode;
-use Jkli\Cms\Models\PublishedNode;
 use Jkli\Cms\Modules\Editor;
 use Jkli\Cms\Modules\LiveServer;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
@@ -35,37 +34,10 @@ class ResolveNodeService
         return $module;
    }
 
-   public function resloveCmsNode(): CmsNode
+   public function resloveNode(): CmsNode
    {
-        $module = $this->getModule();
-        if($module !== Editor::class) {
-            throw new Exception("Can not inject live node in cms node.");
-        }
         $nodeId = $this->getNodeId();
         $node = CmsNode::findOrFail($nodeId);
-        return $node;
-   }
-
-   public function reslovePublishedNode(): PublishedNode
-   {
-        $module = $this->getModule();
-        if($module !== LiveServer::class) {
-            throw new Exception("Can not inject cms node in a live node.");
-        }
-        $nodeId = $this->getNodeId();
-        $node = PublishedNode::findOrFail($nodeId);
-        return $node;
-   }
-
-   public function resloveNode(): PublishedNode | CmsNode
-   {
-        $module = $this->getModule();
-        $nodeId = $this->getNodeId();
-        if($module === Editor::class) {
-            $node = CmsNode::findOrFail($nodeId);
-            return $node;
-        }
-        $node = PublishedNode::findOrFail($nodeId);
         return $node;
    }
 

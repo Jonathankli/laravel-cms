@@ -9,12 +9,10 @@ use Jkli\Cms\Http\Resources\NodeResource;
 use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Http\Resources\ShellResource;
 use Jkli\Cms\Models\Page;
-use Jkli\Cms\Models\PublishedNode;
-use Jkli\Cms\Models\PublishedPage;
 
-class PublishedPageProp extends Prop
+class LivePageProp extends Prop
 {
-    protected PublishedPage $page;
+    protected Page $page;
 
     function __construct(
         protected Request $request
@@ -39,7 +37,7 @@ class PublishedPageProp extends Prop
             $path = rtrim($path, "/");
             $path = "/".$path;
             
-            $page = PublishedPage::where('full_path', $path)
+            $page = Page::where('full_path', $path)
                 ->firstOrFail();
 
             $this->page = $page;
@@ -55,8 +53,8 @@ class PublishedPageProp extends Prop
 
     public function getNodes()
     {
-        $pageNodes = $this->getPage()->nodes();
-        $shellNodes = $this->getShell()?->nodes() ?? collect();
+        $pageNodes = $this->getPage()->nodes;
+        $shellNodes = $this->getShell()?->nodes ?? collect();
         $nodes = $shellNodes->concat($pageNodes);
         return $nodes;
     }

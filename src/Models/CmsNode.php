@@ -2,10 +2,19 @@
 
 namespace Jkli\Cms\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 use Jkli\Cms\Contracts\Node;
+use Jkli\Cms\Contracts\Publishable;
+use Jkli\Cms\Publisher\Dependency;
+use Jkli\Cms\Traits\IsPublishable;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
-class CmsNode extends PublishedNode implements Node
+class CmsNode extends Model implements Node, Publishable
 {
+    use HasUuids, 
+        HasRecursiveRelationships,
+        IsPublishable;
 
     /**
      * The table associated with the model.
@@ -13,6 +22,19 @@ class CmsNode extends PublishedNode implements Node
      * @var string
      */
     protected $table = "nodes";
+
+    protected $casts = [
+        'settings' => 'array',
+    ];
+
+    protected $fillable = [
+        'settings',
+        'type',
+        'index',
+        'parent_id',
+        'outlet',
+        'id',
+    ];
 
     public function page()
     {

@@ -2,6 +2,7 @@
 
 namespace Jkli\Cms;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Jkli\Cms\Contracts\Pluginable;
 
@@ -13,9 +14,17 @@ class Cms
      */
     protected Collection $plugins;
 
+    /**
+     * @var Collection<string,Illuminate\Database\Eloquent\Model> $plugins
+     */
+    protected Collection $publishable;
+
+    protected bool $live = false;
+
     public function __construct()
     {
         $this->plugins = collect();
+        $this->publishable = collect();
     }
 
     public function plugin(Pluginable $plugin)
@@ -59,5 +68,34 @@ class Cms
     public function getCmsObject(string $key): string
     {
         return $this->getCmsObjects()->get($key);
+    }
+
+    public function registerPublishable(string | array $key, ?Model $model = null)
+    {
+        if(is_array($key)) {
+            $this->publishable = $this->publishable->merge($key);
+            return;
+        }
+        $this->publishable->put($key, $model);
+    }
+
+    public function getPublishable()
+    {
+        return $this->publishable;
+    }
+
+    public function setLiveMode()
+    {
+        $this->live = true;
+    }
+
+    public function setCmsMode()
+    {
+        $this->live = false;
+    }
+
+    public function isLive(): bool
+    {
+        return $this->live;
     }
 }

@@ -3,8 +3,9 @@
 namespace Jkli\Cms\Http\Controller;
 
 use Inertia\Inertia;
+use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Http\Controller\Controller;
-use Jkli\Cms\Props\PublishedPageProp;
+use Jkli\Cms\Props\LivePageProp;
 use Jkli\Cms\Services\PropsPipelineService;
 
 class LivePageController extends Controller
@@ -18,8 +19,9 @@ class LivePageController extends Controller
      */
     public function show()
     {
+        Cms::setLiveMode();
         return Inertia::render("Page/Show", PropsPipelineService::run([
-            PublishedPageProp::class,
+            LivePageProp::class,
         ]));
     }
 

@@ -2,11 +2,8 @@
 
 namespace Jkli\Cms\Services;
 
-use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Page;
-use Jkli\Cms\Models\PublishedNode;
-use Jkli\Cms\Models\PublishedPage;
-use Jkli\Cms\Models\PublishedShell;
+use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Shell;
 
 class PublishService
@@ -49,7 +46,7 @@ class PublishService
 
         $this->publishNode($shell->rootNode);
 
-        PublishedShell::updateOrCreate([
+        Shell::updateOrCreate([
             'id' => $shell->id
         ], [
             'id' => $shell->id,
@@ -79,7 +76,7 @@ class PublishService
         }
 
         if(!$page->is_active) {
-            $publishedPage = PublishedPage::find($page->id);
+            $publishedPage = Page::find($page->id);
             if(!$publishedPage) return;
             $publishedPage->rootNode->descendantsAndSelf()->delete();
             $publishedPage->delete();
@@ -89,11 +86,11 @@ class PublishService
         $this->publishNode($page->rootNode);
 
         $shellId = null;
-        if(PublishedShell::find($page->shell_id)) {
+        if(Shell::find($page->shell_id)) {
             $shellId = $page->shell_id;
         }
 
-        PublishedPage::updateOrCreate([
+        Page::updateOrCreate([
             'id' => $page->id
         ], [
             'id' => $page->id,
@@ -112,7 +109,7 @@ class PublishService
         
     }
 
-    public function publishNode(CmsNode | string $node): PublishedNode
+    public function publishNode(CmsNode | string $node): CmsNode
     {
         if (is_string($node)) {
             $node = CmsNode::where('id', $node)
@@ -120,14 +117,14 @@ class PublishService
                 ->firstOrFail();
         }
 
-        $publishedDescendantIds = PublishedNode::find($node->id)?->descendants;
+        $publishedDescendantIds = CmsNode::find($node->id)?->descendants;
 
         if($publishedDescendantIds) {
             $deletedNodes = $node->descendants->pluck('id')->diff($publishedDescendantIds);
-            PublishedNode::destroy($deletedNodes);
+            CmsNode::destroy($deletedNodes);
         }
 
-        $publishedNode = PublishedNode::updateOrCreate([
+        $publishedNode = CmsNode::updateOrCreate([
             'id' => $node->id
         ], [
             'id' => $node->id,

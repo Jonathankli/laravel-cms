@@ -1,14 +1,24 @@
 <?php
 
 namespace Jkli\Cms\Models;
-use Jkli\Cms\Traits\HasFilter;
 
-class Shell extends PublishedShell
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
+use Jkli\Cms\Contracts\Publishable;
+use Jkli\Cms\Publisher\Dependency;
+use Jkli\Cms\Traits\HasFilter;
+use Jkli\Cms\Traits\IsPublishable;
+
+class Shell extends Model implements Publishable
 {
 
-    use HasFilter;
+    use HasUuids, IsPublishable, HasFilter;
 
-    protected array $searchable = ['name'];
+    protected $fillable = [
+        'id',
+        'node_id',
+        'name'
+    ];
 
     public function pages()
     {
@@ -18,5 +28,11 @@ class Shell extends PublishedShell
     public function rootNode()
     {
         return $this->belongsTo(CmsNode::class, 'node_id');
+    }
+
+    #[Dependency(silent: true)]
+    public function nodes()
+    {
+        return $this->rootNode->descendantsAndSelf();
     }
 }

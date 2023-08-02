@@ -11,7 +11,8 @@ use Jkli\Cms\Facades\Cms as CmsFacade;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequestsLive;
 use Jkli\Cms\Models\Page;
-use Jkli\Cms\Models\PublishedNode;
+use Jkli\Cms\Models\CmsNode;
+use Jkli\Cms\Models\Shell;
 use Jkli\Cms\Observers\PageObserver;
 use Jkli\Cms\Services\ResolveNodeService;
 
@@ -23,6 +24,10 @@ class CmsServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         CmsFacade::plugin(new CmsCorePlugin());
+        CmsFacade::registerPublishable([
+            'page' => Page::class,
+            'shell' => Shell::class,
+        ]);
 
         $this->registerModuleRoutes();
 
@@ -80,10 +85,7 @@ class CmsServiceProvider extends ServiceProvider
         });
 
         $this->app->bindIf(CmsNode::class, function () {
-            return (new ResolveNodeService)->resloveCmsNode();
-        });
-        $this->app->bindIf(PublishedNode::class, function () {
-            return (new ResolveNodeService)->reslovePublishedNode();
+            return (new ResolveNodeService)->resloveNode();
         });
         $this->app->bindIf(Node::class, function () {
             return (new ResolveNodeService)->resloveNode();

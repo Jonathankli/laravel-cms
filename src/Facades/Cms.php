@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void plugin(\Jkli\Cms\Contracts\Pluginable $plugin)
+ * @method static bool isLive()
  * 
  * @see \CFMmedia\BlankConnector\BlankConnector
  */

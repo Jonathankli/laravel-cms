@@ -7,6 +7,7 @@ use Jkli\Cms\Modules\Admin;
 use Jkli\Cms\Modules\Editor;
 use Jkli\Cms\Modules\LiveServer;
 use Jkli\Cms\Modules\Pages;
+use Jkli\Cms\Modules\Publisher;
 use Jkli\Cms\Modules\Shells;
 use Jkli\Cms\Modules\Users;
 use Jkli\Cms\Objects\PageOutlet;
@@ -32,6 +33,7 @@ class CmsCorePlugin implements Pluginable
                 Admin::class,
                 LiveServer::class,
                 Editor::class,
+                Publisher::class,
                 Pages::class,
                 Shells::class,
                 Users::class,

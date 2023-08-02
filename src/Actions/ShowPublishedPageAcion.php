@@ -4,9 +4,8 @@ namespace Jkli\Cms\Actions;
 
 use Illuminate\Http\Request;
 use Jkli\Cms\Models\Page;
-use Jkli\Cms\Models\PublishedPage;
 
-class ShowPublishedPageAcion
+class ShowPageAcion
 {
 
     public function __construct(protected Request $request) {}
@@ -17,7 +16,7 @@ class ShowPublishedPageAcion
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function handle(?string $path = null): PublishedPage
+    public function handle(?string $path = null): Page
     {
         if(!$path) {
             $path = $this->request->route('path');
@@ -26,7 +25,7 @@ class ShowPublishedPageAcion
 
         $path = "/".$path;
         
-        $page = PublishedPage::where('full_path', $path)
+        $page = Page::where('full_path', $path)
             ->firstOrFail(); 
 
         return $page;

@@ -53,8 +53,8 @@ class EditorPageProp extends Prop
 
     public function getNodes()
     {
-        $pageNodes = $this->getPage()->nodes();
-        $shellNodes = $this->getShell()?->nodes() ?? collect();
+        $pageNodes = $this->getPage()->nodes;
+        $shellNodes = $this->getShell()?->nodes ?? collect();
         $nodes = $shellNodes->concat($pageNodes);
         return $nodes;
     }

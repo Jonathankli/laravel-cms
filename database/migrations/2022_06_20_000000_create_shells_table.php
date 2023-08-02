@@ -18,6 +18,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
 
+            $table->boolean('published')->default(false);
+
             $table->foreignUuid('node_id')
                 ->references('id')
                 ->on('nodes')

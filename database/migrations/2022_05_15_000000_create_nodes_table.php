@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('outlet')->default(0);
             $table->json('settings')->nullable();
 
+            $table->boolean('published')->default(false);
+
             $table->timestamps();
         });
         Schema::table('nodes', function (Blueprint $table) {

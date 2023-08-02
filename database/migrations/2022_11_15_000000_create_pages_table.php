@@ -28,6 +28,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('use_parent_path')->default(true);
 
+            $table->boolean('published')->default(false);
+
             $table->foreignUuid('shell_id')
                 ->nullable()
                 ->references('id')

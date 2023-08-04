@@ -13,7 +13,7 @@
   "exports": {
     ".": "./dist/exports.js",
     "./cms": "./dist/exportsCms.js",
-    "./vite": "./resources/js/vitePlugin.js"
+    "./vite": "./resources/js/vitePlugin.mjs"
   },
   "main": "dist/exports.js",
   "types": "dist/exports.d.ts",

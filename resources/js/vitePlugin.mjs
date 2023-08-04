@@ -1,9 +1,10 @@
-const react = require("@vitejs/plugin-react");
-const {default: laravel} = require("laravel-vite-plugin");
-const path = require("path");
-const fs = require("fs");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from 'node:url';
+import react from "@vitejs/plugin-react";
+import laravel from "laravel-vite-plugin";
 
-module.exports = function laravelCms() {
+export default function() {
     return [
         react(),
         laravel({
@@ -23,7 +24,7 @@ module.exports = function laravelCms() {
 
 async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "package.json")) {
 
-    const rootPkg = require(rootPkgPath);
+    const rootPkg = JSON.parse(fs.readFileSync(fileURLToPath(new URL(rootPkgPath, import.meta.url)), 'utf8'));
     if (!rootPkg.workspaces?.length) {
         return [];
     }
@@ -48,7 +49,8 @@ async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "pa
     const packages = [];
     for (let i = 0; i < folderPaths.length; i++) {
         const folderPath = folderPaths[i];
-        const packageJson = require(path.resolve(folderPath, "package.json"));
+        const pkgPath = path.resolve(folderPath, "package.json");
+        const packageJson = JSON.parse(fs.readFileSync(fileURLToPath(new URL(pkgPath, import.meta.url)), 'utf8'));
 
         if(Object.keys(packageJson.exports ?? {}).length) {
             //merge exports with package name

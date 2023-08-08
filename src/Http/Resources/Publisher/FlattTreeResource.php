@@ -5,7 +5,7 @@ namespace Jkli\Cms\Http\Resources\Publisher;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Jkli\Cms\Facades\Cms;
 
-class DependencyResource extends JsonResource
+class FlattTreeResource extends JsonResource
 {
 
     /**
@@ -23,12 +23,13 @@ class DependencyResource extends JsonResource
      */
     public function toArray($request)
     {
+        $className = get_class($this->resource[0]?->getModel());
+        $type = Cms::getPublishable()->get($className);
         return [
-            'model' => $this->getModel(),
-            'name' => $this->getModel()->getPublishableName(),
-            'typeName' => $this->getModel()->getPublishableTypeName(),
-            'relations' => RelationResource::collection($this->getRelations())->all(),
-            'isPublished' => $this->isPublished(),
+            'type' => $type,
+            'key' => $className,
+            'name' => $className::getPublishableTypeName(),
+            'models' => FlattDependencyResource::collection($this->resource)->all()
         ];
     }
 }

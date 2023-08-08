@@ -133,5 +133,22 @@ class Publisher
         $dto->setRelations($dependencies);
         return $dto;
     }
+
+    public function flattenTree(DependencyDto $dto): Collection
+    {
+        $map = collect([]);
+        $model = $dto->getModel();
+        $className = get_class($model);
+        $map->put($className, [
+            ...($map->get($className, [])),
+            $dto
+        ]);
+        foreach ($dto->getRelations() as $relation) {
+            foreach($relation->getDependencies()  as $dep) {
+                $map = $map->mergeRecursive($this->flattenTree($dep));
+            }
+        }
+        return $map;
+    }
  
 }

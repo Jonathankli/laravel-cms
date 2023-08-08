@@ -20,6 +20,17 @@ trait IsPublishable
         static::observe(new PublishObserver);
     }
 
+
+    public static function getPublishableTypeName()
+    {
+        return get_class(new static());
+    }
+
+    public function getPublishableName()
+    {
+        return $this->getKey();
+    }
+
         
     /**
      * Initialize the trait

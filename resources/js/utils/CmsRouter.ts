@@ -66,13 +66,13 @@ export class CmsRouter {
         const visit:  CmsVisitOptions<InertiaVisitArgs[1]> = options ?? {};
         if(this.#state.node) {
             visit.headers = {
-                ...visit.headers,
+                ...(visit.headers ?? {}),
                 "X-CMS-NODE-SCOPE": this.#state.node.id,
             }
         }
         if(this.#state.module) {
             visit.headers = {
-                ...visit.headers,
+                ...(visit.headers ?? {}),
                 "X-CMS-MODULE-SCOPE": this.#state.module.type
             }
         }

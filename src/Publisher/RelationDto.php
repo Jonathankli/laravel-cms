@@ -3,7 +3,6 @@
 namespace Jkli\Cms\Publisher;
 
 use Illuminate\Support\Collection;
-use Jkli\Cms\Contracts\Publishable;
 use Jkli\Cms\Publisher\Dependency;
 
 class RelationDto
@@ -19,6 +18,11 @@ class RelationDto
         $this->dependencies = collect();
     }
 
+    public function getKey(DependencyDto $parent)
+    {
+        $model = $parent->getModel();
+        return get_class($model) . ":rel:" . $this->name;
+    }
 
     /**
      * Get the value of dependencies

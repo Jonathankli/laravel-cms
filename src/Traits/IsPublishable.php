@@ -23,7 +23,7 @@ trait IsPublishable
 
     public static function getPublishableTypeName()
     {
-        return get_class(new static());
+        return (new \ReflectionClass(new static()))->getShortName();
     }
 
     public function getPublishableName()
@@ -68,14 +68,21 @@ trait IsPublishable
         return $this->isPublished;
     }
 
-    public function usePublished()
+    public static function usePublished(): self
     {
-        $this->isPublished = true;
+        $instance = new self();
+        $instance->useLive();
+        return $instance;
     }
 
     public function useEdit()
     {
         $this->isPublished = false;
+    }
+
+    public function useLive()
+    {
+        $this->isPublished = true;
     }
 
     public function getExcludePublishAttributes(): array

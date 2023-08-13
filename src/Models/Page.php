@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Jkli\Cms\Contracts\Publishable;
 use Jkli\Cms\Publisher\Dependency;
+use Jkli\Cms\Traits\HasFilter;
 use Jkli\Cms\Traits\IsPublishable;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\Traits\HasAdjacencyList;
 
 class Page extends Model implements Publishable
 {
 
-    use IsPublishable, HasUuids, HasAdjacencyList;
+    use IsPublishable, HasUuids, HasAdjacencyList, HasFilter;
 
     /**
      * The model's attributes.
@@ -21,6 +22,11 @@ class Page extends Model implements Publishable
      */
     protected $attributes = [
         "use_parent_path" => true,
+    ];
+
+    protected $searchable = [
+        "name",
+        "title"
     ];
 
     protected $fillable = [

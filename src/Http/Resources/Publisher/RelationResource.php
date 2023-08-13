@@ -27,6 +27,7 @@ class RelationResource extends JsonResource
             'optional' => $this->getOptions()->optional,
             'silent' => $this->getOptions()->silent,
             'dependencies' => DependencyResource::collection($this->getDependencies())->all(),
+            'key' => $this->getKey(),
         ];
     }
 }

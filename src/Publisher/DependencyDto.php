@@ -10,6 +10,8 @@ class DependencyDto
 
     protected Collection $relations;
 
+    protected DependencyDto $parent;
+
     public function __construct(
         protected $model,
     ) {
@@ -23,6 +25,11 @@ class DependencyDto
     public function getRelations()
     {
         return $this->relations;
+    }
+
+    public function getKey()
+    {
+        return get_class($this->model) . ":id:" . $this->model->getKey();
     }
 
     /**
@@ -62,4 +69,24 @@ class DependencyDto
         return $this->relations->some(fn($relation) => $relation->hasUpdates()); 
     }
 
+
+    /**
+     * Get the value of parent
+     */ 
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Set the value of parent
+     *
+     * @return  self
+     */ 
+    public function setParent(self $parent)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
 }

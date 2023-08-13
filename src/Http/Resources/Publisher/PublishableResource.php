@@ -3,9 +3,8 @@
 namespace Jkli\Cms\Http\Resources\Publisher;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Jkli\Cms\Facades\Cms;
 
-class DependencyResource extends JsonResource
+class PublishableResource extends JsonResource
 {
 
     /**
@@ -24,12 +23,11 @@ class DependencyResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'model' => $this->getModel(),
-            'name' => $this->getModel()->getPublishableName(),
-            'typeName' => $this->getModel()->getPublishableTypeName(),
-            'relations' => RelationResource::collection($this->getRelations())->all(),
-            'isPublished' => $this->isPublished(),
-            'key' => $this->getKey(),
+            'publishedCount' => isset($this->publishedCount) ? $this->publishedCount : null,
+            'count' => isset($this->count) ? $this->count : null,
+            'pendingCount' => isset($this->pendingCount) ? $this->pendingCount : null,
+            'name' => $this->name,
+            'type' => $this->type,
         ];
     }
 }

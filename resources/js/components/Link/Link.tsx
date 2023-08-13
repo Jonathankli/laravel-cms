@@ -12,7 +12,7 @@ interface LinkProps extends InertiaLinkProps {
 export default function Link(props: LinkProps) {
     const router = useRouter();
     const href = router.modifyHref(props.href, props as any);
-    const updatedProps: any = router.modifyVisitOptions(props as any);
+    const updatedProps: any = router.modifyVisitOptions({...props} as any);
     return (
          <InertiaLink {...updatedProps} href={href} />
     )

@@ -11,15 +11,18 @@ use ReflectionClass;
 class Publisher
 {
 
-    public function publish(Publishable | DependencyDto $publishable, array | string | Collection $optionals = [])
+    public function publish(Publishable | DependencyDto $publishable, array | Collection $optionals = [], ?RelationDto $parentRelation = null)
     {
-        if(is_string($optionals))
-            $optionals = collect([$optionals]);
         if(is_array($optionals))
             $optionals = collect($optionals);
         
         if(!($publishable instanceof DependencyDto)) {
             $publishable = $this->getDependencyTree($publishable);
+        }
+
+        $key = $publishable->getKey();
+        if($parentRelation?->getOptions()->optional && !$optionals->has($key)) {
+            return;
         }
         
         //pre publish relations
@@ -27,7 +30,7 @@ class Publisher
             if($relation->getTiming() !== PublishTimingEnum::BEFORE) {
                 continue;
             }
-            $this->publishRelation($relation, $optionals);
+            $this->publishRelation($relation, $publishable, $optionals);
         }
 
         //publish model
@@ -53,51 +56,28 @@ class Publisher
             if($relation->getTiming() !== PublishTimingEnum::AFTER) {
                 continue;
             }
-            $this->publishRelation($relation, $optionals);
+            $this->publishRelation($relation, $publishable, $optionals);
         }
 
     }
 
-    private function publishRelation(RelationDto $relation, Collection $optionals)
+    private function publishRelation(RelationDto $relation, DependencyDto $parent, Collection $optionals)
     {
-        $key = $relation->getName();
-        
-        //check if optional
-        if($relation->getOptions()->optional) {
-            $continue = $optionals->some(function($opt) use ($key) {
-                $segments = str_split($opt, '.');
-                if(!count($segments)) {
-                    throw new Exception("Option can not be empty");
-                }  
-                return $segments[0] === $key;
-            });
-            if(!$continue) {
-                return;
-            }
+        $key = $relation->getKey($parent);
+        if($relation->getOptions()->optional && !$optionals->has($key)) {
+            return;
         }
-
-        //filter relation from optionals
-        $filteredOptionals = $optionals->map(function($opt) use ($key) {
-            $segments = str_split($opt, '.');
-            if(!count($segments)) {
-                throw new Exception("Option can not be empty");
-            }  
-            if($segments[0] === $key) {
-                unset($segemens[0]);
-                return implode('.', $segments);
-            }
-            return null;
-        });
-        $filteredOptionals = $filteredOptionals->filter(fn($opt) => $opt !== null);
 
         //publish dependencies
         foreach ($relation->getDependencies() as $dependeny) {
-            $this->publish($dependeny, $filteredOptionals);
+            $this->publish($dependeny, $optionals, $relation);
         }
     }
     
     public function getDependencyTree(Publishable $publishable): DependencyDto
     {
+        $depDto = new DependencyDto($publishable);
+
         $reflector = new ReflectionClass($publishable);
         $methods = $reflector->getMethods();
 
@@ -116,22 +96,22 @@ class Publisher
             $resolvedDependencies = $resolver->resolve($publishable, $relation);
             $timing = $resolver->timing($publishable, $relation, $resolvedDependencies);
 
-            $dto = new RelationDto($relation, $timing, $options);
+            $relDto = new RelationDto($relation, $timing, $options);
 
             if($resolvedDependencies instanceof Publishable) {
-                $depDto = $this->getDependencyTree($resolvedDependencies);
-                $dto->setDependencies(collect([$depDto]));
+                $childDepDto = $this->getDependencyTree($resolvedDependencies);
+                $childDepDto->setParent($depDto);
+                $relDto->setDependencies(collect([$childDepDto]));
             } else if($resolvedDependencies instanceof Collection) {
-                $dto->setDependencies($resolvedDependencies->map(fn($dep) => $this->getDependencyTree($dep)));
+                $relDto->setDependencies($resolvedDependencies->map(fn($dep) => $this->getDependencyTree($dep)->setParent($depDto)));
             } else if($resolvedDependencies === null && !$options->optional) {
                 throw new \Exception("Dependency {$relation} is not optional");
             }
-            $dependencies->push($dto);
+            $dependencies->push($relDto);
         }
 
-        $dto = new DependencyDto($publishable);
-        $dto->setRelations($dependencies);
-        return $dto;
+        $depDto->setRelations($dependencies);
+        return $depDto;
     }
 
     public function flattenTree(DependencyDto $dto): Collection

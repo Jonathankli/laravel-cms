@@ -24,8 +24,8 @@ class PublishableModelResource extends JsonResource
     {
         return [
             'id' => $this->getKey(),
-            'name' => $this->name,
-            'publishable' => $this->publishable,
+            'name' => $this->getPublishableName(),
+            'publishable' => $this->{$this->getPublishedFlag()},
         ];
     }
 }

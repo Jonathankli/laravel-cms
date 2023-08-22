@@ -22,12 +22,12 @@ class FlattDependencyResource extends JsonResource
      */
     public function toArray($request)
     {
-        $parentClass = get_class($this->getParent()->getModel());
+        $parentClass = $this->getParent() ? get_class($this->getParent()?->getModel()) : null;
         return [
             'model' => $this->getModel(),
             'name' => $this->getModel()->getPublishableName(),
             'parent_type' => $parentClass,
-            'parent_id' => $this->getParent()->getModel()->getKey(),
+            'parent_id' => $this->getParent()?->getModel()->getKey(),
             'isPublished' => $this->isPublished(),
             'key' => $this->getKey(),
         ];

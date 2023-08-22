@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Resources\Publisher\DependencyResource;
+use Jkli\Cms\Http\Resources\Publisher\FlattDependencyResource;
+use Jkli\Cms\Http\Resources\Publisher\FlattTreeResource;
 use Jkli\Cms\Http\Resources\Publisher\PublishableModelResource;
 use Jkli\Cms\Http\Resources\Publisher\PublishableResource;
 use Jkli\Cms\Modules\Publisher as ModulesPublisher;
@@ -68,8 +70,10 @@ class PublishController extends Controller
         }
         $model = $modelClass::findOrFail($id);
         $dependency = $this->publisher->getDependencyTree($model);
+        $falttened = $this->publisher->flattenTree($dependency);
         return Inertia::render(ModulesPublisher::view('Show'), [
-            'publishable' => fn() => DependencyResource::make($dependency),
+            'publishable' => fn() => FlattDependencyResource::make($dependency),
+            'models' => fn() => FlattTreeResource::collection($falttened),
         ]);
     }
 

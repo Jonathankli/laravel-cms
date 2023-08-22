@@ -33,15 +33,15 @@ const columns: Column<PublishableModel>[] = [
     },
 ]
 
-const actions: Action<PublishableModel>[] = [
-    {
-        Icon: IconRocket,
-        route: model => `cms/admin/publisher/${model.type}`
-    },
-]
 
 const Index = (props: IndexProps) => {
     const { publishable, models } = props;
+    const actions: Action<PublishableModel>[] = [
+        {
+            Icon: IconRocket,
+            route: model => `${publishable.type}/${model.id}`
+        },
+    ]
     return ( 
         <Container size={"xl"}>
             <Title>Publisher: {publishable.name}</Title>

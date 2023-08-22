@@ -7,6 +7,7 @@ interface Publishable {
 }
 
 interface PublishableModel {
+    id: string;
     name: string;
     type: string;
     published: boolean;

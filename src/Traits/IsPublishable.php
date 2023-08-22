@@ -28,7 +28,7 @@ trait IsPublishable
 
     public function getPublishableName()
     {
-        return $this->getKey();
+        return $this->name;
     }
 
         

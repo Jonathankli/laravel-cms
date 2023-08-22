@@ -75,7 +75,7 @@ class DependencyDto
      */ 
     public function getParent()
     {
-        return $this->parent;
+        return $this->parent ?? null;
     }
 
     /**

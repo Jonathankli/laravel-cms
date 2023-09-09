@@ -73,7 +73,7 @@ class PublishController extends Controller
         $falttened = $this->publisher->flattenTree($dependency);
         return Inertia::render(ModulesPublisher::view('Show'), [
             'publishable' => fn() => FlattDependencyResource::make($dependency),
-            'models' => fn() => FlattTreeResource::collection($falttened),
+            'flatTree' => fn() => FlattTreeResource::collection($falttened)->all(),
         ]);
     }
 

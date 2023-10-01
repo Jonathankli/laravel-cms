@@ -12,10 +12,15 @@ class DependencyDto
 
     protected DependencyDto $parent;
 
+    protected Collection $ignoreKeys;
+
+    protected ?RelationDto $relation = null;
+
     public function __construct(
         protected $model,
     ) {
         $this->relations = collect();
+        $this->ignoreKeys = collect();
     }
 
 
@@ -86,6 +91,26 @@ class DependencyDto
     public function setParent(self $parent)
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of relation
+     */ 
+    public function getRelation()
+    {
+        return $this->relation;
+    }
+
+    /**
+     * Set the value of relation
+     *
+     * @return  self
+     */ 
+    public function setRelation($relation)
+    {
+        $this->relation = $relation;
 
         return $this;
     }

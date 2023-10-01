@@ -21,6 +21,19 @@ class EloquentResolver implements Resolver
     {
         return $model->$method;
     }
+
+    public function ignoreKeys(Publishable $model, string $method): Collection
+    {
+        $instance = $model->$method();
+        if($instance instanceof BelongsTo) {
+            return collect([$instance->getForeignKeyName()]);
+        }
+        if($instance instanceof MorphTo) {
+            return collect([$instance->getForeignKeyName(), $instance->getMorphType()]);
+        }
+        return collect();
+    }
+    
     public function timing(Publishable $model, string $method, Publishable | Collection | null $resolved): PublishTimingEnum
     {
         $instance = $model->$method();

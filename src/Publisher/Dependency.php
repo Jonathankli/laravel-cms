@@ -12,5 +12,6 @@ class Dependency
         public bool $silent = false,
         public bool $optional = false,
         public $resolver = EloquentResolver::class,
+        public ?PublishTimingEnum $timing = null,
     ) { }
 }

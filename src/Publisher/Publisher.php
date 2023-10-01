@@ -5,6 +5,7 @@ namespace Jkli\Cms\Publisher;
 use Exception;
 use Illuminate\Support\Collection;
 use Jkli\Cms\Contracts\Publishable;
+use Jkli\Cms\Models\Page;
 use Jkli\Cms\Publisher\Dependency;
 use ReflectionClass;
 
@@ -21,24 +22,30 @@ class Publisher
         }
 
         $key = $publishable->getKey();
-        if($parentRelation?->getOptions()->optional && !$optionals->has($key)) {
+        $modelClass = get_class($publishable->getModel());
+        if($parentRelation?->getOptions()->optional && !($optionals->contains($key) || $optionals->contains($modelClass))) {
             return;
         }
-        
+
+        $ignoreKeys = collect([]);
+
         //pre publish relations
         foreach ($publishable->getRelations() as $relation) {
             if($relation->getTiming() !== PublishTimingEnum::BEFORE) {
                 continue;
             }
-            $this->publishRelation($relation, $publishable, $optionals);
+            $ignore = $this->publishRelation($relation, $publishable, $optionals);
+            $ignoreKeys = $ignoreKeys->merge($ignore);
         }
 
         //publish model
         $model = $publishable->getModel();
         $key = $model->getKey();
+        $keyName = $model->getKeyName();
         $publishFlag = $model->getPublishedFlag();
-        $publishExcludeFields = $model->getExcludePublishAttributes();
-        $publishExcludeFields[] = $publishFlag;
+        $publishExcludeFields = collect($model->getExcludePublishAttributes());
+        $publishExcludeFields->add($publishFlag);
+        $publishExcludeFields = $publishExcludeFields->merge($ignoreKeys);
         $class = get_class($model);
 
         if($model->isPublished()) {
@@ -46,14 +53,14 @@ class Publisher
         }
 
         $attributes = collect($model->attributesToArray());
-        $attributes = $attributes->filter(fn($value, $key) => !in_array($key, $publishExcludeFields));
+        $attributes = $attributes->except($publishExcludeFields);
 
-        $class::usePublished()->find($key)->update($attributes->toArray());
+        $class::usePublished()->updateOrCreate([$keyName => $key], $attributes->toArray());
         $model->update([$publishFlag => true]);
 
         //post publish relations
         foreach ($publishable->getRelations() as $relation) {
-            if($relation->getTiming() !== PublishTimingEnum::AFTER) {
+        if($relation->getTiming() !== PublishTimingEnum::AFTER) {
                 continue;
             }
             $this->publishRelation($relation, $publishable, $optionals);
@@ -61,17 +68,24 @@ class Publisher
 
     }
 
-    private function publishRelation(RelationDto $relation, DependencyDto $parent, Collection $optionals)
+    private function publishRelation(RelationDto $relation, DependencyDto $parent, Collection $optionals): Collection
     {
         $key = $relation->getKey($parent);
-        if($relation->getOptions()->optional && !$optionals->has($key)) {
-            return;
+        if(!$relation->getDependencies()->count()) {
+            return $relation->getIgnoreKeys();;
+        }
+        $modelClass = get_class($relation->getDependencies()->first()?->getModel());
+
+        if($relation->getOptions()->optional && !($optionals->contains($key) || $optionals->contains($modelClass))) {
+            return $relation->getIgnoreKeys();
         }
 
         //publish dependencies
         foreach ($relation->getDependencies() as $dependeny) {
             $this->publish($dependeny, $optionals, $relation);
         }
+
+        return collect();
     }
     
     public function getDependencyTree(Publishable $publishable): DependencyDto
@@ -94,16 +108,25 @@ class Publisher
             $relation = $method->getName();
             $resolver = app()->make($options->resolver);
             $resolvedDependencies = $resolver->resolve($publishable, $relation);
+            $ignoreKeys = $resolver->ignoreKeys($publishable, $relation);
             $timing = $resolver->timing($publishable, $relation, $resolvedDependencies);
 
             $relDto = new RelationDto($relation, $timing, $options);
+            $relDto->setIgnoreKeys($ignoreKeys);
 
             if($resolvedDependencies instanceof Publishable) {
                 $childDepDto = $this->getDependencyTree($resolvedDependencies);
+                $childDepDto->setRelation($relDto);
                 $childDepDto->setParent($depDto);
                 $relDto->setDependencies(collect([$childDepDto]));
             } else if($resolvedDependencies instanceof Collection) {
-                $relDto->setDependencies($resolvedDependencies->map(fn($dep) => $this->getDependencyTree($dep)->setParent($depDto)));
+                $relDto->setDependencies(
+                    $resolvedDependencies->map(
+                        fn($dep) => $this->getDependencyTree($dep)
+                            ->setParent($depDto)
+                            ->setRelation($relDto)
+                        )
+                    );
             } else if($resolvedDependencies === null && !$options->optional) {
                 throw new \Exception("Dependency {$relation} is not optional");
             }

@@ -10,12 +10,15 @@ class RelationDto
     //DependencyDto
     protected Collection $dependencies;
 
+    protected Collection $ignoreKeys;
+
     public function __construct(
         protected string $name,
         protected PublishTimingEnum $timing,
         protected Dependency $options,
     ) {
         $this->dependencies = collect();
+        $this->ignoreKeys = collect();
     }
 
     public function getKey(DependencyDto $parent)
@@ -85,6 +88,44 @@ class RelationDto
     public function setTiming($timing)
     {
         $this->timing = $timing;
+
+        return $this;
+    }
+
+
+    /**
+     * Adds a ignore key
+     *
+     * @return  self
+     */ 
+    public function addIgnoreKey(string | Collection $key)
+    {
+        if(is_string($key)) {
+            $this->ignoreKeys->push($key);
+            return $this;
+        } 
+
+        $this->ignoreKeys = $this->ignoreKeys->merge($key);
+        
+        return $this;
+    }
+
+    /**
+     * Get the value of ignoreKeys
+     */ 
+    public function getIgnoreKeys()
+    {
+        return $this->ignoreKeys;
+    }
+
+    /**
+     * Set the value of ignoreKeys
+     *
+     * @return  self
+     */ 
+    public function setIgnoreKeys($ignoreKeys)
+    {
+        $this->ignoreKeys = $ignoreKeys;
 
         return $this;
     }

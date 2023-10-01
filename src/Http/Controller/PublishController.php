@@ -2,6 +2,7 @@
 
 namespace Jkli\Cms\Http\Controller;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Facades\Cms;
@@ -72,19 +73,24 @@ class PublishController extends Controller
         $dependency = $this->publisher->getDependencyTree($model);
         $falttened = $this->publisher->flattenTree($dependency);
         return Inertia::render(ModulesPublisher::view('Show'), [
-            'publishable' => fn() => FlattDependencyResource::make($dependency),
+            'publishable' => fn() => PublishableResource::make((object) [
+                'name' => $modelClass::getPublishableTypeName(),
+                'type' => $type,
+            ]),
+            'rootResource' => fn() => FlattDependencyResource::make($dependency),
             'flatTree' => fn() => FlattTreeResource::collection($falttened)->all(),
+            'model' => fn() => PublishableModelResource::make($model),
         ]);
     }
 
-    public function publish(string $type, string $id)
+    public function publish(string $type, string $id, Request $request)
     {
         $modelClass = Cms::getPublishable()->get($type);
         if(!$modelClass) {
             abort(404, 'Publishable not found!');
         }
         $model = $modelClass::findOrFail($id);
-        $this->publisher->publish($model);
+        $this->publisher->publish($model, $request->input('optionals', []));
         return Redirect::route('publisher.index');
     }
 

@@ -44,12 +44,12 @@ class Page extends Model implements Publishable
         'shell_id',
     ];
 
+    #[Dependency(silent: true)]
     public function rootNode()
     {
         return $this->belongsTo(CmsNode::class, 'node_id');
     }
 
-    #[Dependency(silent: true)]
     public function nodes()
     {
         return $this->rootNode->descendantsAndSelf();

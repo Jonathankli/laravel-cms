@@ -9,4 +9,5 @@ interface Resolver
 {   
     public function resolve(Publishable $model, string $method): Publishable | Collection | null;
     public function timing(Publishable $model, string $method, Publishable | Collection | null $resolved): PublishTimingEnum;
+    public function ignoreKeys(Publishable $model, string $method): Collection;
 }

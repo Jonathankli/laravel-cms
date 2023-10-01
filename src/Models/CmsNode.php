@@ -13,8 +13,10 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 class CmsNode extends Model implements Node, Publishable
 {
     use HasUuids, 
-        HasRecursiveRelationships,
         IsPublishable;
+    use HasRecursiveRelationships {
+        children as protected parentChildren;
+    }
 
     /**
      * The table associated with the model.
@@ -44,6 +46,12 @@ class CmsNode extends Model implements Node, Publishable
     public function shell()
     {
         return $this->hasOne(Shell::class, 'node_id');
+    }
+
+    #[Dependency(silent: true)]
+    public function children() 
+    {
+        return $this->parentChildren();
     }
 
 }

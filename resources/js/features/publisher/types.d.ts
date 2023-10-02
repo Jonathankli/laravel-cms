@@ -4,6 +4,8 @@ interface Publishable {
     count?: number;
     publishedCount?: number;
     pendingCount?: number;
+    deletedCount?: number;
+    draftCount?: number;
 }
 
 interface PublishableModel {

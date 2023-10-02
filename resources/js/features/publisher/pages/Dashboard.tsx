@@ -22,7 +22,7 @@ const Index = (props: DashboardProps) => {
             <Title>Publisher</Title>
             <Grid mt={"md"}>
                 {props.publishables.map((publishable) => (
-                    <Grid.Col span={4} key={publishable.type}>
+                    <Grid.Col span={6} key={publishable.type}>
                         <Publishable publishable={publishable} />
                     </Grid.Col>
                 ))}
@@ -44,6 +44,12 @@ const Publishable = (props: { publishable: Publishable }) => {
                 </Badge>
                 <Badge color="yellow" variant="light">
                     Pending: <b>{props.publishable.pendingCount}</b>
+                </Badge>
+                <Badge color="red" variant="light">
+                    Delted: <b>{props.publishable.deletedCount}</b>
+                </Badge>
+                <Badge color="gray" variant="light">
+                    Draft: <b>{props.publishable.draftCount}</b>
                 </Badge>
             </Group>
 

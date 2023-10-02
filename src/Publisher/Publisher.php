@@ -56,7 +56,8 @@ class Publisher
         $attributes = $attributes->except($publishExcludeFields);
 
         $class::usePublished()->updateOrCreate([$keyName => $key], $attributes->toArray());
-        $model->update([$publishFlag => true]);
+        $model->{$publishFlag} = true;
+        $model->save();
 
         //post publish relations
         foreach ($publishable->getRelations() as $relation) {

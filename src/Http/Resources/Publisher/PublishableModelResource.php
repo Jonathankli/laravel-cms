@@ -3,6 +3,7 @@
 namespace Jkli\Cms\Http\Resources\Publisher;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Jkli\Cms\Enums\PublishStatus;
 
 class PublishableModelResource extends JsonResource
 {
@@ -25,7 +26,7 @@ class PublishableModelResource extends JsonResource
         return [
             'id' => $this->getKey(),
             'name' => $this->getPublishableName(),
-            'published' => $this->{$this->getPublishedFlag()},
+            'published' => $this->{$this->getPublishStatusFlag()} === PublishStatus::Published,
         ];
     }
 }

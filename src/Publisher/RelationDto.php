@@ -3,6 +3,7 @@
 namespace Jkli\Cms\Publisher;
 
 use Illuminate\Support\Collection;
+use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Publisher\Dependency;
 
 class RelationDto
@@ -68,7 +69,7 @@ class RelationDto
      */
     public function hasUpdates()
     {
-        return $this->dependencies->contains("published", false);
+        return $this->dependencies->doesntContain("publish_status", PublishStatus::Published);
     }
 
 

@@ -3,8 +3,10 @@
 namespace Jkli\Cms\Http\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Resources\Publisher\DependencyResource;
@@ -12,6 +14,7 @@ use Jkli\Cms\Http\Resources\Publisher\FlattDependencyResource;
 use Jkli\Cms\Http\Resources\Publisher\FlattTreeResource;
 use Jkli\Cms\Http\Resources\Publisher\PublishableModelResource;
 use Jkli\Cms\Http\Resources\Publisher\PublishableResource;
+use Jkli\Cms\Models\DeletedPublishable;
 use Jkli\Cms\Modules\Publisher as ModulesPublisher;
 use Jkli\Cms\Publisher\Publisher;
 
@@ -28,14 +31,26 @@ class PublishController extends Controller
 
         $models = collect();
         foreach($modelClasses as $type => $model) {
-            $publishedCount = $model::usePublished()->count();
+
             $count = $model::count();
-            $notLiveCount = $model::where((new $model())->getPublishedFlag(), false)->count();
-            $deletedCount = 0; //TODO
+            $publishStatusFlag = (new $model())->getPublishStatusFlag();
+            $publishableType = (new $model())->deletedPublishable()->getMorphClass();
+
+            $status = $model::select($publishStatusFlag, DB::raw('COUNT(*) as count'))
+                ->groupBy($publishStatusFlag)
+                ->get();
+
+            $pendingCount = $status->where($publishStatusFlag, PublishStatus::Pending)->first()?->count ?? 0;
+            $publishedCount = $status->where($publishStatusFlag, PublishStatus::Published)->first()?->count ?? 0;
+            $draftCount = $status->where($publishStatusFlag, PublishStatus::Draft)->first()?->count ?? 0;
+            $deletedCount = DeletedPublishable::where('publishable_type', $publishableType)->count();
+            
             $models->push((object) [
                 'publishedCount' => $publishedCount,
                 'count' => $count,
-                'pendingCount' => $notLiveCount + $deletedCount,
+                'pendingCount' => $pendingCount,
+                'deletedCount' => $deletedCount,
+                'draftCount' => $draftCount,
                 'name' => $model::getPublishableTypeName(),
                 'type' => $type,
             ]);

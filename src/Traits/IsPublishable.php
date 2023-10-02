@@ -2,7 +2,10 @@
 
 namespace Jkli\Cms\Traits;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Facades\Cms;
+use Jkli\Cms\Models\DeletedPublishable;
 use Jkli\Cms\Observers\PublishObserver;
 use Jkli\Cms\Services\Publisher;
 
@@ -92,9 +95,27 @@ trait IsPublishable
         return [];
     }
 
-    public function getPublishedFlag(): string
+    public function getPublishStatusFlag(): string
     {
-        return "published";
+        return "publish_status";
+    }
+
+    public function deletedPublishable(): MorphMany
+    {
+        return $this->morphMany(DeletedPublishable::class, 'publishable');
+    }
+
+    /**
+     * Get the casts array.
+     *
+     * @return array
+     */
+    public function getCasts()
+    {
+        $casts = parent::getCasts();
+        return array_merge($casts, [
+            $this->getPublishStatusFlag() => PublishStatus::class
+        ]);
     }
     
 }

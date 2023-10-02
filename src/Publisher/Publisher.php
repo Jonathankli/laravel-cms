@@ -2,10 +2,9 @@
 
 namespace Jkli\Cms\Publisher;
 
-use Exception;
 use Illuminate\Support\Collection;
 use Jkli\Cms\Contracts\Publishable;
-use Jkli\Cms\Models\Page;
+use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Publisher\Dependency;
 use ReflectionClass;
 
@@ -42,7 +41,7 @@ class Publisher
         $model = $publishable->getModel();
         $key = $model->getKey();
         $keyName = $model->getKeyName();
-        $publishFlag = $model->getPublishedFlag();
+        $publishFlag = $model->getPublishStatusFlag();
         $publishExcludeFields = collect($model->getExcludePublishAttributes());
         $publishExcludeFields->add($publishFlag);
         $publishExcludeFields = $publishExcludeFields->merge($ignoreKeys);
@@ -56,7 +55,7 @@ class Publisher
         $attributes = $attributes->except($publishExcludeFields);
 
         $class::usePublished()->updateOrCreate([$keyName => $key], $attributes->toArray());
-        $model->{$publishFlag} = true;
+        $model->{$publishFlag} = PublishStatus::Published;
         $model->save();
 
         //post publish relations

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Jkli\Cms\Enums\PublishStatus;
 
 return new class extends Migration
 {
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->string('path');
             $table->string('full_path');
             $table->string('name');
-            
+
             //SEO
             $table->string('title');
             $table->string('description')->nullable();
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('use_parent_path')->default(true);
 
-            $table->boolean('published')->default(false);
+            $table->enum('publish_status', collect(PublishStatus::cases())->pluck('value')->toArray())->default(PublishStatus::Draft->value);
 
             $table->foreignUuid('shell_id')
                 ->nullable()

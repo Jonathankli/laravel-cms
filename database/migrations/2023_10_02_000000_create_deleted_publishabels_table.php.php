@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Models\CmsNode;
 
 return new class extends Migration
@@ -15,17 +14,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shells', function (Blueprint $table) {
+        Schema::create('deleted_publishables', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
 
-            $table->enum('publish_status', collect(PublishStatus::cases())->pluck('value')->toArray())->default(PublishStatus::Draft->value);
-
-            $table->foreignUuid('node_id')
-                ->references('id')
-                ->on('nodes')
-                ->cascadeOnDelete();
-
+            $table->uuidMorphs('publishable');
+            
             $table->timestamps();
         });
     }
@@ -37,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shells');
+        Schema::dropIfExists('deleted_publishables');
     }
 };

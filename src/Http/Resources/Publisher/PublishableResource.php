@@ -26,6 +26,8 @@ class PublishableResource extends JsonResource
             'publishedCount' => isset($this->publishedCount) ? $this->publishedCount : null,
             'count' => isset($this->count) ? $this->count : null,
             'pendingCount' => isset($this->pendingCount) ? $this->pendingCount : null,
+            'deletedCount' => isset($this->deletedCount) ? $this->deletedCount : null,
+            'draftCount' => isset($this->draftCount) ? $this->draftCount : null,
             'name' => $this->name,
             'type' => $this->type,
         ];

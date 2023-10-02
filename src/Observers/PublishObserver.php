@@ -3,6 +3,7 @@
 namespace Jkli\Cms\Observers;
 
 use Jkli\Cms\Contracts\Publishable;
+use Jkli\Cms\Enums\PublishStatus;
 
 class PublishObserver
 {
@@ -15,10 +16,19 @@ class PublishObserver
      */
     public function updating($model)
     {
-        if(!$model->isDirty($model->getPublishedFlag())){
-            $model->{$model->getPublishedFlag()} = false;
+        if(!$model->isDirty($model->getPublishStatusFlag())){
+            $model->{$model->getPublishStatusFlag()} = PublishStatus::Pending;
         }
+    }
 
+    /**
+     * Handle the "deleted" event.
+     */
+    public function deleted($model): void
+    {
+        if ($model instanceof Publishable) {
+            $model->deletedPublishable()->create();
+        }
     }
 
 }

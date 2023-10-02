@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Jkli\Cms\Enums\PublishStatus;
 
 return new class extends Migration
 {
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->integer('outlet')->default(0);
             $table->json('settings')->nullable();
 
-            $table->boolean('published')->default(false);
+            $table->enum('publish_status', collect(PublishStatus::cases())->pluck('value')->toArray())->default(PublishStatus::Draft->value);
 
             $table->timestamps();
         });

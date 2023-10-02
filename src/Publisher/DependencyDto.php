@@ -4,6 +4,7 @@ namespace Jkli\Cms\Publisher;
 
 use Illuminate\Support\Collection;
 use Jkli\Cms\Contracts\Publishable;
+use Jkli\Cms\Enums\PublishStatus;
 
 class DependencyDto
 {
@@ -63,7 +64,7 @@ class DependencyDto
      */
     public function isPublished()
     {
-        return $this->model->{$this->model->getPublishedFlag()};
+        return $this->model->{$this->model->getPublishStatusFlag()} === PublishStatus::Published;
     }
 
     /**

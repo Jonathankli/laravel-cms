@@ -16,18 +16,35 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shells', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
 
-            $table->enum('publish_status', collect(PublishStatus::cases())->pluck('value')->toArray())->default(PublishStatus::Draft->value);
+            $this->sharedColums($table);
+
+            $table->publishStatus();
 
             $table->foreignUuid('node_id')
                 ->references('id')
                 ->on('nodes')
                 ->cascadeOnDelete();
-
-            $table->timestamps();
         });
+
+        Schema::create('published_shells', function (Blueprint $table) {
+            
+            $this->sharedColums($table);
+
+            $table->foreignUuid('node_id')
+                ->references('id')
+                ->on('published_nodes')
+                ->cascadeOnDelete();
+
+        });
+    }
+
+    public function sharedColums(Blueprint $table)
+    {
+        $table->uuid('id')->primary();
+        $table->string('name');
+
+        $table->timestamps();
     }
 
     /**
@@ -38,5 +55,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('shells');
+        Schema::dropIfExists('published_shells');
     }
 };

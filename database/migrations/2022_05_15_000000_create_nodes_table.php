@@ -15,16 +15,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('nodes', function (Blueprint $table) {
-            $table->uuid('id')->primary();
 
-            $table->string('type');
-            $table->integer('index')->nullable();
-            $table->integer('outlet')->default(0);
-            $table->json('settings')->nullable();
+            $this->sharedColums($table);
 
-            $table->enum('publish_status', collect(PublishStatus::cases())->pluck('value')->toArray())->default(PublishStatus::Draft->value);
-
-            $table->timestamps();
+            $table->publishStatus();
         });
         Schema::table('nodes', function (Blueprint $table) {
             $table->foreignUuid('parent_id')
@@ -33,6 +27,29 @@ return new class extends Migration
                 ->on('nodes')
                 ->onDelete('cascade');
         });
+
+        Schema::create('published_nodes', function (Blueprint $table) {
+            $this->sharedColums($table);
+        });
+        Schema::table('published_nodes', function (Blueprint $table) {
+            $table->foreignUuid('parent_id')
+                ->nullable()
+                ->references('id')
+                ->on('published_nodes')
+                ->cascadeOnDelete();
+        });
+    }
+
+    public function sharedColums(Blueprint $table)
+    {
+        $table->uuid('id')->primary();
+
+        $table->string('type');
+        $table->integer('index')->nullable();
+        $table->integer('outlet')->default(0);
+        $table->json('settings')->nullable();
+
+        $table->timestamps();
     }
 
     /**
@@ -43,5 +60,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('nodes');
+        Schema::dropIfExists('published_nodes');
     }
 };

@@ -2,11 +2,13 @@
 
 namespace Jkli\Cms;
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\ServiceProvider;
 use Jkli\Cms\Console\PluginMapCommand;
 use Jkli\Cms\Contracts\Node;
+use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Facades\Cms as CmsFacade;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequestsLive;
@@ -46,6 +48,8 @@ class CmsServiceProvider extends ServiceProvider
         ]);
 
         $this->registerObservers();
+
+        $this->registerMacros();
         
         if ($this->app->runningInConsole()) {
 
@@ -58,6 +62,13 @@ class CmsServiceProvider extends ServiceProvider
             ]);
         }
         
+    }
+
+    public function registerMacros()
+    {
+        Blueprint::macro('publishStatus', function (string $name = 'publish_status') {
+            $this->enum($name, collect(PublishStatus::cases())->pluck('value')->toArray())->default(PublishStatus::Draft->value);
+        });
     }
 
     public function registerModuleRoutes()

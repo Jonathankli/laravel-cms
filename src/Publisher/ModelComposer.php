@@ -21,7 +21,7 @@ class ModelComposer implements Publishable
         $this->models = $models ?? collect();
     }
 
-    #[Dependency]
+    #[Dependency(resolver: ModelComposerResolver::class)]
     public function models(): Collection
     {
         return $this->models;

@@ -48,7 +48,7 @@ class CmsNode extends Model implements Node, Publishable
         return $this->hasOne(Shell::class, 'node_id');
     }
 
-    #[Dependency(silent: true)]
+    // #[Dependency(silent: true)]
     public function children() 
     {
         return $this->parentChildren();

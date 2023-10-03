@@ -39,6 +39,11 @@ class Publisher
 
         //publish model
         $model = $publishable->getModel();
+
+        if($model instanceof ModelComposer) {
+            return;
+        }
+
         $key = $model->getKey();
         $keyName = $model->getKeyName();
         $publishFlag = $model->getPublishStatusFlag();
@@ -47,7 +52,7 @@ class Publisher
         $publishExcludeFields = $publishExcludeFields->merge($ignoreKeys);
         $class = get_class($model);
 
-        if($model->isPublished()) {
+        if($model->usesPublishedTable()) {
             throw new \Exception("Can not publish already published model");
         }
 
@@ -88,7 +93,7 @@ class Publisher
         return collect();
     }
     
-    public function getDependencyTree(Publishable $publishable): DependencyDto
+    public function getDependencyTree(Publishable | ModelComposer $publishable): DependencyDto
     {
         $depDto = new DependencyDto($publishable);
 
@@ -142,16 +147,17 @@ class Publisher
         $map = collect([]);
         $model = $dto->getModel();
         $className = get_class($model);
-        $map->put($className, [
-            ...($map->get($className, [])),
-            $dto
-        ]);
+        if(!$model instanceof ModelComposer) {
+            $map->put($className, [$dto]);
+        }
         foreach ($dto->getRelations() as $relation) {
             foreach($relation->getDependencies()  as $dep) {
                 $map = $map->mergeRecursive($this->flattenTree($dep));
             }
         }
-        return $map;
+        return $map->map(function ($array) {
+            return collect($array)->unique('modelKey')->all();
+        });;
     }
  
 }

@@ -37,12 +37,13 @@ interface ShowProps {
     rootResource: Model;
     flatTree: FaltResources;
     model: PublishableModel;
+    publishIds?: string[];
 }
 
 type OptionalRefType = { [key: string]: string[] | boolean };
 
 const Show = (props: ShowProps) => {
-    const { rootResource, flatTree, model, publishable } = props;
+    const { rootResource, flatTree, model, publishable, publishIds } = props;
 
     const optionalRef = React.useRef<OptionalRefType>({});
     const router = useRouter();
@@ -60,6 +61,7 @@ const Show = (props: ShowProps) => {
                 },
                 []
             ),
+            ids: publishIds,
         });
     };
 

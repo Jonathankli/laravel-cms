@@ -8,7 +8,7 @@ use Jkli\Cms\Enums\PublishStatus;
 interface Publishable
 {   
     public function publish();
-    public function isPublished();
+    public function usesPublishedTable();
     public static function usePublished();
     public function useEdit();
     public function useLive();

@@ -17,11 +17,14 @@ class DependencyDto
 
     protected ?RelationDto $relation = null;
 
+    public $modelKey;
+
     public function __construct(
         protected $model,
     ) {
         $this->relations = collect();
         $this->ignoreKeys = collect();
+        $this->modelKey = $this->model->getKey();
     }
 
 

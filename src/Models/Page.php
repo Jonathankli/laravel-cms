@@ -13,7 +13,10 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\Traits\HasAdjacencyList;
 class Page extends Model implements Publishable
 {
 
-    use IsPublishable, HasUuids, HasAdjacencyList, HasFilter;
+    use IsPublishable, HasUuids, HasFilter;
+    use HasAdjacencyList {
+        parent as parentParent;
+    }
 
     /**
      * The model's attributes.
@@ -59,5 +62,11 @@ class Page extends Model implements Publishable
     public function shell()
     {
         return $this->belongsTo(Shell::class);
+    }
+
+    #[Dependency(optional: true)]
+    public function parent()
+    {
+        return $this->parentParent();
     }
 }

@@ -16,6 +16,7 @@ use Jkli\Cms\Http\Resources\Publisher\PublishableModelResource;
 use Jkli\Cms\Http\Resources\Publisher\PublishableResource;
 use Jkli\Cms\Models\DeletedPublishable;
 use Jkli\Cms\Modules\Publisher as ModulesPublisher;
+use Jkli\Cms\Publisher\ModelComposer;
 use Jkli\Cms\Publisher\Publisher;
 
 class PublishController extends Controller
@@ -106,6 +107,43 @@ class PublishController extends Controller
         }
         $model = $modelClass::findOrFail($id);
         $this->publisher->publish($model, $request->input('optionals', []));
+        return Redirect::route('publisher.index');
+    }
+
+    public function showMultiple(string $type, Request $request)
+    {
+        $modelClass = Cms::getPublishable()->get($type);
+        if(!$modelClass) {
+            abort(404, 'Publishable not found!');
+        }
+        $ids = $request->input('ids', []);
+        $models = $modelClass::findMany($ids);
+        $publishable = new ModelComposer($models);
+        $dependency = $this->publisher->getDependencyTree($publishable);
+        $falttened = $this->publisher->flattenTree($dependency);
+
+        return Inertia::render(ModulesPublisher::view('Show'), [
+            'publishable' => fn() => PublishableResource::make((object) [
+                'name' => $modelClass::getPublishableTypeName(),
+                'type' => $type,
+            ]),
+            'rootResource' => fn() => FlattDependencyResource::make($dependency),
+            'flatTree' => fn() => FlattTreeResource::collection($falttened)->all(),
+            'model' => fn() => PublishableModelResource::make($publishable),
+            'publishIds' => $ids,
+        ]);
+    }
+
+    public function publishMultiple(string $type, Request $request)
+    {
+        $modelClass = Cms::getPublishable()->get($type);
+        if(!$modelClass) {
+            abort(404, 'Publishable not found!');
+        }
+        $ids = $request->input('ids', []);
+        $models = $modelClass::findMany($ids);
+        $publishable = new ModelComposer($models);
+        $this->publisher->publish($publishable, $request->input('optionals', []));
         return Redirect::route('publisher.index');
     }
 

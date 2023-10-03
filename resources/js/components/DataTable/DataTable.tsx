@@ -42,6 +42,8 @@ interface TableSelectionProps<T> {
     currentPage: number;
     totalPages: number;
     createLink?: string;
+    setSelection?: React.Dispatch<React.SetStateAction<string[]>>
+    selection?: string[];
 }
 
 function DataTable<T>(props: TableSelectionProps<T>) {
@@ -51,11 +53,13 @@ function DataTable<T>(props: TableSelectionProps<T>) {
         actions = [],
         columns,
         totalPages,
+        selection = [],
+        setSelection,
     } = props;
 
     const { classes, cx } = useStyles();
     const actionIcons = useActions(actions);
-    const [selection, setSelection] = useState<any[]>([]);
+
     const {
         updateSorting,
         submitSearch,
@@ -68,13 +72,13 @@ function DataTable<T>(props: TableSelectionProps<T>) {
     } = useFilter();
 
     const toggleRow = (id: string) =>
-        setSelection((current) =>
+        setSelection && setSelection((current) =>
             current.includes(id)
                 ? current.filter((item) => item !== id)
                 : [...current, id]
         );
     const toggleAll = () =>
-        setSelection((current) =>
+        setSelection && setSelection((current) =>
             current.length === data.length
                 ? []
                 : data.map((item) => item[pirmaryKey])
@@ -90,13 +94,15 @@ function DataTable<T>(props: TableSelectionProps<T>) {
                 key={item[pirmaryKey]}
                 className={cx({ [classes.rowSelected]: selected })}
             >
-                <td>
-                    <Checkbox
-                        checked={selection.includes(item[pirmaryKey])}
-                        onChange={() => toggleRow(item[pirmaryKey])}
-                        transitionDuration={0}
-                    />
-                </td>
+                {setSelection && (
+                    <td>
+                        <Checkbox
+                            checked={selection.includes(item[pirmaryKey])}
+                            onChange={() => toggleRow(item[pirmaryKey])}
+                            transitionDuration={0}
+                        />
+                    </td>
+                )}
                 {fields}
                 <td>
                     <Group position="right" spacing="xs">
@@ -136,17 +142,19 @@ function DataTable<T>(props: TableSelectionProps<T>) {
                 <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
                     <thead>
                         <tr>
-                            <th style={{ width: 40 }}>
-                                <Checkbox
-                                    onChange={toggleAll}
-                                    checked={selection.length === data.length}
-                                    indeterminate={
-                                        selection.length > 0 &&
-                                        selection.length !== data.length
-                                    }
-                                    transitionDuration={0}
-                                />
-                            </th>
+                            {setSelection && (
+                                <th style={{ width: 40 }}>
+                                    <Checkbox
+                                        onChange={toggleAll}
+                                        checked={selection.length === data.length}
+                                        indeterminate={
+                                            selection.length > 0 &&
+                                            selection.length !== data.length
+                                        }
+                                        transitionDuration={0}
+                                    />
+                                </th>
+                            )}
                             {headder}
                             <th></th>
                         </tr>

@@ -11,7 +11,7 @@ use Jkli\Cms\Services\Publisher;
 
 trait IsPublishable
 {   
-    private bool $isPublished = false;
+    private bool $usesPublishedTable = false;
 
     /**
      * Boot the trait.
@@ -42,7 +42,7 @@ trait IsPublishable
      */
     protected function initializeIsPublishable()
     {
-        $this->isPublished = Cms::isLive();
+        $this->usesPublishedTable = Cms::isLive();
     }
 
     public function publish() {
@@ -56,7 +56,7 @@ trait IsPublishable
      */
     public function getTable()
     {
-        if($this->isPublished())
+        if($this->usesPublishedTable())
             return $this->getPublishedTable(parent::getTable());
         return parent::getTable();
     }
@@ -66,9 +66,9 @@ trait IsPublishable
         return "published_" . $baseTable;
     }
 
-    public function isPublished()
+    public function usesPublishedTable()
     {
-        return $this->isPublished;
+        return $this->usesPublishedTable;
     }
 
     public static function usePublished(): self
@@ -80,12 +80,12 @@ trait IsPublishable
 
     public function useEdit()
     {
-        $this->isPublished = false;
+        $this->usesPublishedTable = false;
     }
 
     public function useLive()
     {
-        $this->isPublished = true;
+        $this->usesPublishedTable = true;
     }
 
     public function getExcludePublishAttributes(): array
@@ -103,6 +103,11 @@ trait IsPublishable
     public function deletedPublishable(): MorphMany
     {
         return $this->morphMany(DeletedPublishable::class, 'publishable');
+    }
+
+    public function getPublishStatus(): PublishStatus
+    {
+        return $this->{$this->getPublishStatusFlag()};
     }
 
     /**

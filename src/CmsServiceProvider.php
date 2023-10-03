@@ -15,6 +15,7 @@ use Jkli\Cms\Http\Middleware\HandleInertiaRequestsLive;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Shell;
+use Jkli\Cms\Observers\CmsNodeObserver;
 use Jkli\Cms\Observers\PageObserver;
 use Jkli\Cms\Services\ResolveNodeService;
 
@@ -81,6 +82,7 @@ class CmsServiceProvider extends ServiceProvider
     public function registerObservers()
     {
         Page::observe(PageObserver::class);
+        CmsNode::observe(CmsNodeObserver::class);
     }
 
     /**

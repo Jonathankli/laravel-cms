@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Jkli\Cms\Http\Resources\NodeResource;
 use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Http\Resources\ShellResource;
+use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Page;
 
 class EditorPageProp extends Prop
@@ -53,9 +54,8 @@ class EditorPageProp extends Prop
 
     public function getNodes()
     {
-        $pageNodes = $this->getPage()->nodes;
-        $shellNodes = $this->getShell()?->nodes ?? collect();
-        $nodes = $shellNodes->concat($pageNodes);
+        $ids = collect([$this->getPage()->node_id, $this->getShell()?->node_id])->filter();
+        $nodes = CmsNode::treeOf(fn($query) => $query->whereIn('id', $ids))->get();
         return $nodes;
     }
 }

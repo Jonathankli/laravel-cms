@@ -13,5 +13,6 @@ class Dependency
         public bool $optional = false,
         public $resolver = EloquentResolver::class,
         public ?PublishTimingEnum $timing = null,
+        public ?int $reqursiveStop = null,
     ) { }
 }

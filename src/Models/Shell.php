@@ -25,14 +25,15 @@ class Shell extends Model implements Publishable
         return $this->hasMany(Page::class);
     }
 
-    #[Dependency(silent: true)]
     public function rootNode()
     {
         return $this->belongsTo(CmsNode::class, 'node_id');
     }
 
+    #[Dependency(silent: true )]
     public function nodes()
     {
-        return $this->rootNode->descendantsAndSelf();
+        return CmsNode::ancestorsAndSelfFrom($this->node_id);
     }
+
 }

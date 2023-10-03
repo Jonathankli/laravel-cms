@@ -55,7 +55,7 @@ class Page extends Model implements Publishable
 
     public function nodes()
     {
-        return $this->rootNode->descendantsAndSelf();
+        return CmsNode::ancestorsAndSelfFrom($this->node_id);
     }
 
     #[Dependency(optional: true)]

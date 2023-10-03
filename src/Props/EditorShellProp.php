@@ -41,7 +41,7 @@ class EditorShellProp extends Prop
 
     public function getNodes()
     {
-        $shellNodes = $this->getShell()->nodes;
+        $shellNodes = $this->getShell()->nodes()->get();
         return $shellNodes;
     }
 }

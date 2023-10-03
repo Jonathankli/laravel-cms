@@ -54,4 +54,9 @@ class CmsNode extends Model implements Node, Publishable
         return $this->parentChildren();
     }
 
+    public static function ancestorsAndSelfFrom($nodeId) 
+    {
+        return self::treeOf(fn($query) => $query->where('id', $nodeId))->breadthFirst();
+    }
+
 }

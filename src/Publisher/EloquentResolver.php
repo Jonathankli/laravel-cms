@@ -19,7 +19,7 @@ class EloquentResolver implements Resolver
 {   
     public function resolve(Publishable $model, string $method): Publishable | Collection | null
     {
-        return $model->$method;
+        return $model->$method()->get();
     }
 
     public function ignoreKeys(Publishable $model, string $method): Collection

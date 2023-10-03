@@ -8,7 +8,7 @@ import {
     Text,
     Title,
 } from "@mantine/core";
-import { IconRefresh, IconRocket } from "@tabler/icons";
+import { IconRocket } from "@tabler/icons";
 import React from "react";
 import Link from "../../../components/Link/Link";
 
@@ -67,12 +67,11 @@ const Publishable = (props: { publishable: Publishable }) => {
                 </Grid.Col>
                 <Grid.Col span={2}>
                     <Button
-                        href={`/${props.publishable.type}`}
-                        method={"post"}
-                        data={{ optionals: "*" }}
+                        href={`/${props.publishable.type}/multiple`}
                         variant="outline"
                         radius="md"
                         component={Link}
+                        fullWidth
                     >
                         <IconRocket size={18} />
                     </Button>

@@ -117,7 +117,9 @@ class PublishController extends Controller
             abort(404, 'Publishable not found!');
         }
         $ids = $request->input('ids', []);
-        $models = $modelClass::findMany($ids);
+        $models = count($ids) 
+            ? $modelClass::findMany($ids)
+            : $modelClass::all();
         $publishable = new ModelComposer($models);
         $dependency = $this->publisher->getDependencyTree($publishable);
         $falttened = $this->publisher->flattenTree($dependency);
@@ -141,7 +143,9 @@ class PublishController extends Controller
             abort(404, 'Publishable not found!');
         }
         $ids = $request->input('ids', []);
-        $models = $modelClass::findMany($ids);
+        $models = count($ids) 
+            ? $modelClass::findMany($ids)
+            : $modelClass::all();
         $publishable = new ModelComposer($models);
         $this->publisher->publish($publishable, $request->input('optionals', []));
         return Redirect::route('publisher.index');

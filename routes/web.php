@@ -1,17 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Jkli\Cms\Http\Controller\DashboardController;
 use Jkli\Cms\Http\Controller\EditorController;
+use Jkli\Cms\Http\Controller\GetStartedController;
 use Jkli\Cms\Http\Controller\NodeController;
-use Jkli\Cms\Http\Controller\PageController;
 use Jkli\Cms\Http\Controller\LivePageController;
-use Jkli\Cms\Http\Controller\PageShellController;
-use Jkli\Cms\Http\Controller\PublishPageController;
-use Jkli\Cms\Http\Controller\PublishShellController;
-use Jkli\Cms\Http\Controller\ShellController;
-use Jkli\Cms\Http\Controller\TestController;
-use Jkli\Cms\Http\Controller\UserController;
 
 Route::middleware(['cms'])->group(function () {
 
@@ -20,6 +13,9 @@ Route::middleware(['cms'])->group(function () {
 
         Route::resource('/nodes', NodeController::class)
             ->only(['store', 'update', 'destroy']);
+
+        Route::post('/get-started', [GetStartedController::class, "store"])
+            ->name('get-started.store');
 
     });
 

@@ -2,17 +2,13 @@
 
 namespace Jkli\Cms\Http\Controller;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inertia\Inertia;
-use Jkli\Cms\Actions\CreatePageAction;
 use Jkli\Cms\Http\Controller\Controller;
 use Jkli\Cms\Http\Requests\EditPageRequest;
 use Jkli\Cms\Http\Requests\ShowPageRequest;
-use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Modules\Editor;
-use Jkli\Cms\Modules\Pages;
 use Jkli\Cms\Props\AvailablePathProp;
 use Jkli\Cms\Props\CmsEditModeProp;
 use Jkli\Cms\Props\CmsObjectSettingsProp;
@@ -51,17 +47,23 @@ class EditorController extends Controller
      */
     public function edit(ShowPageRequest $request)
     {
-        return Inertia::render(Editor::view("Edit"), PropsPipelineService::run([
-            EditorPageProp::class,
-            EditNodeProp::class,
-            AvailablePathProp::class,
-            CmsObjectSettingsProp::class,
-            GroupedCmsObjectsProp::class,
-            ObjectSettingsProp::class,
-            PagesProp::class,
-            CmsEditModeProp::class,
-            ShellsProp::class,
-        ]));
+        try {
+            return Inertia::render(Editor::view("Edit"), PropsPipelineService::run([
+                EditorPageProp::class,
+                EditNodeProp::class,
+                AvailablePathProp::class,
+                CmsObjectSettingsProp::class,
+                GroupedCmsObjectsProp::class,
+                ObjectSettingsProp::class,
+                PagesProp::class,
+                CmsEditModeProp::class,
+                ShellsProp::class,
+            ]));
+        } catch (ModelNotFoundException $e) {
+            if($e->getModel() == Page::class && Page::count() === 0) {
+                return Inertia::render(Editor::view("Intro"));
+            }
+        }
     }
 
 }

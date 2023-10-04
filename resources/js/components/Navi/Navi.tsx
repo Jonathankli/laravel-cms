@@ -47,7 +47,7 @@ export default function Navi() {
     const mainLinks = Object.entries(modules).map(([type, module]) => {
         const config = moduleConfigs[type];
         if(!config) throw new Error("Module config not found!");
-        return { icon: config.icon, label: module.name, link: module.full_slug };
+        return { icon: config.icon, label: module.name, link: module.full_slug, fullRelaod: module.type === "live_server" };
     });
     const bottomLinks = bottomLinksMockdata;
 
@@ -68,6 +68,7 @@ export default function Navi() {
                     <div className={classes.mainLinks}>
                         {mainLinks.map((link) => (
                             <IconLink
+                                fullRelaod={link.fullRelaod}
                                 link={link}
                                 open={open}
                                 setActiveLink={setActiveLink}
@@ -101,6 +102,7 @@ export default function Navi() {
                             <div className={classes.mainLinks}>
                                 {mainLinks.map((link) => (
                                     <NaviLink
+                                        fullRelaod={link.fullRelaod}
                                         link={link}
                                         setActiveLink={setActiveLink}
                                         activeLink={activeLink}
@@ -126,13 +128,15 @@ export default function Navi() {
     );
 }
 
-function NaviLink({ setActiveLink, activeLink, link }) {
+function NaviLink({ setActiveLink, activeLink, link, fullRelaod = false }) {
     const { classes, cx } = useStyles();
+    const comp: any = fullRelaod ? "a" : Link;
     return (
-        <Link
+        <UnstyledButton
             className={cx(classes.link, {
                 [classes.linkActive]: activeLink === link.label,
             })}
+            component={comp}
             href={link.link}
             onClick={(event) => {
                 if(!link.onClick) return;
@@ -142,19 +146,20 @@ function NaviLink({ setActiveLink, activeLink, link }) {
             key={link.label}
         >
             {link.label}
-        </Link>
+        </UnstyledButton>
     );
 }
 
-function IconLink({ link, open, setActiveLink, activeLink }) {
+function IconLink({ link, open, setActiveLink, activeLink, fullRelaod = false }) {
     const { classes, cx } = useStyles();
+    const comp: any = fullRelaod ? "a" : Link;
     const button = (
         <UnstyledButton
             className={cx(classes.mainLink, {
                 [classes.mainLinkActive]: activeLink === link.label,
                 [classes.mainLinkOpenActive]: activeLink === link.label && open,
             })}
-            component={Link}
+            component={comp}
             href={link.link}
             onClick={(event) => {
                 if(!link.onClick) return;

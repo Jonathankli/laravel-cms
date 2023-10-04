@@ -60,10 +60,11 @@ class EditorController extends Controller
                 ShellsProp::class,
             ]));
         } catch (ModelNotFoundException $e) {
-            if($e->getModel() == Page::class && Page::count() === 0) {
+            if($e->getModel() == Page::class && !Page::count()) {
                 return Inertia::render(Editor::view("Intro"));
             }
         }
+        return abort(404);
     }
 
 }

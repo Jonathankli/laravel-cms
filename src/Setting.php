@@ -3,6 +3,7 @@
 namespace Jkli\Cms;
 
 use Illuminate\Support\Collection;
+use Jkli\Cms\Models\CmsNode;
 
 abstract class Setting
 {
@@ -127,6 +128,16 @@ abstract class Setting
     public function getMetas(): Collection
     {
         return $this->metas;
+    }
+
+    /**
+     * Get the value from the node
+     * 
+     * @return mixed $name 
+     */
+    public function getValue(CmsNode $node): mixed
+    {
+        return data_get($node->settings, $this->getName(), $this->getDefault());
     }
 
     /**

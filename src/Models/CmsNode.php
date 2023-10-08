@@ -4,8 +4,10 @@ namespace Jkli\Cms\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Jkli\Cms\CmsObject;
 use Jkli\Cms\Contracts\Node;
 use Jkli\Cms\Contracts\Publishable;
+use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Publisher\Dependency;
 use Jkli\Cms\Traits\IsPublishable;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
@@ -48,10 +50,18 @@ class CmsNode extends Model implements Node, Publishable
         return $this->hasOne(Shell::class, 'node_id');
     }
 
-    // #[Dependency(silent: true)]
+    #[Dependency(silent: true)]
     public function children() 
     {
         return $this->parentChildren();
+    }
+
+    public function getObjectInstance(): ?CmsObject
+    {
+        $objects = Cms::getCmsObjects();
+        $object = $objects->get($this->type);
+        $object = $object ? new $object($this) : null;
+        return $object;
     }
 
     public static function ancestorsAndSelfFrom($nodeId) 

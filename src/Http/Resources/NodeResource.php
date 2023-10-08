@@ -24,9 +24,7 @@ class NodeResource extends JsonResource
      */
     public function toArray($request)
     {
-        $objects = Cms::getCmsObjects();
-        $object = $objects->get($this->type);
-        $object = $object ? new $object($this->resource) : null;
+        $object = $this->resource->getObjectInstance();
 
         return [
             'id' => $this->id,

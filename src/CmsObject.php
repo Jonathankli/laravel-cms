@@ -2,6 +2,7 @@
 
 namespace Jkli\Cms;
 
+use Jkli\Cms\Contracts\HasModels;
 use Jkli\Cms\Models\CmsNode;
 
 abstract class CmsObject
@@ -59,11 +60,7 @@ abstract class CmsObject
     public function settingData(): array
     {
         return collect($this->settings())->mapWithKeys(function($setting) {
-            $name = $setting->getName();
-            if(isset($this->node->settings[$name])) {
-                return [$name => $this->node->settings[$name]];
-            }
-            return [$name => $setting->getDefault()];
+            return [$setting->getName() => $setting->getValue($this->getNode())];
         })->toArray();
     }
 

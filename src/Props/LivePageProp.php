@@ -10,6 +10,7 @@ use Jkli\Cms\Http\Resources\PageResource;
 use Jkli\Cms\Http\Resources\ShellResource;
 use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Models\Page;
+use Jkli\Cms\Services\HasModelService;
 
 class LivePageProp extends Prop
 {
@@ -56,6 +57,7 @@ class LivePageProp extends Prop
     {
         $ids = collect([$this->getPage()->node_id, $this->getShell()?->node_id])->filter();
         $nodes = CmsNode::treeOf(fn($query) => $query->whereIn('id', $ids))->get();
+        HasModelService::resolveModels($nodes);
         return $nodes;
     }
 }

@@ -10,6 +10,7 @@ use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Http\Resources\CmsObject\CmsObjectResource;
 use Jkli\Cms\Http\Resources\NodeResource;
 use Jkli\Cms\Models\CmsNode;
+use Jkli\Cms\Services\HasModelService;
 
 class EditNodeProp extends Prop
 {
@@ -36,12 +37,13 @@ class EditNodeProp extends Prop
 
     public function getEditNode()
     {
-        $settings = request()->header('X-CMS-CmsNode-Settings');
+        $settings = request()->header('X-CMS-Cms-Node-Settings');
         $settings = json_decode($settings, true);
         $node = $this->getNode();
         if(!$settings) {
             $node->settings = $settings;
         }
+        HasModelService::resolveModels(collect([$node]));
         return $node;
     }
 

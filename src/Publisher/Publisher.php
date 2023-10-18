@@ -3,6 +3,7 @@
 namespace Jkli\Cms\Publisher;
 
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Jkli\Cms\Contracts\Publishable;
 use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Publisher\Dependency;
@@ -10,9 +11,21 @@ use ReflectionClass;
 
 class Publisher
 {
+    protected array $updateFlag = [];
+    protected array $deleteCms = [];
+    protected array $deletePublished = [];
+    protected bool $firstCall = true;
 
-    public function publish(Publishable | DependencyDto $publishable, array | Collection $optionals = [], ?RelationDto $parentRelation = null)
+    
+
+    public function publish(Publishable | DependencyDto $publishable, array | Collection $optionals = [], ?RelationDto $parentRelation = null, $depth = 1)
     {
+        $firstCall = false;
+        if($this->firstCall) {
+            $this->firstCall = false;
+            $firstCall = true;
+        }
+
         if(is_array($optionals))
             $optionals = collect($optionals);
         
@@ -41,6 +54,8 @@ class Publisher
         $model = $publishable->getModel();
 
         if($model instanceof ModelComposer) {
+            $this->deleteModels();
+            $this->updateFlags();
             return;
         }
 
@@ -49,19 +64,30 @@ class Publisher
         $publishFlag = $model->getPublishStatusFlag();
         $publishExcludeFields = collect($model->getExcludePublishAttributes());
         $publishExcludeFields->add($publishFlag);
+        $publishExcludeFields->add($model->getDeletedAtColumn());
         $publishExcludeFields = $publishExcludeFields->merge($ignoreKeys);
+
         $class = get_class($model);
 
-        if($model->usesPublishedTable()) {
+        if($model->trashed()) {
+            $this->deleteCms[$class][] = $key;
+            if($model->getPublishStatus() !== PublishStatus::Draft) {
+                $this->deletePublished[$class][] = $key;
+            }
+            return;
+        }
+
+        if($model->publishedMode()) {
             throw new \Exception("Can not publish already published model");
         }
 
         $attributes = collect($model->attributesToArray());
         $attributes = $attributes->except($publishExcludeFields);
 
-        $class::usePublished()->updateOrCreate([$keyName => $key], $attributes->toArray());
-        $model->{$publishFlag} = PublishStatus::Published;
-        $model->save();
+        $class::published()
+            ->updateOrCreate([$keyName => $key], $attributes->toArray());
+
+        $this->updateFlag[$class][] = $key;
 
         //post publish relations
         foreach ($publishable->getRelations() as $relation) {
@@ -71,6 +97,36 @@ class Publisher
             $this->publishRelation($relation, $publishable, $optionals);
         }
 
+        if($firstCall) {
+            $this->deleteModels();
+            $this->updateFlags();
+            $this->firstCall = true;
+        }
+
+    }
+
+    protected function deleteModels()
+    {
+        foreach ($this->deleteCms as $class => $keys) {
+            $model = new $class;
+            $keyName = $model->getKeyName();
+            $class::whereIn($keyName, $keys)->delete();
+        }
+        foreach ($this->deletePublished as $class => $keys) {
+            $model = new $class;
+            $keyName = $model->getKeyName();
+            $class::published()->whereIn($keyName, $keys)->delete();
+        }
+    }
+
+    protected function updateFlags()
+    {
+        foreach ($this->updateFlag as $class => $keys) {
+            $model = new $class;
+            $keyName = $model->getKeyName();
+            $publishFlag = $model->getPublishStatusFlag();
+            $class::whereIn($keyName, $keys)->update([$publishFlag => PublishStatus::Published]);
+        }
     }
 
     private function publishRelation(RelationDto $relation, DependencyDto $parent, Collection $optionals): Collection
@@ -87,7 +143,7 @@ class Publisher
 
         //publish dependencies
         foreach ($relation->getDependencies() as $dependeny) {
-            $this->publish($dependeny, $optionals, $relation);
+            $this->publish($dependeny, $optionals, $relation, 2);
         }
 
         return collect();

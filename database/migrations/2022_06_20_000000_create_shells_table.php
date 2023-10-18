@@ -19,6 +19,7 @@ return new class extends Migration
 
             $this->sharedColums($table);
 
+            $table->softDeletes();
             $table->publishStatus();
 
             $table->foreignUuid('node_id')

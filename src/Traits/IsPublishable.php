@@ -2,16 +2,18 @@
 
 namespace Jkli\Cms\Traits;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Facades\Cms;
-use Jkli\Cms\Models\DeletedPublishable;
 use Jkli\Cms\Observers\PublishObserver;
 use Jkli\Cms\Services\Publisher;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 trait IsPublishable
 {   
-    private bool $usesPublishedTable = false;
+    use SoftDeletes;
+
+    private bool $publishedMode = false;
 
     /**
      * Boot the trait.
@@ -22,19 +24,7 @@ trait IsPublishable
     {
         static::observe(new PublishObserver);
     }
-
-
-    public static function getPublishableTypeName()
-    {
-        return (new \ReflectionClass(new static()))->getShortName();
-    }
-
-    public function getPublishableName()
-    {
-        return $this->name;
-    }
-
-        
+            
     /**
      * Initialize the trait
      *
@@ -42,11 +32,60 @@ trait IsPublishable
      */
     protected function initializeIsPublishable()
     {
-        $this->usesPublishedTable = Cms::isLive();
+        Cms::isLive()
+            ? $this->bootPublished()
+            : $this->bootDraft();
     }
 
-    public function publish() {
+    public function publish(): void
+    {
         app()->make(Publisher::class)->publish($this);
+    }
+
+    /**
+     * Boots into the publish mode.
+     *
+     * @return void
+     */
+    public function bootPublished(): void
+    {
+        $this->publishedMode = true;
+        if(static::hasGlobalScope(SoftDeletingScope::class)) {
+            unset(static::$globalScopes[static::class][SoftDeletingScope::class]);
+        }
+    }
+
+    /**
+     * Boots into the deaft mode.
+     *
+     * @return void
+     */
+    public function bootDraft(): void
+    {
+        $this->publishedMode = false;
+        if(!$this->hasGlobalScope(SoftDeletingScope::class)) {
+            static::addGlobalScope(new SoftDeletingScope);
+        }
+    }
+
+    public function publishedMode(): bool
+    {
+        return $this->publishedMode;
+    }
+
+    public function getPublishableName(): string
+    {
+        return $this->name ?? $this->getKey();
+    }
+
+    public static function getPublishableTypeName():string
+    {
+        return (new \ReflectionClass(new static()))->getShortName();
+    }
+
+    public function getPublishedTable(string $baseTable): string
+    {
+        return "published_" . $baseTable;
     }
 
     /**
@@ -56,36 +95,23 @@ trait IsPublishable
      */
     public function getTable()
     {
-        if($this->usesPublishedTable())
+        if($this->publishedMode())
             return $this->getPublishedTable(parent::getTable());
         return parent::getTable();
     }
 
-    public function getPublishedTable(string $baseTable)
+    public static function published(): static
     {
-        return "published_" . $baseTable;
-    }
-
-    public function usesPublishedTable()
-    {
-        return $this->usesPublishedTable;
-    }
-
-    public static function usePublished(): self
-    {
-        $instance = new self();
-        $instance->useLive();
+        $instance = new static();
+        $instance->bootPublished();
         return $instance;
     }
 
-    public function useEdit()
+    public static function draft(): static
     {
-        $this->usesPublishedTable = false;
-    }
-
-    public function useLive()
-    {
-        $this->usesPublishedTable = true;
+        $instance = new static();
+        $instance->bootDraft();
+        return $instance;
     }
 
     public function getExcludePublishAttributes(): array
@@ -98,11 +124,6 @@ trait IsPublishable
     public function getPublishStatusFlag(): string
     {
         return "publish_status";
-    }
-
-    public function deletedPublishable(): MorphMany
-    {
-        return $this->morphMany(DeletedPublishable::class, 'publishable');
     }
 
     public function getPublishStatus(): PublishStatus

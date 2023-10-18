@@ -14,7 +14,6 @@ use Jkli\Cms\Http\Resources\Publisher\FlattDependencyResource;
 use Jkli\Cms\Http\Resources\Publisher\FlattTreeResource;
 use Jkli\Cms\Http\Resources\Publisher\PublishableModelResource;
 use Jkli\Cms\Http\Resources\Publisher\PublishableResource;
-use Jkli\Cms\Models\DeletedPublishable;
 use Jkli\Cms\Modules\Publisher as ModulesPublisher;
 use Jkli\Cms\Publisher\ModelComposer;
 use Jkli\Cms\Publisher\Publisher;
@@ -35,7 +34,6 @@ class PublishController extends Controller
 
             $count = $model::count();
             $publishStatusFlag = (new $model())->getPublishStatusFlag();
-            $publishableType = (new $model())->deletedPublishable()->getMorphClass();
 
             $status = $model::select($publishStatusFlag, DB::raw('COUNT(*) as count'))
                 ->groupBy($publishStatusFlag)
@@ -44,7 +42,7 @@ class PublishController extends Controller
             $pendingCount = $status->where($publishStatusFlag, PublishStatus::Pending)->first()?->count ?? 0;
             $publishedCount = $status->where($publishStatusFlag, PublishStatus::Published)->first()?->count ?? 0;
             $draftCount = $status->where($publishStatusFlag, PublishStatus::Draft)->first()?->count ?? 0;
-            $deletedCount = DeletedPublishable::where('publishable_type', $publishableType)->count();
+            $deletedCount = $model::onlyTrashed()->count();
             
             $models->push((object) [
                 'publishedCount' => $publishedCount,

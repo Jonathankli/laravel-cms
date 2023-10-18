@@ -13,51 +13,51 @@ use Illuminate\Support\Collection;
 use Jkli\Cms\Contracts\Publishable;
 
 class EloquentResolver implements Resolver
-{   
+{
     public function resolve(Publishable $model, string $method): Publishable | Collection | null
     {
-        return $model->$method()->get();
+        return $model->$method()->withTrashed()->get();
     }
 
     public function ignoreKeys(Publishable $model, string $method): Collection
     {
         $instance = $model->$method();
-        if($instance instanceof BelongsTo) {
+        if ($instance instanceof BelongsTo) {
             return collect([$instance->getForeignKeyName()]);
         }
-        if($instance instanceof MorphTo) {
+        if ($instance instanceof MorphTo) {
             return collect([$instance->getForeignKeyName(), $instance->getMorphType()]);
         }
         return collect();
     }
-    
+
     public function timing(Publishable $model, string $method, Publishable | Collection | null $resolved): PublishTimingEnum
     {
         $instance = $model->$method();
         //Has One
-        if($instance instanceof HasOne) {
+        if ($instance instanceof HasOne) {
             return PublishTimingEnum::AFTER;
         }
         //Has Many
-        if($instance instanceof HasMany) {
+        if ($instance instanceof HasMany) {
             return PublishTimingEnum::AFTER;
         }
-        if($instance instanceof BelongsTo) {
+        if ($instance instanceof BelongsTo) {
             return PublishTimingEnum::BEFORE;
         }
         //Many To Many
-        if($instance instanceof BelongsToMany) {
+        if ($instance instanceof BelongsToMany) {
             return PublishTimingEnum::BEFORE;
         }
 
         //Morph
-        if($instance instanceof MorphTo) {
+        if ($instance instanceof MorphTo) {
             return PublishTimingEnum::AFTER;
         }
-        if($instance instanceof MorphOne) {
+        if ($instance instanceof MorphOne) {
             return PublishTimingEnum::BEFORE;
         }
-        if($instance instanceof MorphMany) {
+        if ($instance instanceof MorphMany) {
             return PublishTimingEnum::BEFORE;
         }
         // if($instance instanceof MorphPivot) {

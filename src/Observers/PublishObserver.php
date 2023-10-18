@@ -21,14 +21,4 @@ class PublishObserver
         }
     }
 
-    /**
-     * Handle the "deleted" event.
-     */
-    public function deleted($model): void
-    {
-        if ($model instanceof Publishable) {
-            $model->deletedPublishable()->create();
-        }
-    }
-
 }

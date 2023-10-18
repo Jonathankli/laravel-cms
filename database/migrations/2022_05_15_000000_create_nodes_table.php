@@ -18,6 +18,7 @@ return new class extends Migration
 
             $this->sharedColums($table);
 
+            $table->softDeletes();
             $table->publishStatus();
         });
         Schema::table('nodes', function (Blueprint $table) {

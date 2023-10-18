@@ -27,7 +27,7 @@ class ModelComposer implements Publishable
         return $this->models;
     }
 
-    public function publish() {}
+    public function publish(): void {}
 
     public function getPublishStatusFlag(): string
     {

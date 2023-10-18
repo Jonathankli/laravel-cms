@@ -7,14 +7,16 @@ use Jkli\Cms\Enums\PublishStatus;
 
 interface Publishable
 {   
-    public function publish();
-    public function usesPublishedTable();
-    public static function usePublished();
-    public function useEdit();
-    public function useLive();
-    public function getPublishedTable(string $baseTable);
+    public function publish(): void;
+    public function bootPublished(): void;
+    public function bootDraft(): void;
+    public function publishedMode(): bool;
+    public function getPublishedTable(string $baseTable): string;
     public function getExcludePublishAttributes(): array;
     public function getPublishStatusFlag(): string;
-    public function deletedPublishable(): MorphMany;
+    public function getPublishStatus(): PublishStatus;
+    public static function getPublishableTypeName(): string;
+    public static function published(): static;
+    public static function draft(): static;
 
 }

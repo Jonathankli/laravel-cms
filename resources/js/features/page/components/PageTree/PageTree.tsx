@@ -6,22 +6,7 @@ import {
     NodeModel,
     Tree,
 } from "@minoru/react-dnd-treeview";
-import {
-    ActionIcon,
-    Container,
-    Divider,
-    Flex,
-    Group,
-    Text,
-} from "@mantine/core";
-import {
-    IconChevronDown,
-    IconChevronRight,
-    IconEdit,
-    IconNavigation,
-    IconSettings,
-    IconTrash,
-} from "@tabler/icons";
+import { Divider } from "@mantine/core";
 import { useStyles } from "./styles";
 import ListItem from "../ListItem/ListItem";
 
@@ -30,7 +15,6 @@ interface PageTreeProps {
 }
 
 const PageTree = (props: PageTreeProps) => {
-
     const { pages } = props;
     const { classes } = useStyles();
 
@@ -68,7 +52,7 @@ const PageTree = (props: PageTreeProps) => {
                     }
                 }}
                 onDrop={(pages) => null}
-                render={(node, params) => <ListItem node={node} {...params} /> }
+                render={(node, params) => <ListItem node={node} pages={pages} {...params} />}
                 placeholderRender={(node, { depth }) => <Divider />}
             />
         </DndProvider>

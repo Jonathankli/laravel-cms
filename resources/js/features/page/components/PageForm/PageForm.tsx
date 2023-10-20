@@ -32,11 +32,11 @@ export function PageForm(props: PageFormProps) {
     const form = useForm({
         initialValues: {
             name: "",
-            path: "",
             title: "",
             use_parent_path: true,
             parent_id: parent ?? null,
-            ...(page ?? {})
+            ...(page ?? {}),
+            path: page?.relative_path ?? "",
         },
     });
     

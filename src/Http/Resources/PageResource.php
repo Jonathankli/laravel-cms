@@ -29,6 +29,7 @@ class PageResource extends JsonResource
             'parent_id' => $this->parent_id,
             'parent' => PageResource::make($this->whenLoaded('parent')),
             'path' => $this->full_path,
+            'relative_path' => $this->path,
             'shell_id' => $this->shell_id,
             'shell' => ShellResource::make($this->whenLoaded('shell')),
             'node_id' => $this->node_id,

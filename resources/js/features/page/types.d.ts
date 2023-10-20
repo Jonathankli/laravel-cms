@@ -4,6 +4,7 @@ interface Page {
     title: string;
     parent_id: string;
     path: string;
+    relative_path: string;
     node_id: string;
     parent?: Page;
     shell_id?: string;

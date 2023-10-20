@@ -40,7 +40,7 @@ class PageObserver
      */
     public function updating(Page $page)
     {
-        if($page->isDirty('path') || $page->isDirty('use_parent_path')){
+        if($page->isDirty('path') || $page->isDirty('use_parent_path') || $page->isDirty('parent_id')){
             $page->full_path = $this->pathService->getPagePath($page);
         }
     }

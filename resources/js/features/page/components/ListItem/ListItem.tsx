@@ -21,14 +21,16 @@ import {
 } from "@tabler/icons";
 import { useStyles } from "./styles";
 import { useRouter } from "../../../../exports";
-import { openConfirmModal } from "@mantine/modals";
+import { closeModal, openModal } from "@mantine/modals";
+import { DeleteModel } from "../DeleteModel/DeleteModel";
 
 interface ListItemProps extends RenderParams {
     node: NodeModel<Page>;
+    pages: Page[];
 }
 
 const ListItem = (props: ListItemProps) => {
-    const { node, hasChild, depth, isOpen, onToggle } = props;
+    const { node, hasChild, depth, isOpen, onToggle, pages } = props;
     const page = node.data;
     
     const { classes } = useStyles();
@@ -42,15 +44,10 @@ const ListItem = (props: ListItemProps) => {
     }
 
     const onDelete = () => {
-        openConfirmModal({
+        openModal({
+            modalId: "delete-page",
             title: "Seite löschen?",
-            labels: {
-                cancel: "Abbrechen",
-                confirm: "Löschen",
-            },
-            onConfirm: () => {
-                router.delete(`${page.id}`)
-            }
+            children: <DeleteModel close={closeModal.bind(this, "delete-page")} page={page} hasChildren={pages.some(p => p.parent_id === page.id)} />,
         })
     }
 

@@ -5,11 +5,11 @@ use Jkli\Cms\Http\Controller\PublishShellController;
 use Jkli\Cms\Http\Controller\ShellController;
 
 Route::get('/', [ShellController::class, "index"])
-    ->name('pages.index');
+    ->name('shells.index');
 
 
 Route::get('/create', [ShellController::class, "create"])
-    ->name('page.edit');
+    ->name('shell.edit');
 
 Route::get('/{shell}', [ShellController::class, "show"])
     ->name('shell.show');
@@ -28,4 +28,4 @@ Route::get('/{parent}/create', [ShellController::class, "create"])
 
 
 Route::post('/{shellId}/publish', [PublishShellController::class, "store"])
-    ->name('page.publish');
+    ->name('shell.publish');

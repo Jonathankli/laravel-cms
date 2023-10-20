@@ -2,12 +2,13 @@
 
 namespace Jkli\Cms\Http\Controller;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Jkli\Cms\Actions\CreatePageAction;
 use Jkli\Cms\Actions\UpdatePageAction;
 use Jkli\Cms\Http\Controller\Controller;
+use Jkli\Cms\Http\Requests\DeletePageRequest;
+use Jkli\Cms\Models\Page;
 use Jkli\Cms\Modules\Pages;
 use Jkli\Cms\Props\AvailablePathProp;
 use Jkli\Cms\Props\PageProp;
@@ -103,11 +104,35 @@ class PageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DeletePageRequest $request, string $page)
     {
-        //
+        $page = Page::findOrFail($page);
+        $hasChildren = $page->children->count() > 0; //yes intended
+        if (!$hasChildren) {
+            $page->delete();
+            return Redirect::route("pages.index");
+        }
+
+        $method = $request->input("method", "newparent");
+
+        if ($method === "newparent") {
+            $parent = $request->input("newParent");
+            $page->children->each(function (Page $child) use ($parent, $request, $page) {
+                $child->parent_id = $parent;
+                if($child->use_parent_path && $request->input("keepPath", true)) {
+                    $child->use_parent_path = false;
+                    $child->path = $page->full_path . "/" . $child->path;
+                }
+                $child->save();
+            });
+            $page->delete();
+            return Redirect::route("pages.index");
+        }
+
+        $page->delete();
+        return Redirect::route("pages.index");
     }
 }

@@ -3,10 +3,10 @@ import { GlobalObjectEditor, GlobalObjectPicker } from '../../editor';
 import { EditorHeader } from '../components/EditorHeader/EditorHeader';
 import { EditShellNodes } from '../components/EditShellNodes/EditShellNodes';
 
-const EditShell = () => {
+const EditShell = (props: any) => {
     return (
         <>
-            <EditorHeader />
+            <EditorHeader shell={props.shell}/>
             <GlobalObjectPicker />
             <GlobalObjectEditor />
             <EditShellNodes />

@@ -9,7 +9,7 @@ const EditPage = (props: any) => {
     
     return (
         <>
-            <Header />
+            <Header page={props.page} />
             <GlobalObjectPicker />
             <GlobalObjectEditor />
             <ShellActionContainer>

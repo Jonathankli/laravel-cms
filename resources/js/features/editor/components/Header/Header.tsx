@@ -2,8 +2,13 @@ import React from 'react';
 import { Header as MantineHeader, Group, Container } from '@mantine/core';
 import { useStyles } from './styles';
 import { PageListTrigger } from '../../../page';
+import { QuickPublishButton } from '../../../publisher';
 
-export function Header() {
+interface Headerprops {
+  page: Page;
+}
+
+export function Header(props: Headerprops) {
   const { classes } = useStyles();
 
   return (
@@ -13,6 +18,8 @@ export function Header() {
         <Group position='left'>
           <PageListTrigger />
         </Group>
+
+        <QuickPublishButton type='page' id={props.page.id} />
 
       </Container>
     </MantineHeader>

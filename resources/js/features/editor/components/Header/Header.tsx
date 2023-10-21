@@ -1,7 +1,6 @@
 import React from 'react';
 import { Header as MantineHeader, Group, Container } from '@mantine/core';
 import { useStyles } from './styles';
-import { PublishButton } from '../../../publisher';
 import { PageListTrigger } from '../../../page';
 
 export function Header() {
@@ -15,7 +14,6 @@ export function Header() {
           <PageListTrigger />
         </Group>
 
-        <PublishButton />
       </Container>
     </MantineHeader>
   );

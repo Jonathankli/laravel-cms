@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Jkli\Cms\Http\Controller\PageController;
 use Jkli\Cms\Http\Controller\PageShellController;
-use Jkli\Cms\Http\Controller\PublishPageController;
 
 Route::get('/', [PageController::class, "index"])
     ->name('pages.index');
@@ -34,6 +33,3 @@ Route::get('/{page}/shell/edit', [PageShellController::class, "edit"]);
 Route::get('/{page}/shell', [PageShellController::class, "show"]);
 
 Route::delete('/{page}/shell', [PageShellController::class, "destroy"]);
-
-Route::post('/{pageId}/publish', [PublishPageController::class, "store"])
-    ->name('page.publish');

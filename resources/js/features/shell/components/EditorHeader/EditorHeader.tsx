@@ -6,7 +6,6 @@ import { QuickPublishButton } from '../../../publisher';
 
 export function EditorHeader(props: any) {
   const { classes } = useStyles();
-console.log(props);
 
   return (
     <MantineHeader height={56} className={classes.header}>

@@ -44,4 +44,9 @@ class ModelComposer implements Publishable
         return 'Multiple Models';
     }
 
+    public function trashed(): bool
+    {
+        return false;
+    }
+
 }

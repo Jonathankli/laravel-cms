@@ -16,6 +16,7 @@ import React from "react";
 import DataTable, { Column } from "../../../components/DataTable/DataTable";
 import { Action } from "../../../hooks/useActions";
 import Link from "../../../components/Link/Link";
+import { StatusIcon } from "../components/StatusIcon/StatusIcon";
 
 interface IndexProps {
     publishable: Publishable;
@@ -29,46 +30,6 @@ interface IndexProps {
     };
 }
 
-const getStatusIcon = (model: PublishableModel) => {
-    if (model.deleted) {
-        return (
-            <Tooltip label="Deleted">
-                <ThemeIcon variant="light" color="red">
-                    <IconTrash />
-                </ThemeIcon>
-            </Tooltip>
-        );
-    }
-    switch (model.published) {
-        case "draft":
-            return (
-                <Tooltip label="Draft">
-                    <ThemeIcon variant="light" color="gray">
-                        <IconPencil />
-                    </ThemeIcon>
-                </Tooltip>
-            );
-        case "published":
-            return (
-                <Tooltip label="Published">
-                    <ThemeIcon variant="light" color="green">
-                        <IconCheck />
-                    </ThemeIcon>
-                </Tooltip>
-            );
-        case "pending":
-            return (
-                <Tooltip label="Pending">
-                    <ThemeIcon variant="light" color="yellow">
-                        <IconRefresh />
-                    </ThemeIcon>
-                </Tooltip>
-            );
-        default:
-            return null;
-    }
-};
-
 const columns: Column<PublishableModel>[] = [
     {
         name: "Name",
@@ -78,7 +39,7 @@ const columns: Column<PublishableModel>[] = [
     {
         name: "Status",
         sort: "published",
-        selector: getStatusIcon,
+        selector: (model) => <StatusIcon model={model} />,
     },
 ];
 

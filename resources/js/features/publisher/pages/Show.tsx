@@ -12,13 +12,15 @@ import { useListState } from "@mantine/hooks";
 import { Icon24Hours, IconRocket } from "@tabler/icons";
 import * as React from "react";
 import { useRouter } from "../../../exports";
+import { StatusIcon } from "../components/StatusIcon/StatusIcon";
 
-interface Model {
+export interface Model {
     model: string;
     name: string;
     parent_type: string;
     parent_id: string;
-    isPublished: boolean;
+    published: 'draft' | 'published' | 'pending';
+    deleted: boolean;
     isOptional: boolean;
     isSilent: boolean;
     key: string;
@@ -151,23 +153,14 @@ function Resource(props: {
                     )
                 }
             >
-                <Indicator
-                    position="middle-end"
-                    color={getModelStatus(resource)}
-                    offset={10}
-                >
-                    {resource.name}
-                </Indicator>
+                {resource.name}
             </Accordion.Control>
             <Accordion.Panel>
                 {resource.models.map((model) => (
-                    <Indicator
-                        key={model.key}
-                        position="middle-end"
-                        color={model.isPublished ? "green" : "red"}
-                    >
+                    <Group position="apart">
                         {model.isOptional ? (
                             <Checkbox
+                                key={model.key}
                                 label={model.name}
                                 mt="xs"
                                 ml={33}
@@ -190,28 +183,12 @@ function Resource(props: {
                                 {model.name}
                             </Text>
                         )}
-                    </Indicator>
+                        <StatusIcon model={model} />
+                    </Group>
                 ))}
             </Accordion.Panel>
         </Accordion.Item>
     );
-}
-
-function getModelStatus(resource: Resource) {
-    const count = resource.models.reduce((count, model) => {
-        if (model.isPublished) {
-            return count++;
-        }
-        return count;
-    }, 0);
-
-    if (count === resource.models.length) {
-        return "green";
-    }
-    if (count === 0) {
-        return "red";
-    }
-    return "yellow";
 }
 
 export default Show;

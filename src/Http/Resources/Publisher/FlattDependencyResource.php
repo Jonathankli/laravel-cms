@@ -30,7 +30,8 @@ class FlattDependencyResource extends JsonResource
             'parent_id' => $this->getParent()?->getModel()->getKey(),
             'isOptional' => $this->getRelation()?->getOptions()->optional ?? false,
             'isSilent' => $this->getRelation()?->getOptions()->silent ?? false,
-            'isPublished' => $this->isPublished(),
+            'published' => $this->getPublishedStatus(),
+            'deleted' => $this->isDeleted(),
             'key' => $this->getKey(),
         ];
     }

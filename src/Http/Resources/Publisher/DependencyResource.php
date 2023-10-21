@@ -28,7 +28,8 @@ class DependencyResource extends JsonResource
             'name' => $this->getModel()->getPublishableName(),
             'typeName' => $this->getModel()->getPublishableTypeName(),
             'relations' => RelationResource::collection($this->getRelations())->all(),
-            'isPublished' => $this->isPublished(),
+            'status' => $this->getPublishedStatus(),
+            'deleted' => $this->isDeleted(),
             'key' => $this->getKey(),
         ];
     }

@@ -65,9 +65,17 @@ class DependencyDto
     /**
      * Get the value of isUpdated
      */
-    public function isPublished()
+    public function getPublishedStatus()
     {
-        return $this->model->{$this->model->getPublishStatusFlag()} === PublishStatus::Published;
+        return $this->model->{$this->model->getPublishStatusFlag()};
+    }
+
+    /**
+     * Get the value of isUpdated
+     */
+    public function isDeleted()
+    {
+        return $this->model->trashed();
     }
 
     /**

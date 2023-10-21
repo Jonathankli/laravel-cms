@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 trait IsPublishable
 {   
-    use SoftDeletes;
+    use SoftDeletes {
+        performDeleteOnModel as performDeleteOnModelSoftDelete;
+    }
 
     private bool $publishedMode = false;
 
@@ -142,6 +144,20 @@ trait IsPublishable
         return array_merge($casts, [
             $this->getPublishStatusFlag() => PublishStatus::class
         ]);
+    }
+
+    /**
+     * Perform the actual delete query on this model instance.
+     *
+     * @return mixed
+     */
+    protected function performDeleteOnModel()
+    {
+        if ($this->getPublishStatus() === PublishStatus::Draft) {
+            $this->forceDeleting = true;
+        }
+
+        return $this->performDeleteOnModelSoftDelete();
     }
     
 }

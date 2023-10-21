@@ -17,8 +17,7 @@ class CmsNodeObserver
     public function updating(CmsNode $model)
     {
         if(!$model->isDirty($model->getPublishStatusFlag())){
-            $model->rootAncestor->page->{$model->getPublishStatusFlag()} = PublishStatus::Pending;
-            $model->rootAncestor->page->save();
+            $model->rootAncestor->page->touch();
         }
     }
 

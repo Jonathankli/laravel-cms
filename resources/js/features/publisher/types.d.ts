@@ -13,5 +13,5 @@ interface PublishableModel {
     name: string;
     type: string;
     deleted: boolean;
-    published: 'draft' | 'published' | 'updated';
+    published: 'draft' | 'published' | 'pending';
 }

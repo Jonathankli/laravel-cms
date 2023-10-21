@@ -56,9 +56,9 @@ const getStatusIcon = (model: PublishableModel) => {
                     </ThemeIcon>
                 </Tooltip>
             );
-        case "updated":
+        case "pending":
             return (
-                <Tooltip label="Updated">
+                <Tooltip label="Pending">
                     <ThemeIcon variant="light" color="yellow">
                         <IconRefresh />
                     </ThemeIcon>

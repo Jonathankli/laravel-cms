@@ -72,7 +72,7 @@ class PublishController extends Controller
                 'name' => $modelClass::getPublishableTypeName(),
                 'type' => $type,
             ]),
-            'models' => PublishableModelResource::collection($modelClass::filter()),
+            'models' => PublishableModelResource::collection($modelClass::withTrashed()->filter()),
         ]);
     }
 
@@ -83,7 +83,7 @@ class PublishController extends Controller
         if(!$modelClass) {
             abort(404, 'Publishable not found!');
         }
-        $model = $modelClass::findOrFail($id);
+        $model = $modelClass::withTrashed()->findOrFail($id);
         $dependency = $this->publisher->getDependencyTree($model);
         $falttened = $this->publisher->flattenTree($dependency);
         return Inertia::render(ModulesPublisher::view('Show'), [
@@ -103,7 +103,7 @@ class PublishController extends Controller
         if(!$modelClass) {
             abort(404, 'Publishable not found!');
         }
-        $model = $modelClass::findOrFail($id);
+        $model = $modelClass::withTrashed()->findOrFail($id);
         $this->publisher->publish($model, $request->input('optionals', []));
         return Redirect::route('publisher.index');
     }
@@ -116,8 +116,8 @@ class PublishController extends Controller
         }
         $ids = $request->input('ids', []);
         $models = count($ids) 
-            ? $modelClass::findMany($ids)
-            : $modelClass::all();
+            ? $modelClass::withTrashed()->findMany($ids)
+            : $modelClass::withTrashed()->get();
         $publishable = new ModelComposer($models);
         $dependency = $this->publisher->getDependencyTree($publishable);
         $falttened = $this->publisher->flattenTree($dependency);
@@ -142,8 +142,8 @@ class PublishController extends Controller
         }
         $ids = $request->input('ids', []);
         $models = count($ids) 
-            ? $modelClass::findMany($ids)
-            : $modelClass::all();
+            ? $modelClass::withTrashed()->findMany($ids)
+            : $modelClass::withTrashed()->get();
         $publishable = new ModelComposer($models);
         $this->publisher->publish($publishable, $request->input('optionals', []));
         return Redirect::route('publisher.index');

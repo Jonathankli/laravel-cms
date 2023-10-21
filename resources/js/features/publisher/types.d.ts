@@ -12,5 +12,6 @@ interface PublishableModel {
     id: string;
     name: string;
     type: string;
-    published: boolean;
+    deleted: boolean;
+    published: 'draft' | 'published' | 'updated';
 }

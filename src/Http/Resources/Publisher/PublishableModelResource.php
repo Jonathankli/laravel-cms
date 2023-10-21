@@ -26,7 +26,8 @@ class PublishableModelResource extends JsonResource
         return [
             'id' => $this->getKey(),
             'name' => $this->getPublishableName(),
-            'published' => $this->{$this->getPublishStatusFlag()} === PublishStatus::Published,
+            'deleted' => $this->trashed() ?? false,
+            'published' => $this->{$this->getPublishStatusFlag()},
         ];
     }
 }

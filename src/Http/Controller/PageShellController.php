@@ -24,7 +24,7 @@ class PageShellController extends Controller
             abort(404, "Shell not found");
         }
         Session::put('backToPagePath', $page->full_path);
-        return Redirect::route("shell.show", ["shell" => $page->shell->id]);
+        return Redirect::route("shells.show", ["shell" => $page->shell->id]);
     }
 
     /**
@@ -40,7 +40,7 @@ class PageShellController extends Controller
             abort(404, "Shell not found");
         }
         Session::put('backToPagePath', $page->full_path);
-        return Redirect::route("shell.editor", ["shell" => $page->shell->id]);
+        return Redirect::route("shells.editor", ["shell" => $page->shell->id]);
     }
 
     /**

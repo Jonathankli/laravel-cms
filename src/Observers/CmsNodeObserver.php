@@ -17,6 +17,10 @@ class CmsNodeObserver
     public function updating(CmsNode $model)
     {
         if(!$model->isDirty($model->getPublishStatusFlag())){
+            if($model->rootAncestor->shell) {    
+                $model->rootAncestor->shell->touch();
+                return;
+            }
             $model->rootAncestor->page->touch();
         }
     }
@@ -26,6 +30,11 @@ class CmsNodeObserver
      */
     public function deleted(CmsNode $model): void
     {
+        if($model->rootAncestor->shell) {
+            $model->rootAncestor->shell->{$model->getPublishStatusFlag()} = PublishStatus::Pending;
+            $model->rootAncestor->shell->save();
+            return;
+        }
         $model->rootAncestor->page->{$model->getPublishStatusFlag()} = PublishStatus::Pending;
         $model->rootAncestor->page->save();
     }

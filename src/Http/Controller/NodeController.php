@@ -17,7 +17,7 @@ class NodeController extends Controller
     {
         $shell = $node->rootAncestor->shell;
         if($shell) {
-            return Redirect::route("shells.edit", ["shell" => $shell->id]);
+            return Redirect::route("shells.editor", ["shell" => $shell->id]);
         }
         $path = ltrim($node->rootAncestor->page->full_path, "/");
         return Redirect::route("pages.edit", ["path" => $path]);

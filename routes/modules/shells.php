@@ -8,19 +8,19 @@ Route::get('/', [ShellController::class, "index"])
 
 
 Route::get('/create', [ShellController::class, "create"])
-    ->name('shell.edit');
+    ->name('shells.edit');
 
 Route::get('/{shell}', [ShellController::class, "show"])
-    ->name('shell.show');
+    ->name('shells.show');
 
 Route::patch('/{shell}', [ShellController::class, "update"])
-    ->name('shell.store');
+    ->name('shells.store');
 
 Route::get('/{shell}/edit', [ShellController::class, "edit"])
-    ->name('shell.edit');
+    ->name('shells.edit');
 
 Route::get('/{shell}/editor', [ShellController::class, "editor"])
-    ->name('shell.editor');
+    ->name('shells.editor');
 
 Route::get('/{parent}/create', [ShellController::class, "create"])
-    ->name('shell.parent.create');
+    ->name('shells.parent.create');

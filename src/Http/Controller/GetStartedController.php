@@ -20,6 +20,7 @@ class GetStartedController extends Controller
 
         $pageOutlet = new CmsNode();
         $pageOutlet->type = PageOutlet::type();
+        $pageOutlet->index = 0;
         $pageOutlet->parent_id = $rootNode->id;
         $pageOutlet->save();
 

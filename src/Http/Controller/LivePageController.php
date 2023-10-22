@@ -19,7 +19,7 @@ class LivePageController extends Controller
      */
     public function show()
     {
-        Cms::setLiveMode();
+        Cms::setPublishedMode();
         return Inertia::render("Page/Show", PropsPipelineService::run([
             LivePageProp::class,
         ]));

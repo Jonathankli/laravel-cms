@@ -17,6 +17,8 @@ trait IsPublishable
 
     private bool $publishedMode = false;
 
+    private string $draftTable;
+
     /**
      * Boot the trait.
      *
@@ -34,7 +36,7 @@ trait IsPublishable
      */
     protected function initializeIsPublishable()
     {
-        Cms::isLive()
+        Cms::isInPublishedMode()
             ? $this->bootPublished()
             : $this->bootDraft();
     }
@@ -49,9 +51,11 @@ trait IsPublishable
      *
      * @return void
      */
-    public function bootPublished(): void
+    protected function bootPublished(): void
     {
         $this->publishedMode = true;
+        $this->draftTable = parent::getTable();
+        $this->table = $this->getPublishedTable($this->draftTable);
         if(static::hasGlobalScope(SoftDeletingScope::class)) {
             unset(static::$globalScopes[static::class][SoftDeletingScope::class]);
         }
@@ -62,9 +66,12 @@ trait IsPublishable
      *
      * @return void
      */
-    public function bootDraft(): void
+    protected function bootDraft(): void
     {
         $this->publishedMode = false;
+        if(isset($this->draftTable)) {
+            $this->table = $this->draftTable;
+        }
         if(!$this->hasGlobalScope(SoftDeletingScope::class)) {
             static::addGlobalScope(new SoftDeletingScope);
         }
@@ -88,18 +95,6 @@ trait IsPublishable
     public function getPublishedTable(string $baseTable): string
     {
         return "published_" . $baseTable;
-    }
-
-    /**
-     * Get the table associated with the model.
-     *
-     * @return string
-     */
-    public function getTable()
-    {
-        if($this->publishedMode())
-            return $this->getPublishedTable(parent::getTable());
-        return parent::getTable();
     }
 
     public static function published(): static

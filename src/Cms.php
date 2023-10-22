@@ -19,7 +19,7 @@ class Cms
      */
     protected Collection $publishable;
 
-    protected bool $live = false;
+    protected bool $publishedMode = false;
 
     public function __construct()
     {
@@ -84,18 +84,36 @@ class Cms
         return $this->publishable;
     }
 
-    public function setLiveMode()
+    public function setPublishedMode()
     {
-        $this->live = true;
+        $this->publishedMode = true;
     }
 
-    public function setCmsMode()
+    public function setDraftMode()
     {
-        $this->live = false;
+        $this->publishedMode = false;
     }
 
-    public function isLive(): bool
+    public function isInPublishedMode(): bool
     {
-        return $this->live;
+        return $this->publishedMode;
+    }
+
+    public function runInPublishedMode(callable $func): mixed
+    {
+        $prevMode = $this->isInPublishedMode();
+        $this->setPublishedMode();
+        $result = $func();
+        $this->publishedMode = $prevMode;
+        return $result;
+    }
+
+    public function runInDraftMode(callable $func): mixed
+    {
+        $prevMode = $this->isInPublishedMode();
+        $this->setDraftMode();
+        $result = $func();
+        $this->publishedMode = $prevMode;
+        return $result;
     }
 }

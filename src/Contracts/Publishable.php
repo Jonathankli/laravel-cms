@@ -8,8 +8,6 @@ use Jkli\Cms\Enums\PublishStatus;
 interface Publishable
 {   
     public function publish(): void;
-    public function bootPublished(): void;
-    public function bootDraft(): void;
     public function publishedMode(): bool;
     public function getPublishedTable(string $baseTable): string;
     public function getExcludePublishAttributes(): array;

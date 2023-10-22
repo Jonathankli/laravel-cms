@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Jkli\Cms\Contracts\Publishable;
 use Jkli\Cms\Enums\PublishStatus;
+use Jkli\Cms\Facades\Cms;
 use Jkli\Cms\Publisher\Dependency;
 use ReflectionClass;
 
@@ -32,7 +33,7 @@ class Publisher
         if(!($publishable instanceof DependencyDto)) {
             $publishable = $this->getDependencyTree($publishable);
         }
-
+// dd($publishable);
         $key = $publishable->getKey();
         $modelClass = get_class($publishable->getModel());
         if($parentRelation?->getOptions()->optional && !($optionals->contains($key) || $optionals->contains($modelClass))) {
@@ -56,6 +57,7 @@ class Publisher
         if($model instanceof ModelComposer) {
             $this->deleteModels();
             $this->updateFlags();
+            // dd(1);
             return;
         }
 
@@ -84,8 +86,12 @@ class Publisher
         $attributes = collect($model->attributesToArray());
         $attributes = $attributes->except($publishExcludeFields);
 
-        $class::published()
-            ->updateOrCreate([$keyName => $key], $attributes->toArray());
+        Cms::runInPublishedMode(function () use ($attributes, $keyName, $key, $class, $model, $publishExcludeFields) {
+            $class::updateOrCreate(
+                [$keyName => $key], 
+                $attributes->toArray()
+            );
+        });
 
         $this->updateFlag[$class][] = $key;
 
@@ -101,6 +107,7 @@ class Publisher
             $this->deleteModels();
             $this->updateFlags();
             $this->firstCall = true;
+            // dd(1);
         }
 
     }
@@ -112,11 +119,14 @@ class Publisher
             $keyName = $model->getKeyName();
             $class::whereIn($keyName, $keys)->delete();
         }
-        foreach ($this->deletePublished as $class => $keys) {
-            $model = new $class;
-            $keyName = $model->getKeyName();
-            $class::published()->whereIn($keyName, $keys)->delete();
-        }
+
+        Cms::runInPublishedMode(function () {
+            foreach ($this->deletePublished as $class => $keys) {
+                $model = new $class;
+                $keyName = $model->getKeyName();
+                $class::whereIn($keyName, $keys)->delete();
+            }
+        });
     }
 
     protected function updateFlags()

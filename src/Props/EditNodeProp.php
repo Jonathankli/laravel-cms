@@ -37,7 +37,7 @@ class EditNodeProp extends Prop
 
     public function getEditNode()
     {
-        $settings = request()->header('X-CMS-Cms-Node-Settings');
+        $settings = request()->header('X-CMS-Node-Settings');
         $settings = json_decode($settings, true);
         $node = $this->getNode();
         if(!$settings) {

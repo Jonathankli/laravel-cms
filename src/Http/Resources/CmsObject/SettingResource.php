@@ -15,11 +15,13 @@ class SettingResource extends JsonResource
      */
     public function toArray($request)
     {
-        $payload = $request->header('X-Setting-Reload', null);
+        $payload = $request->header('X-CMS-Setting-Reload', null);
         if($payload) {
             $payload = json_decode($payload, true);
             if(data_get($payload, 'setting') === $this->getName()) {
                 $payload = data_get($payload, 'payload', null);
+            } else {
+                $payload = null;
             }
         }
         return [

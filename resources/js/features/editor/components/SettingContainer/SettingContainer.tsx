@@ -24,7 +24,7 @@ export function SettingContainer(props: SettingContainerProps) {
     const reload = (payload: any = null) => {
         router.reload({
             headers: {
-                "X-Setting-Reload": JSON.stringify({
+                "X-CMS-Setting-Reload": JSON.stringify({
                     setting: setting.name,
                     payload,
                 }),

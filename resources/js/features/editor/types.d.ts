@@ -33,5 +33,6 @@ interface Setting {
     name: string;
     metas: Object;
     default: any;
+    data: any;
     serverValudation: boolean;
 }

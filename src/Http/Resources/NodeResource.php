@@ -2,9 +2,7 @@
 
 namespace Jkli\Cms\Http\Resources;
 
-use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Jkli\Cms\Facades\Cms;
 
 class NodeResource extends JsonResource
 {

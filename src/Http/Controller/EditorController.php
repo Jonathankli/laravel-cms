@@ -17,6 +17,7 @@ use Jkli\Cms\Props\GroupedCmsObjectsProp;
 use Jkli\Cms\Props\ObjectSettingsProp;
 use Jkli\Cms\Props\EditorPageProp;
 use Jkli\Cms\Props\PagesProp;
+use Jkli\Cms\Props\SettingDataReloadProp;
 use Jkli\Cms\Props\ShellsProp;
 use Jkli\Cms\Services\PropsPipelineService;
 
@@ -58,6 +59,7 @@ class EditorController extends Controller
                 PagesProp::class,
                 CmsEditModeProp::class,
                 ShellsProp::class,
+                SettingDataReloadProp::class,
             ]));
         } catch (ModelNotFoundException $e) {
             if($e->getModel() == Page::class && !Page::count()) {

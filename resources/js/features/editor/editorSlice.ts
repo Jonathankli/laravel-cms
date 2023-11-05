@@ -11,6 +11,7 @@ export interface NodeState {
     isEditorOpen: boolean;
     editNode: CmsNode | null;
     editNodeOrigial: CmsNode | null;
+    settingServerDatas: {[key: string]: any};
 }
 
 // Define the initial state using that type
@@ -22,11 +23,17 @@ const initialState: NodeState = {
     isEditorOpen: false,
     editNode: null,
     editNodeOrigial: null,
+    settingServerDatas: {},
 };
 
 export interface UpdateNodePayload {
   target: string;
   value: any;
+}
+
+export interface AddSettingData {
+  name: string;
+  data: any;
 }
 
 export const editorSlice = createSlice({
@@ -81,6 +88,17 @@ export const editorSlice = createSlice({
             state.editNode = null;
             state.editNodeOrigial = null;
         },
+        addSettingServerData: (state, action: PayloadAction<AddSettingData>) => {
+            if (!state.editNode?.settings) {
+                console.error("No node in edit mode.");
+                return;
+            }
+            if (state.editNode.settings[action.payload.name] === undefined) {
+                console.error("No setting not present.");
+                return;
+            }
+            state.settingServerDatas[action.payload.name] = action.payload.data;
+        },
     },
 });
 
@@ -93,6 +111,7 @@ export const {
   saveObject,
   abortEdit,
   openEditor, 
+  addSettingServerData,
 } = editorSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -106,5 +125,11 @@ export const selectEditNode = (state: RootState) =>
 
 export const selectEditNodeOriginal = (state: RootState) =>
     state.editor.editNodeOrigial;
+
+export const selectSettingsDatas = (state: RootState) =>
+    state.editor.settingServerDatas;
+
+export const selectSettingsData = (settingName: string) => (state: RootState) =>
+    state.editor.settingServerDatas[settingName];
 
 export default editorSlice.reducer;

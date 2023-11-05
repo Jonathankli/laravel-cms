@@ -2,9 +2,10 @@ import { router } from "@inertiajs/react";
 import { Space } from "@mantine/core";
 import { useDebouncedState, useDidUpdate } from "@mantine/hooks";
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useFrontendConfig from "../../../../hooks/config/useFrontendConfig";
-import { selectEditNode } from "../../editorSlice";
+import { addSettingServerData, selectEditNode, selectSettingsData } from "../../editorSlice";
+import { useCmsDispatch } from "../../../../hooks/redux";
 
 export interface SettingContainerProps {
     setting: Setting
@@ -17,17 +18,25 @@ export function SettingContainer(props: SettingContainerProps) {
 
     const { setting } = props;
     const { objectSettings } = useFrontendConfig();
+    const dispatch = useCmsDispatch();
     const editNode = useSelector(selectEditNode);
+    const serverData = useSelector(selectSettingsData(setting.name));
     const [debouncedPayload, setDebouncedPayload] = useDebouncedState(null, 500);
     const [isLoading, setIsLoading] = React.useState(false);
 
     const reload = (payload: any = null) => {
         router.reload({
             headers: {
-                "X-CMS-Setting-Reload": JSON.stringify({
+                "X-CMS-Setting-Data-Request": JSON.stringify({
                     setting: setting.name,
                     payload,
                 }),
+            },
+            onSuccess: (page) => {
+                const data = page.props.settingServerData as {name?: string, data?: any}
+                if(data?.name === setting.name) {
+                    dispatch(addSettingServerData({name: setting.name, data: data.data}));
+                }
             },
             onFinish: () => {
                 setIsLoading(false);
@@ -73,6 +82,7 @@ export function SettingContainer(props: SettingContainerProps) {
         <>
             <Component
                 {...setting}
+                data={serverData ?? setting.data}
                 key={setting.name}
                 value={value}
                 update={props.update.bind(this, setting.name)}

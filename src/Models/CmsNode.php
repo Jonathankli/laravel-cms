@@ -26,6 +26,8 @@ class CmsNode extends Model implements Node, Publishable
      * @var string
      */
     protected $table = "nodes";
+    
+    protected ?CmsObject $objectInstance;
 
     protected $casts = [
         'settings' => 'array',
@@ -58,10 +60,13 @@ class CmsNode extends Model implements Node, Publishable
 
     public function getObjectInstance(): ?CmsObject
     {
+        if (isset($this->objectInstance)) {
+            return $this->objectInstance;
+        }
         $objects = Cms::getCmsObjects();
         $object = $objects->get($this->type);
-        $object = $object ? new $object($this) : null;
-        return $object;
+        $this->objectInstance = $object ? new $object($this) : null;
+        return $this->objectInstance;
     }
 
     public static function ancestorsAndSelfFrom($nodeId) 

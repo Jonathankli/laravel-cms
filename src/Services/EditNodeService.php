@@ -27,7 +27,7 @@ class EditNodeService
         $settings = request()->header('X-CMS-Node-Settings');
         $settings = json_decode($settings, true);
 
-        if (!$settings) {
+        if ($settings) {
             self::$node->settings = $settings;
         }
 

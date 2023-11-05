@@ -1,5 +1,5 @@
 import { router } from "@inertiajs/react";
-import { Button, Group } from "@mantine/core";
+import { Button, Group, Text } from "@mantine/core";
 import { useDebouncedValue, useDidUpdate } from "@mantine/hooks";
 import * as React from "react";
 import { useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import {
     saveObject as saveObjectAction,
 } from "../../editorSlice";
 import { SettingContainer } from "../SettingContainer/SettingContainer";
+import { closeModal, openModal } from "@mantine/modals";
 
 export interface ObjectEditorProps {
     isLoadinng?: boolean;
@@ -24,6 +25,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
     const editNode = useSelector(selectEditNode);
     const editNodeOriginal = useSelector(selectEditNodeOriginal);
     const editNodeMeta = useInertiaProps().editNodeMeta as CmsObject;
+    const errors = useInertiaProps().errors?.objectEditor;
     const dispatch = useCmsDispatch();
     const { params, paths } = useServerConfig();
     const [debouncedSettings] = useDebouncedValue(
@@ -46,6 +48,19 @@ export function ObjectEditor(props: ObjectEditorProps) {
                 settings: editNode.settings as any, //idk why typscrout is complaining
             },
             {
+                onError: (errors) => {
+                    openModal({
+                        title: <Text weight="bold">Error</Text>,
+                        modalId: "object-editor-error",
+                        zIndex: 10000,
+                        children: (
+                            <>
+                                <Text>Deine einsztellungen sind nicht Valide, bitte überprüfe diese, bevor du das Objekt speicherst.</Text>
+                                <Button mt="md" fullWidth variant="outline" onClick={() => closeModal("object-editor-error")}>Schließen</Button>
+                            </>
+                        ),
+                    });
+                },
                 onSuccess: () => {
                     setTimeout(() => {
                         dispatch(saveObjectAction());
@@ -70,7 +85,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
             headers: {
                 "X-CMS-Node-Settings": JSON.stringify(debouncedSettings),
             },
-            only: ["editNode"],
+            only: ["editNode", "errors"],
             onFinish: () => {
                 props?.setIsLoading?.(false);
             },
@@ -111,6 +126,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
                         reset={reset}
                         resetDefault={resetDefault}
                         setting={setting}
+                        error={errors?.[setting.name]}
                     />
                 ))}
             </div>

@@ -1,5 +1,5 @@
 import { router } from "@inertiajs/react";
-import { Space } from "@mantine/core";
+import { Space, Text } from "@mantine/core";
 import { useDebouncedState, useDidUpdate } from "@mantine/hooks";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,8 @@ import { addSettingServerData, selectEditNode, selectSettingsData } from "../../
 import { useCmsDispatch } from "../../../../hooks/redux";
 
 export interface SettingContainerProps {
-    setting: Setting
+    setting: Setting;
+    error: string;
     update(target: string, value: any): void;
     reset(target: string): void;
     resetDefault(target: string): void;
@@ -82,6 +83,7 @@ export function SettingContainer(props: SettingContainerProps) {
         <>
             <Component
                 {...setting}
+                error={props.error}
                 data={serverData ?? setting.data}
                 key={setting.name}
                 value={value}
@@ -91,6 +93,7 @@ export function SettingContainer(props: SettingContainerProps) {
                 requestServerData={requestServerData}
                 isLoading={isLoading}
             />
+            <Text color="red" size="xs">{props.error}</Text>
             <Space h="sm" />
         </>
     );

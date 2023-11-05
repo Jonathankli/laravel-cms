@@ -13,7 +13,7 @@ abstract class Setting
     
     protected static bool $serversideValidation = false;
     
-    protected array|string $rules;
+    protected Collection $rules;
 
     protected mixed $default = null;
 
@@ -24,6 +24,7 @@ abstract class Setting
         protected string $name
     ) {
         $this->metas = collect();
+        $this->rules = collect();
      }
 
     /**
@@ -43,9 +44,9 @@ abstract class Setting
      * @param  array|string  $rules
      * @return $this
      */
-    public function rules($rules)
+    public function rules(array|string $rules)
     {
-        $this->rules = func_get_args();
+        $this->rules = $this->rules->merge(func_get_args());
         return $this;
     }
  

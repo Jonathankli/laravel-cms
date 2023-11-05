@@ -4,6 +4,7 @@ namespace Jkli\Cms\Observers;
 
 use Jkli\Cms\Enums\PublishStatus;
 use Jkli\Cms\Models\CmsNode;
+use Jkli\Cms\Services\SettingsValidateService;
 
 class CmsNodeObserver
 {
@@ -16,6 +17,8 @@ class CmsNodeObserver
      */
     public function updating(CmsNode $model)
     {
+        SettingsValidateService::validateSettings($model);
+        
         if(!$model->isDirty($model->getPublishStatusFlag())){
             if($model->rootAncestor->shell) {    
                 $model->rootAncestor->shell->touch();

@@ -20,6 +20,7 @@ use Jkli\Cms\Props\PagesProp;
 use Jkli\Cms\Props\SettingDataReloadProp;
 use Jkli\Cms\Props\ShellsProp;
 use Jkli\Cms\Services\PropsPipelineService;
+use Jkli\Cms\Services\SettingsValidateService;
 
 class EditorController extends Controller
 {
@@ -48,6 +49,7 @@ class EditorController extends Controller
      */
     public function edit(ShowPageRequest $request)
     {
+        SettingsValidateService::validateEditNodeSettings();
         try {
             return Inertia::render(Editor::view("Edit"), PropsPipelineService::run([
                 EditorPageProp::class,

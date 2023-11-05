@@ -69,6 +69,7 @@ export const editorSlice = createSlice({
             state.prevSelectedObject = null;
             state.editNode = action.payload.node;
             state.editNodeOrigial = action.payload.node;
+            state.settingServerDatas = {};
         },
         updateObject: (state, action: PayloadAction<UpdateNodePayload>) => {
             if (!state.editNode?.settings) {
@@ -82,11 +83,13 @@ export const editorSlice = createSlice({
             state.isEditorOpen = false;
             state.editNode = null;
             state.editNodeOrigial = null;
+            state.settingServerDatas = {};
         },
         abortEdit: (state, action: PayloadAction) => {
             state.isEditorOpen = false;
             state.editNode = null;
             state.editNodeOrigial = null;
+            state.settingServerDatas = {};
         },
         addSettingServerData: (state, action: PayloadAction<AddSettingData>) => {
             if (!state.editNode?.settings) {

@@ -12,6 +12,8 @@ import {
     selectEditNodeOriginal,
     updateObject,
     saveObject as saveObjectAction,
+    selectRevalidateServerdata,
+    getSettingName,
 } from "../../editorSlice";
 import { SettingContainer } from "../SettingContainer/SettingContainer";
 import { closeModal, openModal } from "@mantine/modals";
@@ -24,17 +26,20 @@ export interface ObjectEditorProps {
 export function ObjectEditor(props: ObjectEditorProps) {
     const editNode = useSelector(selectEditNode);
     const editNodeOriginal = useSelector(selectEditNodeOriginal);
+    const revalidateServerData = useSelector(selectRevalidateServerdata);
     const editNodeMeta = useInertiaProps().editNodeMeta as CmsObject;
     const errors = useInertiaProps().errors?.objectEditor;
     const dispatch = useCmsDispatch();
     const { params, paths } = useServerConfig();
     const [debouncedSettings] = useDebouncedValue(
-        editNodeMeta?.revalidateServerData ? editNode?.settings : null,
+        editNode?.settings,
         500
     );
 
     useDidUpdate(() => {
-        reloadData();
+        if(editNodeMeta?.revalidateServerData || revalidateServerData) {
+            reloadData();
+        }
     }, [debouncedSettings]);
 
     if (!editNodeMeta || !editNode || !editNodeOriginal) {
@@ -92,21 +97,21 @@ export function ObjectEditor(props: ObjectEditorProps) {
         });
     };
 
-    const update = (target: string, value: any) =>
+    const update = (target: string | Setting, value: any) =>
         dispatch(updateObject({ target, value }));
 
-    const reset = (target: string) =>
+    const reset = (target: string | Setting) =>
         dispatch(
             updateObject({
                 target,
                 value:
-                    editNodeOriginal?.settings?.[target] ??
+                    editNodeOriginal?.settings?.[getSettingName(target)] ??
                     editNodeMeta.settings.find(
                         (setting) => setting.name === target
                     )?.default,
             })
         );
-    const resetDefault = (target: string) =>
+    const resetDefault = (target: string | Setting) =>
         dispatch(
             updateObject({
                 target,

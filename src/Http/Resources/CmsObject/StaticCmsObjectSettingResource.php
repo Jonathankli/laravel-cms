@@ -25,7 +25,6 @@ class StaticCmsObjectSettingResource extends JsonResource
         return [
             'type' => $this->resource::type(),
             'component' => $this->resource::component(),
-            'serverValidation' => $this->resource::serversideValidation(),
         ];
     }
 }

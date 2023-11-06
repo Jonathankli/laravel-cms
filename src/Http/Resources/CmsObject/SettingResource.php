@@ -23,7 +23,7 @@ class SettingResource extends JsonResource
             'metas' => $this->getMetas(),
             'default' => $this->getDefault(),
             'data' => $this->serverData(null),
-            'serverValidation' => $this->resource::serversideValidation(),
+            'serversideValidation' => $this->serversideValidation(),
         ];
     }
 }

@@ -34,5 +34,5 @@ interface Setting {
     metas: Object;
     default: any;
     data: any;
-    serverValudation: boolean;
+    serversideValidation: boolean;
 }

@@ -12,6 +12,7 @@ export interface NodeState {
     editNode: CmsNode | null;
     editNodeOrigial: CmsNode | null;
     settingServerDatas: {[key: string]: any};
+    revalidateServerData: boolean;
 }
 
 // Define the initial state using that type
@@ -24,10 +25,11 @@ const initialState: NodeState = {
     editNode: null,
     editNodeOrigial: null,
     settingServerDatas: {},
+    revalidateServerData: false,
 };
 
 export interface UpdateNodePayload {
-  target: string;
+  target: string | Setting;
   value: any;
 }
 
@@ -76,8 +78,10 @@ export const editorSlice = createSlice({
                 console.error("No node in edit mode.");
                 return;
             }
-            state.editNode.settings[action.payload.target] =
+            state.editNode.settings[getSettingName(action.payload.target)] =
                 action.payload.value;
+            
+            state.revalidateServerData = typeof action.payload.target !== "string" ? action.payload.target.serversideValidation : false;
         },
         saveObject: (state, action: PayloadAction) => {
             state.isEditorOpen = false;
@@ -129,10 +133,20 @@ export const selectEditNode = (state: RootState) =>
 export const selectEditNodeOriginal = (state: RootState) =>
     state.editor.editNodeOrigial;
 
+export const selectRevalidateServerdata = (state: RootState) =>
+    state.editor.revalidateServerData;
+
 export const selectSettingsDatas = (state: RootState) =>
     state.editor.settingServerDatas;
 
 export const selectSettingsData = (settingName: string) => (state: RootState) =>
     state.editor.settingServerDatas[settingName];
+
+export function getSettingName(setting: string | Setting): string {
+    if (typeof setting === "string") {
+        return setting;
+    }
+    return setting.name;
+}
 
 export default editorSlice.reducer;

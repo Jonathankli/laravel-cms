@@ -46,11 +46,11 @@ trait InteractsWithModels
     }
 
     /**
-     * Does the setting need servervalidation?
+     * Does the setting need serversideValidation?
      * 
      * @return bool $serversideValidation 
      */
-    public static function serversideValidation(): bool
+    public function serversideValidation(): bool
     {
         return true;
     }

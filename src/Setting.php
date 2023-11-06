@@ -11,11 +11,11 @@ abstract class Setting
     
     protected static string $component;
     
-    protected static bool $serversideValidation = false;
-    
     protected Collection $rules;
 
     protected mixed $default = null;
+
+    protected bool $disableServersideValidation;
 
     protected Collection $metas;
 
@@ -152,17 +152,33 @@ abstract class Setting
     }
 
     /**
+     * Dsables the live validation for rules and serverside data
+     * 
+     * @return mixed $name 
+     */
+    public function disableServersideValidation(bool $disableServersideValidation = true)
+    {
+        $this->disableServersideValidation = $disableServersideValidation;
+        return $this;
+    }
+
+    /**
      * -------------- STATIC GETTER --------------
      */
 
     /**
-     * Does the setting need servervalidation?
+     * Does the setting need serversideValidation?
      * 
      * @return bool $serversideValidation 
      */
-    public static function serversideValidation(): bool
+    public function serversideValidation(): bool
     {
-        return static::$serversideValidation;
+        $reflector = new \ReflectionMethod($this, 'getValue');
+        $overwrittenGetValueFunction = ($reflector->getDeclaringClass()->getName() === static::class);
+
+        return isset($this->disableServersideValidation) 
+            ? !$this->disableServersideValidation
+            : $overwrittenGetValueFunction || !$this->rules->isEmpty();
     }
 
     /**

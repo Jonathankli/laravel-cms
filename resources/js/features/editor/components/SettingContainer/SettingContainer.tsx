@@ -10,9 +10,9 @@ import { useCmsDispatch } from "../../../../hooks/redux";
 export interface SettingContainerProps {
     setting: Setting;
     error: string;
-    update(target: string, value: any): void;
-    reset(target: string): void;
-    resetDefault(target: string): void;
+    update(target: string | Setting, value: any): void;
+    reset(target: string | Setting): void;
+    resetDefault(target: string | Setting): void;
 }
 
 export function SettingContainer(props: SettingContainerProps) {
@@ -78,7 +78,7 @@ export function SettingContainer(props: SettingContainerProps) {
         Fallback = Component.Fallback;
         Component = Component.Component;
     }
-
+    
     return (
         <>
             <Component
@@ -87,9 +87,9 @@ export function SettingContainer(props: SettingContainerProps) {
                 data={serverData ?? setting.data}
                 key={setting.name}
                 value={value}
-                update={props.update.bind(this, setting.name)}
-                reset={props.reset.bind(this, setting.name)}
-                resetDefault={props.resetDefault.bind(this, setting.name)}
+                update={props.update.bind(this, setting)}
+                reset={props.reset.bind(this, setting)}
+                resetDefault={props.resetDefault.bind(this, setting)}
                 requestServerData={requestServerData}
                 isLoading={isLoading}
             />

@@ -12,7 +12,6 @@ export interface NodeState {
     editNode: CmsNode | null;
     editNodeOrigial: CmsNode | null;
     settingServerDatas: {[key: string]: any};
-    revalidateServerData: boolean;
 }
 
 // Define the initial state using that type
@@ -25,7 +24,6 @@ const initialState: NodeState = {
     editNode: null,
     editNodeOrigial: null,
     settingServerDatas: {},
-    revalidateServerData: false,
 };
 
 export interface UpdateNodePayload {
@@ -73,16 +71,17 @@ export const editorSlice = createSlice({
             state.editNodeOrigial = action.payload.node;
             state.settingServerDatas = {};
         },
+        serverUpdateEditNode: (state, action: PayloadAction<{ node: CmsNode }>) => {
+            state.editNode = action.payload.node;
+        },
         updateObject: (state, action: PayloadAction<UpdateNodePayload>) => {
             if (!state.editNode?.settings) {
                 console.error("No node in edit mode.");
                 return;
             }
             state.editNode.settings[getSettingName(action.payload.target)] =
-                action.payload.value;
-            
-            state.revalidateServerData = typeof action.payload.target !== "string" ? action.payload.target.serversideValidation : false;
-        },
+                action.payload.value;         
+       },
         saveObject: (state, action: PayloadAction) => {
             state.isEditorOpen = false;
             state.editNode = null;
@@ -119,6 +118,7 @@ export const {
   abortEdit,
   openEditor, 
   addSettingServerData,
+  serverUpdateEditNode,
 } = editorSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -132,9 +132,6 @@ export const selectEditNode = (state: RootState) =>
 
 export const selectEditNodeOriginal = (state: RootState) =>
     state.editor.editNodeOrigial;
-
-export const selectRevalidateServerdata = (state: RootState) =>
-    state.editor.revalidateServerData;
 
 export const selectSettingsDatas = (state: RootState) =>
     state.editor.settingServerDatas;

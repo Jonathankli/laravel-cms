@@ -12,11 +12,12 @@ import {
     selectEditNodeOriginal,
     updateObject,
     saveObject as saveObjectAction,
-    selectRevalidateServerdata,
     getSettingName,
+    serverUpdateEditNode,
 } from "../../editorSlice";
 import { SettingContainer } from "../SettingContainer/SettingContainer";
 import { closeModal, openModal } from "@mantine/modals";
+import { debounce } from "../../../../utils/debounce";
 
 export interface ObjectEditorProps {
     isLoadinng?: boolean;
@@ -26,21 +27,11 @@ export interface ObjectEditorProps {
 export function ObjectEditor(props: ObjectEditorProps) {
     const editNode = useSelector(selectEditNode);
     const editNodeOriginal = useSelector(selectEditNodeOriginal);
-    const revalidateServerData = useSelector(selectRevalidateServerdata);
     const editNodeMeta = useInertiaProps().editNodeMeta as CmsObject;
     const errors = useInertiaProps().errors?.objectEditor;
     const dispatch = useCmsDispatch();
     const { params, paths } = useServerConfig();
-    const [debouncedSettings] = useDebouncedValue(
-        editNode?.settings,
-        500
-    );
 
-    useDidUpdate(() => {
-        if(editNodeMeta?.revalidateServerData || revalidateServerData) {
-            reloadData();
-        }
-    }, [debouncedSettings]);
 
     if (!editNodeMeta || !editNode || !editNodeOriginal) {
         return <>Error!</>;
@@ -74,6 +65,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
             }
         );
     };
+
     const close = () => {
         router.reload({
             data: {
@@ -84,21 +76,34 @@ export function ObjectEditor(props: ObjectEditorProps) {
             },
         });
     };
-    const reloadData = () => {
+
+    const reloadData = (newSettings: Object) => {
         props?.setIsLoading?.(true);
         router.reload({
             headers: {
-                "X-CMS-Node-Settings": JSON.stringify(debouncedSettings),
+                "X-CMS-Node-Settings": JSON.stringify(newSettings),
             },
             only: ["editNode", "errors"],
+            onSuccess: (page) => {
+                dispatch(serverUpdateEditNode({node: page.props.editNode as CmsNode}))
+            },
             onFinish: () => {
                 props?.setIsLoading?.(false);
             },
         });
     };
+    const debouncedReloadData = debounce(reloadData);
 
-    const update = (target: string | Setting, value: any) =>
+    const update = (target: string | Setting, value: any) => {
+        const serverUpdate = editNodeMeta.revalidateServerData || (typeof target !== "string" ? target.serversideValidation : false);
+        if(serverUpdate) {
+            const newSettings: Object = {...editNode.settings, [getSettingName(target)]: value};
+            debouncedReloadData(newSettings);
+            return;
+        }
+        
         dispatch(updateObject({ target, value }));
+    }
 
     const reset = (target: string | Setting) =>
         dispatch(

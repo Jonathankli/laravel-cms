@@ -10,4 +10,5 @@ interface HasModels
     public function getModelIds(CmsNode $node): null|string|Collection;
     public function getModelType(): string;
     public function getModelKey(): string;
+    public function getResource(): string;
 }

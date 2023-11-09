@@ -2,6 +2,7 @@
 
 namespace Jkli\Cms\Traits;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 use Jkli\Cms\Models\CmsNode;
 use Jkli\Cms\Services\HasModelService;
@@ -38,11 +39,17 @@ trait InteractsWithModels
         $models = HasModelService::getModels()
             ->get($this->getModelType(), collect());
 
-        if(is_string($ids)) {
-            return $models->get($ids);
+        if(is_array($ids)) {
+            $models = $models->whereIn($this->getModelKey(), $ids);
+            return $this->getResource()::collection($models);
         }
-    
-        return $models->whereIn($this->getModelKey(), $ids);
+        
+        return $this->getResource()::make($models->get($ids));
+    }
+
+    public function getResource(): string 
+    {
+        return JsonResource::class;
     }
 
     /**

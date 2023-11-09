@@ -27,6 +27,7 @@ export function SettingContainer(props: SettingContainerProps) {
 
     const reload = (payload: any = null) => {
         router.reload({
+            only: ["settingServerData"],
             headers: {
                 "X-CMS-Setting-Data-Request": JSON.stringify({
                     setting: setting.name,
@@ -69,7 +70,7 @@ export function SettingContainer(props: SettingContainerProps) {
         );
         return <>Error!</>;
     }
-
+    
     const value = editNode.settings?.[setting.name];
 
     let Component = settingConfig.Component;

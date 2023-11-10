@@ -1,0 +1,12 @@
+.outer {
+    position: relative;
+}
+
+.container {
+    border-radius: var(--mantine-radius-sm);
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.active {
+    border: 1px solid #228be6;
+}

@@ -70,7 +70,7 @@ const UserForm = (props: UserFormProps) => {
                             setData("email", event.target.value)
                         }
                         error={errors.email}
-                        icon={<IconAt size={14} />}
+                        leftSection={<IconAt size={14} />}
                     />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -96,7 +96,7 @@ const UserForm = (props: UserFormProps) => {
                     />
                 </Grid.Col>
                 <Grid.Col span={12}>
-                    <Group position="right">
+                    <Group justify="felx-end">
                         <Button
                             onClick={() =>
                                 submit(method as any, route)

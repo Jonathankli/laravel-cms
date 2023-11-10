@@ -1,6 +1,6 @@
 import React from 'react';
-import { Header as MantineHeader, Group, Container } from '@mantine/core';
-import { useStyles } from './styles';
+import { AppShell, Group, Container } from '@mantine/core';
+import classes from './styles.module.css';
 import { PageListTrigger } from '../../../page';
 import { QuickPublishButton } from '../../../publisher';
 
@@ -9,19 +9,17 @@ interface Headerprops {
 }
 
 export function Header(props: Headerprops) {
-  const { classes } = useStyles();
-
   return (
-    <MantineHeader height={56} className={classes.header}>
+    <AppShell.Header h={56} className={classes.header}>
       <Container className={classes.inner} >
 
-        <Group position='left'>
+        <Group justify='flex-start'>
           <PageListTrigger />
         </Group>
 
         <QuickPublishButton type='page' id={props.page.id} />
 
       </Container>
-    </MantineHeader>
+    </AppShell.Header>
   );
 }

@@ -4,12 +4,10 @@ import {
     Checkbox,
     Container,
     Group,
-    Indicator,
     Text,
     Title,
 } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
-import { Icon24Hours, IconRocket } from "@tabler/icons";
+import { IconRocket } from "@tabler/icons";
 import * as React from "react";
 import { useRouter } from "../../../exports";
 import { StatusIcon } from "../components/StatusIcon/StatusIcon";
@@ -91,7 +89,7 @@ const Show = (props: ShowProps) => {
             <Button
                 variant="light"
                 color="blue"
-                leftIcon={<IconRocket />}
+                leftSection={<IconRocket />}
                 onClick={submit}
                 mt={"md"}
             >
@@ -157,7 +155,7 @@ function Resource(props: {
             </Accordion.Control>
             <Accordion.Panel>
                 {resource.models.map((model) => (
-                    <Group position="apart">
+                    <Group justify="space-between">
                         {model.isOptional ? (
                             <Checkbox
                                 key={model.key}

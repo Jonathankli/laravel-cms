@@ -1,0 +1,22 @@
+.navi {
+    width: 260;
+    border: 1px solid #dee2e6;
+    border-radius: var(--mantine-radius-md);
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.navigationHeadline {
+    font-weight: 500;
+    font-size: var(--mantine-font-sice-sm);
+    line-height: 1;
+}
+.navigationSite {
+    font-size: var(--mantine-font-sice-sm);
+    color: var(--mantine-color-blue);
+    line-height: 1;
+}
+.navigationText {
+    padding-left: var(--mantine-spacting-xs);
+    flex: 1 !important;
+}

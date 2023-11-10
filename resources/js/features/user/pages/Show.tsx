@@ -45,7 +45,7 @@ const Show = (props: UserIndexProps) => {
                     Benutzer: {props.user.name}
                 </Title>
                 {actionIcons.length && (
-                    <Group py="lg" position="right">
+                    <Group py="lg" justify="felx-end">
                         {actionIcons}
                     </Group>
                 )}

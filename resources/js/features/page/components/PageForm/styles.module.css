@@ -1,0 +1,9 @@
+.input {
+        pointer-events: none
+    }
+    .vaildPath {
+        border-color: var(--mantine-color-green)
+    }
+    .invaildPath {
+        border-color: var(--mantine-color-red)
+    }

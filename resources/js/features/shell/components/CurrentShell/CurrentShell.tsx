@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { Outlet } from "../../../../exports";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { ShellContext } from "../../contexts/ShellContext";
-import { useShell } from "../../hooks/useShell";
 
 interface CurrentShellProps {
     children: JSX.Element;

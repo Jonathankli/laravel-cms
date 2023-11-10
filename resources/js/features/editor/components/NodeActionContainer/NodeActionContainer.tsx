@@ -4,11 +4,12 @@ import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import { setActiveNode } from "../../editorSlice";
 import { InsertNode } from "../InsertNode/InsertNode";
-import { useStyles } from "./useStyles";
+import classes from "./styles.module.css";
 import { NodeActions } from "../NodeActions/NodeActions";
 import { useInShell } from "../../../shell/live";
 import { useObjectEditor } from "../../hooks/useObjectEditor";
 import { useObjectPicker } from "../../hooks/useObjectPicker";
+import cx from "clsx";
 
 interface NodeActionContainerProps {
     node: CmsNode;
@@ -18,7 +19,6 @@ interface NodeActionContainerProps {
 export function NodeActionContainer(props: NodeActionContainerProps) {
     const { node, children } = props;
 
-    const { classes, cx } = useStyles();
     const isActiveNode = useCmsSelector(
         (state) => state.editor.activeNodeId === node.id
     );

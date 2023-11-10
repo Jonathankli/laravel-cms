@@ -1,0 +1,10 @@
+.header {
+    left: 56;
+}
+.inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56;
+    max-width: 100vw;
+}

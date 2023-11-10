@@ -1,0 +1,5 @@
+.actions {
+    position: absolute;
+    right: 25px;
+    transform: translateY(-50%);
+}

@@ -2,13 +2,12 @@ import React, { useEffect } from "react";
 import { TextInput, Button, Checkbox, Group, Autocomplete, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCheck, IconX } from "@tabler/icons";
-import { useStyles } from "./styles";
-import { router } from "@inertiajs/react";
-import { useServerConfig } from "../../../../hooks/config/useServerConfig";
+import classes from "./styles.module.css";
 import { usePathInfo } from "../../hooks/usePathInfo";
 import { usePrefillInputs } from "../../hooks/usePrefillValues";
 import { useRouter } from "../../../../exports";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
+import cx from "clsx";
 
 interface PageFormProps {
     page?: Page;
@@ -46,8 +45,6 @@ export function PageForm(props: PageFormProps) {
         parent
     );
     usePrefillInputs(form, !page);
-
-    const { classes, cx } = useStyles();
 
     const handleSubmit = (data: typeof form.values) => {
         if(page) {
@@ -113,7 +110,7 @@ export function PageForm(props: PageFormProps) {
                 data={shells.map(shell => ({value: shell.id, label: shell.name}))}
                 {...form.getInputProps("shell_id")}
             />
-            <Group position="apart">
+            <Group justify="space-between">
                 <Button mt="md" type="submit">
                     { page ? "Update" : "Add" }
                 </Button>

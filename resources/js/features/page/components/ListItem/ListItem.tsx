@@ -19,7 +19,7 @@ import {
     IconSettings,
     IconTrash,
 } from "@tabler/icons";
-import { useStyles } from "./styles";
+import classes from "./styles.module.css";
 import { useRouter } from "../../../../exports";
 import { closeModal, openModal } from "@mantine/modals";
 import { DeleteModel } from "../DeleteModel/DeleteModel";
@@ -33,7 +33,6 @@ const ListItem = (props: ListItemProps) => {
     const { node, hasChild, depth, isOpen, onToggle, pages } = props;
     const page = node.data;
     
-    const { classes } = useStyles();
     const router = useRouter();
 
     let padding = depth * 30;
@@ -84,7 +83,7 @@ const ListItem = (props: ListItemProps) => {
                         </span>
                     </Text>
                 </Flex>
-                <Group spacing={6}>
+                <Group gap={6}>
                     <ActionIcon color="green" size="sm" variant="outline" onClick={(e) => {
                         e.stopPropagation();
                         router.get(`${page.path}`, {}, { module: "live" })

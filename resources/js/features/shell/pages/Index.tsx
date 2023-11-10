@@ -56,7 +56,7 @@ const Index = (props: IndexPageProps) => {
 
     return (
         <Container>
-            <Group position="apart" pb={"md"}>
+            <Group justify="space-between" pb={"md"}>
                 <Title>Shells</Title>
                 <Button onClick={() => router.get('/create', {}, { preserveState: true })}>New</Button>
             </Group>

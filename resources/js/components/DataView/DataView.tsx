@@ -30,7 +30,7 @@ function DataView<T>(props: DataViewProps<T>) {
 
     return (
         <ScrollArea>
-            <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
+            <Table style={{ minWidth: 800 }} verticalSpacing="sm">
                 <tbody>{tabelRows}</tbody>
             </Table>
         </ScrollArea>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-    Navbar,
+    AppShell,
     UnstyledButton,
     Tooltip,
     Title,
@@ -8,28 +8,16 @@ import {
     Transition,
 } from "@mantine/core";
 import {
-    IconHome2,
     IconUser,
     IconSearch,
-    IconPencil,
-    IconBoxMargin,
-    IconBrowser,
-    IconUsers,
 } from "@tabler/icons";
 import { useClickOutside } from "@mantine/hooks";
-import { useStyles } from "./styles";
+import classes from "./styles.module.css";
 import { spotlight } from "@mantine/spotlight";
 import { Link } from '@inertiajs/react'
 import useInertiaProps from "../../hooks/inertia/useInertiaProps";
 import useFrontendConfig from "../../hooks/config/useFrontendConfig";
-
-const mainLinksMockdata = [
-    { icon: IconHome2, label: "Home", link: "/cms/admin" },
-    { icon: IconPencil, label: "Page Editor", link: "/cms/" },
-    { icon: IconBrowser, label: "Pages", link: "/cms/admin/pages" },
-    { icon: IconBoxMargin, label: "Shells", link: "/cms/admin/shells" },
-    { icon: IconUsers, label: "Users", link: "/cms/admin/users" },
-];
+import cx from 'clsx';
 
 const bottomLinksMockdata = [
     { icon: IconSearch, label: "Search", onClick: () => spotlight.open() },
@@ -37,7 +25,6 @@ const bottomLinksMockdata = [
 ];
 
 export default function Navi() {
-    const { classes, cx } = useStyles();
     const [activeLink, setActiveLink] = useState("Settings");
     const [open, setOpen] = useState(false);
     const ref = useClickOutside(() => setOpen(false));
@@ -52,8 +39,8 @@ export default function Navi() {
     const bottomLinks = bottomLinksMockdata;
 
     return (
-        <Navbar width={{ sm: 56 }} ref={ref} className={classes.root}>
-            <Navbar.Section grow className={classes.wrapper}>
+        <AppShell.Navbar w={{ sm: 56 }} ref={ref} className={classes.root}>
+            <div className={classes.wrapper}>
                 <div
                     className={cx(classes.aside, {
                         [classes.naviOpen]: open,
@@ -123,13 +110,12 @@ export default function Navi() {
                         </div>
                     )}
                 </Transition>
-            </Navbar.Section>
-        </Navbar>
+            </div>
+        </AppShell.Navbar>
     );
 }
 
-function NaviLink({ setActiveLink, activeLink, link, fullRelaod = false }) {
-    const { classes, cx } = useStyles();
+function NaviLink({ activeLink, setActiveLink, link, fullRelaod = false }) {
     const comp: any = fullRelaod ? "a" : Link;
     return (
         <UnstyledButton
@@ -151,7 +137,6 @@ function NaviLink({ setActiveLink, activeLink, link, fullRelaod = false }) {
 }
 
 function IconLink({ link, open, setActiveLink, activeLink, fullRelaod = false }) {
-    const { classes, cx } = useStyles();
     const comp: any = fullRelaod ? "a" : Link;
     const button = (
         <UnstyledButton

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import useCmsMode from "../../../../hooks/useCmsMode";
 import useEntityType, { EntityType } from "../../../../hooks/useEntityType";
 import { ShellContext } from "../../contexts/ShellContext";
 

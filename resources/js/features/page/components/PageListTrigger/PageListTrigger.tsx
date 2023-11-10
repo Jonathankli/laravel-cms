@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ActionIcon, Drawer, Group, Popover, Text } from "@mantine/core";
 import { IconDirections, IconSettings } from "@tabler/icons";
-import { useStyles } from "./styles";
+import classes from "./styles.module.css";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useRouter } from "../../../../exports";
 import { PageForm } from "../..";
@@ -9,7 +9,6 @@ import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import { PageList } from "../PageList/PageList";
 
 export function PageListTrigger() {
-    const { classes } = useStyles();
     const page = useInertiaProps().page as Page;
     const [editPageOpen, setEditPageOpen] = useState<boolean>(false);
     const router = useRouter();
@@ -33,10 +32,10 @@ export function PageListTrigger() {
         <Popover width={260} position="bottom" withArrow shadow="md">
             <Popover.Target>
                 <Group
-                    spacing={0}
+                    gap={0}
                     className={classes.navi}
-                    position="left"
-                    noWrap
+                    justify="felx-start"
+                    wrap="nowrap"
                 >
                     <IconDirections />
                     <div className={classes.navigationText}>

@@ -1,5 +1,3 @@
-import { createEmotionCache } from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
 import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "../store";
@@ -9,14 +7,11 @@ interface GlobalProvidersProps {
     children: any
 }
 
-
-const appendCache = createEmotionCache({ key: 'mantine', prepend: false });
-
 const GlobalProviders = (props: GlobalProvidersProps) => {
 
     return (
         <ReduxProvider store={store}>
-            <MantineProvider emotionCache={appendCache} >
+            <MantineProvider>
                     {props.children}
             </MantineProvider>
         </ReduxProvider>

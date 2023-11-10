@@ -116,7 +116,7 @@ export function DeleteModel(props: DeleteModelProps) {
                     />
                 </>
             )}
-            <Group position="apart">
+            <Group justify="space-between">
                 <Button onClick={close} variant="outline">Abrechen</Button>
                 <Button color="red" variant="filled" onClick={onDelete}>
                     Löschen

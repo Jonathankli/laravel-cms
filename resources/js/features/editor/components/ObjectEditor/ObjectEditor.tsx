@@ -46,7 +46,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
             {
                 onError: (errors) => {
                     openModal({
-                        title: <Text weight="bold">Error</Text>,
+                        title: <Text fw="bold">Error</Text>,
                         modalId: "object-editor-error",
                         zIndex: 10000,
                         children: (
@@ -141,7 +141,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
                 ))}
             </div>
             <Group
-                position="apart"
+                justify="space-between"
                 p={"sm"}
                 style={{
                     position: "absolute",

@@ -28,7 +28,7 @@ export function PageList() {
         <LoadingOverlay visible={isLoading} />
         <TextInput
           placeholder="Suche"
-          icon={<IconSearch size={18}/>}
+          leftSection={<IconSearch size={18}/>}
           withAsterisk
           pb={"sm"}
           onChange={(e) => setTerm(e.target.value)}

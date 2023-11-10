@@ -34,8 +34,8 @@ const Index = (props: DashboardProps) => {
 const Publishable = (props: { publishable: Publishable }) => {
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Text weight={500}>{props.publishable.name}</Text>
-            <Group position="apart" mt="md" mb="md" spacing={5}>
+            <Text fw={500}>{props.publishable.name}</Text>
+            <Group justify="space-between" mt="md" mb="md" gap={5}>
                 <Badge color="green" variant="light">
                     Total: <b>{props.publishable.count}</b>
                 </Badge>

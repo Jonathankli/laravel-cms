@@ -1,14 +1,13 @@
 import React from 'react';
-import { Header as MantineHeader, Container } from '@mantine/core';
-import { useStyles } from './styles';
+import { AppShell, Container } from '@mantine/core';
+import classes from './styles.module.css';
 import { BackToPageButton } from '../..';
 import { QuickPublishButton } from '../../../publisher';
 
 export function EditorHeader(props: any) {
-  const { classes } = useStyles();
 
   return (
-    <MantineHeader height={56} className={classes.header}>
+    <AppShell.Header h={56} className={classes.header}>
       <Container className={classes.inner} >
 
         <BackToPageButton />
@@ -16,6 +15,6 @@ export function EditorHeader(props: any) {
         <QuickPublishButton type='shell' id={props.shell.id} />
 
       </Container>
-    </MantineHeader>
+    </AppShell.Header>
   );
 }

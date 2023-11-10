@@ -1,16 +1,10 @@
 import {
     Button,
     Container,
-    ThemeIcon,
     Title,
-    Tooltip,
 } from "@mantine/core";
 import {
-    IconCheck,
-    IconPencil,
-    IconRefresh,
     IconRocket,
-    IconTrash,
 } from "@tabler/icons";
 import React from "react";
 import DataTable, { Column } from "../../../components/DataTable/DataTable";

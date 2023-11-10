@@ -26,7 +26,7 @@ export function ObjectPicker(props: ObjectPickerProps) {
 
     const isLoading = !groupedCmsObjects;
     if (isLoading) {
-        return <LoadingOverlay visible={true} overlayBlur={2} />;
+        return <LoadingOverlay visible={true} overlayProps={{ blur: 2 }} />;
     }
     return (
         <>
@@ -37,7 +37,7 @@ export function ObjectPicker(props: ObjectPickerProps) {
                         <Accordion.Panel>
                             {Object.values(group.objects).map((object) => (
                                 <Card key={object.type} shadow="sm" p="sm" radius="md" withBorder onClick={() => props.onSelect(object)}>
-                                    <Text weight={500}>{object.name}</Text>
+                                    <Text fw={500}>{object.name}</Text>
                                 </Card>
                             ))}
                         </Accordion.Panel>

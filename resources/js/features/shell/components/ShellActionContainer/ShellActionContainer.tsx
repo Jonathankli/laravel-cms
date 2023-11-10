@@ -3,7 +3,8 @@ import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
 import { useCmsDispatch, useCmsSelector } from "../../../../hooks/redux";
 import { setActiveNode } from "../../../editor";
 import { ShellActions } from "../ShellActions/ShellActions";
-import { useStyles } from "./useStyles";
+import classes from "./styles.module.css";
+import cx from "clsx";
 
 interface ShellActionContainerProps {
     children: JSX.Element;
@@ -14,7 +15,6 @@ export function ShellActionContainer(props: ShellActionContainerProps) {
     const { children } = props;
     const shell = useInertiaProps().shell as Shell;
 
-    const { classes, cx } = useStyles();
     const isActiveNode = useCmsSelector(
         (state) => state.editor.activeNodeId === "shell"
     );

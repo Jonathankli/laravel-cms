@@ -7,7 +7,7 @@ import {
     Tree,
 } from "@minoru/react-dnd-treeview";
 import { Divider } from "@mantine/core";
-import { useStyles } from "./styles";
+import classes from "./styles.module.css";
 import ListItem from "../ListItem/ListItem";
 
 interface PageTreeProps {
@@ -16,7 +16,6 @@ interface PageTreeProps {
 
 const PageTree = (props: PageTreeProps) => {
     const { pages } = props;
-    const { classes } = useStyles();
 
     const treeData: NodeModel<Page>[] = useMemo(() => {
         return pages.map((page) => ({

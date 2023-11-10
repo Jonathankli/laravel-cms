@@ -1,31 +1,17 @@
 import React, { useState } from "react";
 import {
-    createStyles,
     Table,
     Checkbox,
     ScrollArea,
     ActionIcon,
     Group,
     Input,
-    Title,
-    Container,
     Pagination,
-    Button,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
 import useFilter from "../../hooks/useFilter";
 import TableHead from "./TableHead";
 import useActions, { Action } from "../../hooks/useActions";
-import { Link } from "@inertiajs/react";
-
-const useStyles = createStyles((theme) => ({
-    rowSelected: {
-        backgroundColor:
-            theme.colorScheme === "dark"
-                ? theme.fn.rgba(theme.colors[theme.primaryColor][7], 0.2)
-                : theme.colors[theme.primaryColor][0],
-    },
-}));
 
 export interface Column<T> {
     selector: (column: T) => React.ReactNode;
@@ -57,7 +43,6 @@ function DataTable<T>(props: TableSelectionProps<T>) {
         setSelection,
     } = props;
 
-    const { classes, cx } = useStyles();
     const actionIcons = useActions(actions);
 
     const {
@@ -90,26 +75,25 @@ function DataTable<T>(props: TableSelectionProps<T>) {
         const fields = columns.map((col) => <td>{col.selector(item)}</td>);
 
         return (
-            <tr
+            <Table.Tr
                 key={item[pirmaryKey]}
-                className={cx({ [classes.rowSelected]: selected })}
+                bg={selected ? 'var(--mantine-color-blue-light)' : undefined}
             >
                 {setSelection && (
                     <td>
                         <Checkbox
                             checked={selection.includes(item[pirmaryKey])}
                             onChange={() => toggleRow(item[pirmaryKey])}
-                            transitionDuration={0}
                         />
                     </td>
                 )}
                 {fields}
                 <td>
-                    <Group position="right" spacing="xs">
+                    <Group justify="felx-end" gap="xs">
                         {actionIcons(item)}
                     </Group>
                 </td>
-            </tr>
+            </Table.Tr>
         );
     });
 
@@ -139,7 +123,7 @@ function DataTable<T>(props: TableSelectionProps<T>) {
                 onChange={(e) => setSearch(e.target.value)}
             />
             <ScrollArea>
-                <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
+                <Table style={{ minWidth: 800 }} verticalSpacing="sm">
                     <thead>
                         <tr>
                             {setSelection && (
@@ -151,7 +135,6 @@ function DataTable<T>(props: TableSelectionProps<T>) {
                                             selection.length > 0 &&
                                             selection.length !== data.length
                                         }
-                                        transitionDuration={0}
                                     />
                                 </th>
                             )}
@@ -166,7 +149,6 @@ function DataTable<T>(props: TableSelectionProps<T>) {
                 value={page}
                 onChange={switchPage}
                 total={totalPages}
-                position="center"
                 py={"lg"}
             />
         </>

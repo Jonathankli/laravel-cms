@@ -4,14 +4,13 @@ import { IconEdit, IconPlus, IconTrash } from "@tabler/icons";
 import React from "react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import { useObjectEditor } from "../../hooks/useObjectEditor";
-import { useStyles } from "./useStyles";
+import classes from "./styles.module.css";
 
 interface InsertNodeProps {
     node: CmsNode;
 }
 
 export function NodeActions(props: InsertNodeProps) {
-    const { classes } = useStyles();
     const { open } = useObjectEditor(props.node);
     const config = useServerConfig();
 

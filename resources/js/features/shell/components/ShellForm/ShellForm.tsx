@@ -37,7 +37,7 @@ export function ShellForm(props: ShellFormProps) {
                 placeholder="Name"
                 data-autofocus
             />
-            <Group position="apart" mt="sm">
+            <Group justify="space-between" mt="sm">
                 <Button type="submit">
                     {props.shell ? "Update" : "Add"}
                 </Button>

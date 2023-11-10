@@ -94,7 +94,7 @@ export function SettingContainer(props: SettingContainerProps) {
                 requestServerData={requestServerData}
                 isLoading={isLoading}
             />
-            <Text color="red" size="xs">{props.error}</Text>
+            <Text style={{color: "red"}} size="xs">{props.error}</Text>
             <Space h="sm" />
         </>
     );

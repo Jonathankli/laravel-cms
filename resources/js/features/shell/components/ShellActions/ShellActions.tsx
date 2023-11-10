@@ -4,13 +4,12 @@ import { IconEdit, IconUnlink } from "@tabler/icons";
 import React from "react";
 import { useServerConfig } from "../../../../hooks/config/useServerConfig";
 import useInertiaProps from "../../../../hooks/inertia/useInertiaProps";
-import { useStyles } from "./useStyles";
+import classes from "./styles.module.css";
 
 interface ShellActionsProps {
 }
 
 export function ShellActions(props: ShellActionsProps) {
-    const { classes } = useStyles();
     const config = useServerConfig();
     const page = useInertiaProps().page as Page;
 

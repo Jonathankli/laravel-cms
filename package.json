@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "watch": "tsc-watch & tscp -w",
+    "watch": "tsc-watch --noClear & tscp -w",
     "build": "tsc && tscp"
   },
   "keywords": [],

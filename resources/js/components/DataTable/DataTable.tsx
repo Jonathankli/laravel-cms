@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     Table,
     Checkbox,
@@ -12,6 +12,7 @@ import { IconSearch } from "@tabler/icons";
 import useFilter from "../../hooks/useFilter";
 import TableHead from "./TableHead";
 import useActions, { Action } from "../../hooks/useActions";
+import classes from "./styles.module.css"
 
 export interface Column<T> {
     selector: (column: T) => React.ReactNode;
@@ -80,19 +81,19 @@ function DataTable<T>(props: TableSelectionProps<T>) {
                 bg={selected ? 'var(--mantine-color-blue-light)' : undefined}
             >
                 {setSelection && (
-                    <td>
+                    <Table.Td>
                         <Checkbox
                             checked={selection.includes(item[pirmaryKey])}
                             onChange={() => toggleRow(item[pirmaryKey])}
                         />
-                    </td>
+                    </Table.Td>
                 )}
                 {fields}
-                <td>
-                    <Group justify="felx-end" gap="xs">
+                <Table.Td>
+                    <Group justify="flex-end" gap="xs">
                         {actionIcons(item)}
                     </Group>
-                </td>
+                </Table.Td>
             </Table.Tr>
         );
     });
@@ -124,10 +125,10 @@ function DataTable<T>(props: TableSelectionProps<T>) {
             />
             <ScrollArea>
                 <Table style={{ minWidth: 800 }} verticalSpacing="sm">
-                    <thead>
-                        <tr>
+                    <Table.Thead>
+                        <Table.Tr>
                             {setSelection && (
-                                <th style={{ width: 40 }}>
+                                <Table.Th className={classes.th}>
                                     <Checkbox
                                         onChange={toggleAll}
                                         checked={selection.length === data.length}
@@ -136,13 +137,13 @@ function DataTable<T>(props: TableSelectionProps<T>) {
                                             selection.length !== data.length
                                         }
                                     />
-                                </th>
+                                </Table.Th>
                             )}
                             {headder}
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>{rows}</tbody>
+                            <Table.Th className={classes.th}></Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>{rows}</Table.Tbody>
                 </Table>
             </ScrollArea>
             <Pagination

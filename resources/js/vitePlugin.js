@@ -21,7 +21,7 @@ module.exports = function laravelCms() {
     ];
 }
 
-async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "package.json")) {
+async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "../../package.json")) {
 
     const rootPkg = require(rootPkgPath);
     if (!rootPkg.workspaces?.length) {

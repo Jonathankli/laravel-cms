@@ -5,6 +5,7 @@ import {
     Container,
     Grid,
     Group,
+    Portal,
     Text,
     Title,
 } from "@mantine/core";
@@ -19,7 +20,9 @@ interface DashboardProps {
 const Index = (props: DashboardProps) => {
     return (
         <Container size={"xl"}>
-            <Title>Publisher</Title>
+            <Portal target="#cms-header-portal-title">
+                Publisher
+            </Portal>
             <Grid mt={"md"}>
                 {props.publishables.map((publishable) => (
                     <Grid.Col span={6} key={publishable.type}>

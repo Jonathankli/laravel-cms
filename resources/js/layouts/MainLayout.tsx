@@ -44,16 +44,13 @@ export function MainLayot(props: any) {
                             />
                             <Flex
                                 style={{ flex: 0 }}
-                                id="cms-header-portal-center"
                             >
                                 <Flex
                                     justify={"center"}
                                     h="100%"
                                     align={"center"}
                                 >
-                                    <Text style={{ whiteSpace: "nowrap" }}>
-                                        Laravel Cms
-                                    </Text>
+                                    <Text fw="bold" style={{ whiteSpace: "nowrap" }} id="cms-header-portal-title"></Text>
                                 </Flex>
                             </Flex>
                             <Flex

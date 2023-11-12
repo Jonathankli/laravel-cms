@@ -1,5 +1,5 @@
 .navi {
-    width: 260;
+    width: 260px;
     border: 1px solid #dee2e6;
     border-radius: var(--mantine-radius-md);
     padding: 5px 10px;
@@ -12,8 +12,8 @@
     line-height: 1;
 }
 .navigationSite {
-    font-size: var(--mantine-font-sice-sm);
-    color: var(--mantine-color-blue);
+    font-size: var(--mantine-font-size-sm);
+    color: var(--mantine-primary-color-filled);
     line-height: 1;
 }
 .navigationText {

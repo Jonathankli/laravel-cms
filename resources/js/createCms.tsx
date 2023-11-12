@@ -11,6 +11,7 @@ import { Outlet } from "./features/editor";
 import core from "./plugin/coreCms";
 import { MainLayot } from "./layouts/MainLayout";
 import '@mantine/core/styles.css';
+import '@mantine/spotlight/styles.css';
 
 function getModules(config: FrontendConfig) {
     const pluginModules = config.plugins?.flatMap((p) => {

@@ -23,7 +23,7 @@ function TableHead({ children, reversed, sortBy, sortKey, onSort }: ThProps) {
         : IconSelector;
 
     return (
-        <Table.Th style={{ width: rem(40) }}>
+        <Table.Th className={classes.th}>
             {sortKey ? (
                 <UnstyledButton onClick={() => onSort(sortKey)} className={classes.control}>
                     <Group justify="space-between">

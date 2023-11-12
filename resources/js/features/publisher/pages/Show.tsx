@@ -4,6 +4,7 @@ import {
     Checkbox,
     Container,
     Group,
+    Portal,
     Text,
     Title,
 } from "@mantine/core";
@@ -67,9 +68,9 @@ const Show = (props: ShowProps) => {
 
     return (
         <Container>
-            <Title>
+            <Portal target="#cms-header-portal-title">
                 Publish {publishable.type}: {rootResource.name}
-            </Title>
+            </Portal>
             <Text my={"md"}>
                 Publish the {publishable.type} {rootResource.name} to the live
                 system. Please check the informations and select or deselect the

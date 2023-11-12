@@ -46,7 +46,10 @@ export function PageListTrigger() {
                             {(page as Page).name}
                         </Text>
                     </div>
-                    <ActionIcon onClick={setEditPageOpen.bind(this, true)}>
+                    <ActionIcon variant="light" onClick={event => {
+                        event.stopPropagation();
+                        setEditPageOpen(true)
+                    }}>
                       <IconSettings color="grey" />
                     </ActionIcon>
                 </Group>

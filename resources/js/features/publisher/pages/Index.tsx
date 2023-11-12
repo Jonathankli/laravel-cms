@@ -1,6 +1,7 @@
 import {
     Button,
     Container,
+    Portal,
     Title,
 } from "@mantine/core";
 import {
@@ -49,7 +50,9 @@ const Index = (props: IndexProps) => {
 
     return (
         <Container size={"xl"}>
-            <Title>Publisher: {publishable.name}</Title>
+            <Portal target="#cms-header-portal-title">
+                Publisher: {publishable.name}
+            </Portal>
             <Button
                 component={Link}
                 href={`/${publishable.type}/multiple${

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Drawer, Group, Title } from "@mantine/core";
+import { Button, Container, Drawer, Group, Portal, Text, Title } from "@mantine/core";
 import { useRouter } from "../../../exports";
 import DataTable, { Column } from "../../../components/DataTable/DataTable";
 import { IconEdit, IconEye, IconNavigation, IconTrash } from "@tabler/icons";
@@ -55,11 +55,13 @@ const Index = (props: IndexPageProps) => {
     const navigateIndex = () => router.get("/", {}, { preserveState: true });
 
     return (
-        <Container>
-            <Group justify="space-between" pb={"md"}>
-                <Title>Shells</Title>
+        <Container pt={"md"}>
+            <Portal target="#cms-header-portal-title">
+                Shells
+            </Portal>
+            <Portal target="#cms-header-portal-right">
                 <Button onClick={() => router.get('/create', {}, { preserveState: true })}>New</Button>
-            </Group>
+            </Portal>
 
             {/* Page List */}
             <DataTable 

@@ -23,11 +23,11 @@
     "@emotion/react": "^11.10.5",
     "@inertiajs/react": "^1.0.0",
     "@jkli/react-finder": "^0.4.0",
-    "@mantine/core": "^7.0",
-    "@mantine/form": "^7.0",
-    "@mantine/hooks": "^7.0",
-    "@mantine/modals": "^7.0",
-    "@mantine/spotlight": "^7.0",
+    "@mantine/core": "^7.2.1",
+    "@mantine/form": "^7.2.1",
+    "@mantine/hooks": "^7.2.1",
+    "@mantine/modals": "^7.2.1",
+    "@mantine/spotlight": "^7.2.1",
     "@minoru/react-dnd-treeview": "^3.4.4",
     "@reduxjs/toolkit": "^1.9.1",
     "@tabler/icons": "^1.111.0",
@@ -48,7 +48,7 @@
     "tsc-watch": "^6.0.4",
     "typescript": "^4.8.4",
     "typescript-cp": "^0.1.9",
-    "vite": "^4.0.4"
+    "vite": "^4.5.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",

@@ -1,25 +1,23 @@
-import React from 'react';
-import { AppShell, Group, Container } from '@mantine/core';
-import classes from './styles.module.css';
-import { PageListTrigger } from '../../../page';
-import { QuickPublishButton } from '../../../publisher';
+import React from "react";
+import { Group, Portal } from "@mantine/core";
+import { PageListTrigger } from "../../../page";
+import { QuickPublishButton } from "../../../publisher";
 
 interface Headerprops {
-  page: Page;
+    page: Page;
 }
 
 export function Header(props: Headerprops) {
-  return (
-    <AppShell.Header h={56} className={classes.header}>
-      <Container className={classes.inner} >
-
-        <Group justify='flex-start'>
-          <PageListTrigger />
-        </Group>
-
-        <QuickPublishButton type='page' id={props.page.id} />
-
-      </Container>
-    </AppShell.Header>
-  );
+    return (
+        <>
+            <Portal target="#cms-header-portal-left">
+                <Group justify="flex-start">
+                    <PageListTrigger />
+                </Group>
+            </Portal>
+            <Portal target="#cms-header-portal-right">
+                <QuickPublishButton type="page" id={props.page.id} />
+            </Portal>
+        </>
+    );
 }

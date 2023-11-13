@@ -35,4 +35,5 @@ interface Setting {
     default: any;
     data: any;
     serversideValidation: boolean;
+    optimistic: boolean;
 }

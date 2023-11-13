@@ -24,6 +24,7 @@ class SettingResource extends JsonResource
             'default' => $this->getDefault(),
             'data' => $this->serverData(null),
             'serversideValidation' => $this->serversideValidation(),
+            'optimistic' => $this->getOptimistic(),
         ];
     }
 }

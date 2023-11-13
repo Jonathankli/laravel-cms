@@ -12,6 +12,7 @@ export interface NodeState {
     editNode: CmsNode | null;
     editNodeOrigial: CmsNode | null;
     settingServerDatas: {[key: string]: any};
+    pendingOptimisticUpdates: {[key: string]: any};
 }
 
 // Define the initial state using that type
@@ -24,6 +25,7 @@ const initialState: NodeState = {
     editNode: null,
     editNodeOrigial: null,
     settingServerDatas: {},
+    pendingOptimisticUpdates: {},
 };
 
 export interface UpdateNodePayload {
@@ -71,7 +73,11 @@ export const editorSlice = createSlice({
             state.editNodeOrigial = action.payload.node;
             state.settingServerDatas = {};
         },
-        serverUpdateEditNode: (state, action: PayloadAction<{ node: CmsNode }>) => {
+        serverUpdateEditNode: (state, action: PayloadAction<{ node: CmsNode, setting?: string | Setting }>) => {
+
+            if(action.payload.setting && state.pendingOptimisticUpdates[getSettingName(action.payload.setting)]) {
+                delete state.pendingOptimisticUpdates[getSettingName(action.payload.setting)];
+            }
             state.editNode = action.payload.node;
         },
         updateObject: (state, action: PayloadAction<UpdateNodePayload>) => {
@@ -81,6 +87,29 @@ export const editorSlice = createSlice({
             }
             state.editNode.settings[getSettingName(action.payload.target)] =
                 action.payload.value;         
+       },
+        updateObjectOptimistic: (state, action: PayloadAction<UpdateNodePayload>) => {
+            if (!state.editNode?.settings) {
+                console.error("No node in edit mode.");
+                return;
+            }
+            state.pendingOptimisticUpdates[getSettingName(action.payload.target)] = 
+                state.editNode.settings[getSettingName(action.payload.target)];
+            state.editNode.settings[getSettingName(action.payload.target)] =
+                action.payload.value;         
+       },
+       revertOptimisticUpdate: (state, action: PayloadAction<{setting: string | Setting}>) => {
+            const prevValue = state.pendingOptimisticUpdates[getSettingName(action.payload.setting)];
+            if (prevValue === undefined) {
+                console.error("Opimistic Value not found.");
+                return;
+            }
+            if (!state.editNode?.settings) {
+                console.error("No node in edit mode.");
+                return;
+            }
+            state.editNode.settings[getSettingName(action.payload.setting)] = prevValue  
+            delete state.pendingOptimisticUpdates[getSettingName(action.payload.setting)];
        },
         saveObject: (state, action: PayloadAction) => {
             state.isEditorOpen = false;
@@ -119,6 +148,8 @@ export const {
   openEditor, 
   addSettingServerData,
   serverUpdateEditNode,
+  updateObjectOptimistic,
+  revertOptimisticUpdate,
 } = editorSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

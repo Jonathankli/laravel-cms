@@ -15,6 +15,8 @@ abstract class Setting
 
     protected mixed $default = null;
 
+    protected bool $optimistic = true;
+
     protected bool $disableServersideValidation;
 
     protected Collection $metas;
@@ -72,6 +74,18 @@ abstract class Setting
     public function default($value)
     {
         $this->default = $value;
+        return $this;
+    }
+ 
+    /**
+     * Sets the default value of the setting
+     *
+     * @param  mixed   $value
+     * @return $this
+     */
+    public function optimistic($optimistic = true)
+    {
+        $this->optimistic = $optimistic;
         return $this;
     }
  
@@ -149,6 +163,16 @@ abstract class Setting
     public function getDefault(): mixed
     {
         return $this->default;
+    }
+
+    /**
+     * Get the default value
+     * 
+     * @return mixed $name 
+     */
+    public function getOptimistic(): bool
+    {
+        return $this->optimistic;
     }
 
     /**

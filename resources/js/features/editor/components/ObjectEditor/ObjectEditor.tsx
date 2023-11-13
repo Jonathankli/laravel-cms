@@ -14,6 +14,8 @@ import {
     saveObject as saveObjectAction,
     getSettingName,
     serverUpdateEditNode,
+    updateObjectOptimistic,
+    revertOptimisticUpdate,
 } from "../../editorSlice";
 import { SettingContainer } from "../SettingContainer/SettingContainer";
 import { closeModal, openModal } from "@mantine/modals";
@@ -77,7 +79,7 @@ export function ObjectEditor(props: ObjectEditorProps) {
         });
     };
 
-    const reloadData = (newSettings: Object) => {
+    const reloadData = (newSettings: Object, setting: string | Setting) => {
         props?.setIsLoading?.(true);
         router.reload({
             headers: {
@@ -87,6 +89,9 @@ export function ObjectEditor(props: ObjectEditorProps) {
             onSuccess: (page) => {
                 dispatch(serverUpdateEditNode({node: page.props.editNode as CmsNode}))
             },
+            onError: (page) => {
+                dispatch(revertOptimisticUpdate({setting}))
+            },
             onFinish: () => {
                 props?.setIsLoading?.(false);
             },
@@ -94,11 +99,14 @@ export function ObjectEditor(props: ObjectEditorProps) {
     };
     const debouncedReloadData = debounce(reloadData);
 
-    const update = (target: string | Setting, value: any) => {
+    const update = (target: string | Setting, value: any, optimisticValue?: any) => {
         const serverUpdate = editNodeMeta.revalidateServerData || (typeof target !== "string" ? target.serversideValidation : false);
         if(serverUpdate) {
+            if(typeof target !== "string" && target.optimistic) {
+                dispatch(updateObjectOptimistic({ target, value: optimisticValue ?? value }));
+            }
             const newSettings: Object = {...editNode.settings, [getSettingName(target)]: value};
-            debouncedReloadData(newSettings);
+            debouncedReloadData(newSettings, target);
             return;
         }
         

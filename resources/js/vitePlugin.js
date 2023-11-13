@@ -1,27 +1,19 @@
-const react = require("@vitejs/plugin-react");
-const {default: laravel} = require("laravel-vite-plugin");
 const path = require("path");
 const fs = require("fs");
 
-module.exports = function laravelCms() {
-    return [
-        react(),
-        laravel({
-            input: ["resources/js/cms.ts", "resources/js/live.ts", "resources/css/app.css"],
-        }),
-        {
-            name: "laravel-cms",
+exports.symlinkWorkspaces = function (path = path.resolve(process.cwd(), "../../package.json")) {
+    return {
+            name: "symlinkWorkspaces",
             config: async () => ({
                 resolve: {
                     preserveSymlinks: true,
-                    alias: await getWorkspaceAliases()
+                    alias: await getWorkspaceAliases(path)
                 },
             }),
-        },
-    ];
+    };
 }
 
-async function getWorkspaceAliases(rootPkgPath = path.resolve(process.cwd(), "../../package.json")) {
+async function getWorkspaceAliases(rootPkgPath) {
 
     const rootPkg = require(rootPkgPath);
     if (!rootPkg.workspaces?.length) {

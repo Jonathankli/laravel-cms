@@ -1,13 +1,13 @@
 const path = require("path");
 const fs = require("fs");
 
-exports.symlinkWorkspaces = function (path = path.resolve(process.cwd(), "../../package.json")) {
+exports.symlinkWorkspaces = function (rootPkgPath = path.resolve(process.cwd(), "./package.json")) {
     return {
             name: "symlinkWorkspaces",
-            config: async () => ({
+            config: async (config) => ({
                 resolve: {
                     preserveSymlinks: true,
-                    alias: await getWorkspaceAliases(path)
+                    alias: await getWorkspaceAliases(rootPkgPath)
                 },
             }),
     };

@@ -3,14 +3,12 @@ import {
     AppShell,
     Burger,
     Flex,
-    Group,
-    MantineProvider,
     Text,
 } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import Navi from "../components/Navi/Navi";
 import { Spotlight } from "@mantine/spotlight";
-import { IconSearch } from "@tabler/icons";
+import { IconSearch } from "@tabler/icons"
 
 export function MainLayot(props: any) {
     return (

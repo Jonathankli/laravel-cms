@@ -20,6 +20,10 @@ class Shell extends Model implements Publishable
         'name'
     ];
 
+    protected $searchable = [
+        'name'
+    ];
+
     public function pages()
     {
         return $this->hasMany(Page::class);

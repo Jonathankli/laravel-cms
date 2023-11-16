@@ -5,6 +5,7 @@ namespace Jkli\Cms;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Jkli\Cms\Console\PluginMapCommand;
 use Jkli\Cms\Contracts\Node;
@@ -14,8 +15,10 @@ use Jkli\Cms\Http\Middleware\HandleInertiaRequests;
 use Jkli\Cms\Http\Middleware\HandleInertiaRequestsLive;
 use Jkli\Cms\Models\Page;
 use Jkli\Cms\Models\CmsNode;
+use Jkli\Cms\Models\Media;
 use Jkli\Cms\Models\Shell;
 use Jkli\Cms\Observers\CmsNodeObserver;
+use Jkli\Cms\Observers\MediaObserver;
 use Jkli\Cms\Observers\PageObserver;
 use Jkli\Cms\Services\ResolveNodeService;
 
@@ -83,6 +86,7 @@ class CmsServiceProvider extends ServiceProvider
     {
         Page::observe(PageObserver::class);
         CmsNode::observe(CmsNodeObserver::class);
+        Media::observe(MediaObserver::class);
     }
 
     /**

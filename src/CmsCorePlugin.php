@@ -6,6 +6,7 @@ use Jkli\Cms\Contracts\Pluginable;
 use Jkli\Cms\Modules\Admin;
 use Jkli\Cms\Modules\Editor;
 use Jkli\Cms\Modules\LiveServer;
+use Jkli\Cms\Modules\MediaManager;
 use Jkli\Cms\Modules\Pages;
 use Jkli\Cms\Modules\Publisher;
 use Jkli\Cms\Modules\Shells;
@@ -36,6 +37,7 @@ class CmsCorePlugin implements Pluginable
                 Publisher::class,
                 Pages::class,
                 Shells::class,
+                MediaManager::class,
                 Users::class,
             ];
         }

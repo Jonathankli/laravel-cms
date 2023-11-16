@@ -11,4 +11,10 @@ return [
 
     'cms_param_base' => '_cms',
 
+    'media' => [
+        'disk' => 'local',
+        'public_path' => 'storage/media',
+        'storage_path' => 'app/media',
+    ],
+
 ];

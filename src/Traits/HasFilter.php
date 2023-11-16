@@ -11,9 +11,7 @@ trait HasFilter
     {
         if(request()->has('search')) {
             $query->where(function($query) {
-                foreach ($this->searchable as $field) {
-                    $query->orWhere($field, 'LIKE', "%".request()->input('search')."%");
-                }
+                $this->recursiveSearch($query, $this->searchable, request()->input('search'));
             });
         }
         if(request()->has('sort')) {
@@ -22,5 +20,23 @@ trait HasFilter
 
         $limit = request()->input('limit', $this->defaultLimit);
         return $query->paginate($limit);
+    }
+
+    protected function recursiveSearch($query, $searchables, $keyword)
+    {
+        if(!$searchables || !count($searchables)) {
+            return;
+        }
+        foreach ($searchables as $key => $field) {
+            if(is_array($field)) {
+                $query->orWhereHas($key, function($query) use ($field, $keyword) {
+                    $query->where(function($query) use ($field, $keyword) {
+                    	$this->recursiveSearch($query, $field, $keyword);
+                    });
+                });
+                continue;
+            }
+            $query->orWhere($field, 'LIKE', "%".$keyword."%");
+        }
     }
 }

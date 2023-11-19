@@ -5,6 +5,7 @@ namespace Jkli\Cms\Http\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Jkli\Cms\Http\Requests\ResourceFilterRequest;
 use Jkli\Cms\Http\Resources\MediaResource;
 use Jkli\Cms\Models\Media;
@@ -68,11 +69,11 @@ class MediaController extends Controller
         $media->title = $request->input('title');
         $media->save();
 
-        $file->storeAs($media->id, $media->file_name, config('cms.media.disk', 'cms_media'));
+        $storagePath = rtrim(config('cms.media.storage_path'), '/');
+        
+        $file->storeAs($storagePath . '/' . $media->id, $media->file_name, config('cms.media.disk', 'public'));
 
-        $storagePath = config('cms.media.storage_path', 'app/media/');
-
-        $path = storage_path($storagePath . $media->id . '/' . $media->file_name);
+        $path = Storage::disk(config('cms.media.disk', 'public'))->path($storagePath . '/' . $media->id . '/' . $media->file_name);
 
         if($request->input('optimize', false)) {
             Image::load($path)
@@ -81,10 +82,11 @@ class MediaController extends Controller
         }
 
         if(str_starts_with($file->getMimeType(), 'image')) {
+            $thumbpath = Storage::disk(config('cms.media.disk', 'public'))->path($storagePath . '/' . $media->id . '/thumb_' . $media->file_name);
             Image::load($path)
                 ->width(150)
                 ->height(150)
-                ->save(storage_path($storagePath . $media->id . '/thumb_' . $media->file_name));
+                ->save($thumbpath);
         }
 
         return Redirect::route('media.show', [ 'media' => $media->id ]);

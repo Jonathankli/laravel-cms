@@ -27,6 +27,7 @@ class MediaListResource extends JsonResource
             'name' => $this->name,
             'file_name' => $this->file_name,
             'thumb_url' => $this->fullTumbUrl(),
+            'folder_id' => $this->folder_id,
         ];
     }
 }

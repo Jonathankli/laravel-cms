@@ -27,6 +27,7 @@ class FolderListResource extends JsonResource
             'name' => $this->name,
             'folders' => self::collection($this->whenLoaded('children')),
             'media' => MediaListResource::collection($this->whenLoaded('media')),
+            'parent_id' => $this->parent_id,
         ];
     }
 }

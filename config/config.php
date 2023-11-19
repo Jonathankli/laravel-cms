@@ -12,9 +12,9 @@ return [
     'cms_param_base' => '_cms',
 
     'media' => [
-        'disk' => 'local',
-        'public_path' => 'storage/media',
-        'storage_path' => 'app/media',
+        'disk' => 'public',
+        'public_path' => config('app.url') . '/storage/media',
+        'storage_path' => 'media',
     ],
 
 ];

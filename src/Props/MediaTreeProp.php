@@ -12,13 +12,22 @@ use Jkli\Cms\Models\Media;
 class MediaTreeProp extends Prop
 {
 
+    protected $folders;
+
     public function handle(Collection $props, Closure $next)
     {
-
-        $props->put('media', fn() => MediaListResource::collection(Media::whereNull('folder_id')->get())->all());
-        $props->put('folders', fn() => FolderListResource::collection(Folder::tree()->with('media')->get()->toTree())->all());
+        $props->put('folders', fn() => FolderListResource::collection($this->getFolders())->all());
+        $props->put('media', fn() => MediaListResource::collection(Media::whereNull('folder_id')->get()->merge($this->getFolders()->pluck('media')->flatten()))->all());
         
         return $next($props);
+    }
+
+    protected function getFolders(): Collection
+    {
+        if(!isset($this->folders)) {
+            $this->folders = Folder::tree()->with('media')->get();;
+        }
+        return $this->folders;
     }
 
 }

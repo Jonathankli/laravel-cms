@@ -1,11 +1,12 @@
 interface Folder {
     id: string;
     name: string;
-    parent_id?: number;
     folders?: Folder[];
     media?: Media[];
     media_count?: number;
     folders_count?: number;
+    parent?: Folder;
+    parent_id?: string
 }
 interface Media {
     id: string;
@@ -18,7 +19,9 @@ interface Media {
     description?: string;
     url: string;
     thumb_url: string;
+    folder?: Folder;
+    folder_id?: string;
 }
 
-type MediaListType = Pick<Media, 'id' | 'thumb_url' | 'name' | 'file_name'>; 
-type FolderListType = Pick<Folder, 'id' | 'name'>; 
+type MediaListType = Pick<Omit<Media, 'folder'> & {folder: FolderListType}, 'id' | 'thumb_url' | 'name' | 'file_name' | 'folder' | 'folder_id'>; 
+type FolderListType = Pick<Omit<Folder, 'parent'> & {parent: FolderListType}, 'id' | 'name' | 'parent' | 'parent_id'>; 

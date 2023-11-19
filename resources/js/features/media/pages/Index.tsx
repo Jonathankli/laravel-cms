@@ -4,6 +4,7 @@ import DataTable, { Column } from "../../../components/DataTable/DataTable";
 import { Action } from "../../../hooks/useActions";
 import { Button, Container, Portal } from "@mantine/core";
 import { useRouter } from "../../../exports";
+import MediaTree from "../components/MediaTree/MediaTree";
 
 interface MediaManagerIndexProps {
     folders: FolderListType[];
@@ -17,7 +18,7 @@ const Index = (props: MediaManagerIndexProps) => {
     return (
         <Container pt={"md"}>
             <Portal target="#cms-header-portal-title">Madia</Portal>
-            
+            <MediaTree folders={props.folders} media={props.media} />
         </Container>
     );
 };

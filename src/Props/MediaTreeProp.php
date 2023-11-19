@@ -17,7 +17,7 @@ class MediaTreeProp extends Prop
     public function handle(Collection $props, Closure $next)
     {
         $props->put('folders', fn() => FolderListResource::collection($this->getFolders())->all());
-        $props->put('media', fn() => MediaListResource::collection(Media::whereNull('folder_id')->get()->merge($this->getFolders()->pluck('media')->flatten()))->all());
+        $props->put('medias', fn() => MediaListResource::collection(Media::whereNull('folder_id')->get()->merge($this->getFolders()->pluck('media')->flatten()))->all());
         
         return $next($props);
     }

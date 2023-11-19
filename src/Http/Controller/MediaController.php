@@ -95,11 +95,12 @@ class MediaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Media  $media
+     * @param  string  $media
      * @return \Illuminate\Http\Response
      */
-    public function show(Media $media)
+    public function show(string $media)
     {
+        $media = Media::findOrFail($media); 
         return Inertia::render(MediaManager::view('Index'), PropsPipelineService::run([
             MediaTreeProp::class,
         ], [
@@ -110,11 +111,12 @@ class MediaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Media $media
+     * @param  string $media
      * @return \Illuminate\Http\Response
      */
-    public function edit(Media $media)
+    public function edit(string $media)
     {
+        $media = Media::findOrFail($media); 
         return Inertia::render(MediaManager::view('Index'), PropsPipelineService::run([
             MediaTreeProp::class,
         ], [

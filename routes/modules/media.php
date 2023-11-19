@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Jkli\Cms\Http\Controller\FolderController;
 use Jkli\Cms\Http\Controller\MediaController;
 use Jkli\Cms\Http\Controller\MediaManagerController;
 
@@ -24,3 +25,6 @@ Route::put('/{media}', [MediaController::class, "update"])
 
 Route::delete('/{media}', [MediaController::class, "destroy"])
     ->name('media.destroy');
+
+Route::resource('folders', FolderController::class)
+    ->except('index', 'show');

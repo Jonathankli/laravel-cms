@@ -1,6 +1,14 @@
 import React from "react";
 import { RenderParams } from "@minoru/react-dnd-treeview";
-import { ActionIcon, Divider, Flex, Group, Image, Text } from "@mantine/core";
+import {
+    ActionIcon,
+    Button,
+    Divider,
+    Flex,
+    Group,
+    Image,
+    Text,
+} from "@mantine/core";
 import {
     IconEdit,
     IconFile,
@@ -10,8 +18,9 @@ import {
 } from "@tabler/icons";
 import classes from "./styles.module.css";
 import { useRouter } from "../../../../exports";
-import { openConfirmModal } from "@mantine/modals";
+import { closeModal, openConfirmModal, openModal } from "@mantine/modals";
 import { MediaNode } from "../MediaTree/MediaTree";
+import { openMediaTypeModel } from "../../utils/mediaTypeModel";
 
 interface ListItemProps extends RenderParams {
     node: MediaNode;
@@ -47,7 +56,7 @@ const ListItem = (props: ListItemProps) => {
                 >
                     <div className={classes.thumbnail}>
                         {media.isFolder ? (
-                            <IconFolder size={18} />
+                            <IconFolder fill="blue" size={18} color="blue" />
                         ) : "thumb_url" in media && media.thumb_url ? (
                             <Image
                                 src={media.thumb_url}
@@ -69,11 +78,7 @@ const ListItem = (props: ListItemProps) => {
                             variant="outline"
                             onClick={(e) => {
                                 e.stopPropagation();
-                                router.get(
-                                    `create`,
-                                    { folder: media.id },
-                                    { preserveState: true }
-                                );
+                                openMediaTypeModel(router, media)
                             }}
                         >
                             <IconPlus size={14} />
@@ -88,7 +93,7 @@ const ListItem = (props: ListItemProps) => {
                             router.get(
                                 `${media.isFolder ? "folders/" : ""}${
                                     media.id
-                                }`,
+                                }/edit`,
                                 {}
                             );
                         }}

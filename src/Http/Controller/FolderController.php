@@ -62,7 +62,7 @@ class FolderController extends Controller
      */
     public function show(string $folder)
     {
-        $folder = Folder::withCount(['media', 'folders'])->findOrFail($folder); 
+        $folder = Folder::findOrFail($folder); 
         return Inertia::render(MediaManager::view('Index'), PropsPipelineService::run([
             MediaTreeProp::class,
         ], [
@@ -78,12 +78,11 @@ class FolderController extends Controller
      */
     public function edit(string $folder)
     {
-        $folder = Folder::withCount(['media', 'folders'])->findOrFail($folder); 
+        $folder = Folder::findOrFail($folder); 
         return Inertia::render(MediaManager::view('Index'), PropsPipelineService::run([
             MediaTreeProp::class,
         ], [
             'folder' => FolderResource::make($folder),
-            'editFolder' => true,
         ]));
     }
 
@@ -91,27 +90,28 @@ class FolderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Folder $folder
+     * @param  string $folder
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Folder $folder)
+    public function update(Request $request, string $folder)
     {
+        $folder = Folder::findOrFail($folder);
         $folder->name = $request->input('name', $folder->name);
         $folder->parent_id = $request->input('parent_id', $folder->parent_id);
         $folder->save();
 
-        return Redirect::route('folder.show', [ 'folder' => $folder->id ]);
+        return Redirect::route('media.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Folder $folder
+     * @param  string $folder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Folder $folder)
+    public function destroy(string $folder)
     {
-        $folder->delete();
+        Folder::findOrFail($folder)->delete();
         return Redirect::route('media.index');
     }
 }

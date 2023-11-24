@@ -33,6 +33,8 @@ class MediaResource extends JsonResource
             'description' => $this->description,
             'url' => $this->fullUrl(),
             'thumb_url' => $this->fullTumbUrl(),
+            'folder_id' => $this->folder_id,
+            'folder' => FolderResource::make($this->whenLoaded('folder')),
         ];
     }
 }

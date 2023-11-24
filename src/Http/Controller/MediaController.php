@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Jkli\Cms\Http\Requests\CreateMediaRequest;
 use Jkli\Cms\Http\Requests\ResourceFilterRequest;
+use Jkli\Cms\Http\Requests\UpdateMediaRequest;
 use Jkli\Cms\Http\Resources\MediaResource;
 use Jkli\Cms\Models\Media;
 use Jkli\Cms\Modules\MediaManager;
@@ -51,7 +53,7 @@ class MediaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateMediaRequest $request)
     {
         if(!$request->hasFile('file')) {
             throw new \Exception('No file uploaded');
@@ -61,12 +63,13 @@ class MediaController extends Controller
 
         $media = new Media();
         $media->name = $request->input('name', $file->getClientOriginalName());
-        $media->file_name = $file->getClientOriginalName();
+        $media->file_name = $request->input('file_name', $file->getClientOriginalName());
         $media->mime_type = $file->getMimeType();
         $media->copy = $request->input('copy');
         $media->description = $request->input('description');
         $media->alt = $request->input('alt');
         $media->title = $request->input('title');
+        $media->folder_id = $request->input('folder_id');
         $media->save();
 
         $storagePath = rtrim(config('cms.media.storage_path'), '/');
@@ -132,7 +135,7 @@ class MediaController extends Controller
      * @param  string $media
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, string $media)
+    public function update(UpdateMediaRequest $request, string $media)
     {
         $media = Media::findOrFail($media);
         $fileName = $request->input('file_name');
@@ -173,9 +176,10 @@ class MediaController extends Controller
         $media->description = $request->input('description', $media->description);
         $media->alt = $request->input('alt', $media->alt);
         $media->title = $request->input('title', $media->title);
+        $media->folder_id = $request->input('folder_id', $media->folder_id);
         $media->save();
 
-        return Redirect::route('media.show', [ 'media' => $media->id ]);
+        return Redirect::route('media.index');
     }
 
     /**

@@ -40,15 +40,14 @@ export function MediaForm(props: MediaFormProps) {
 
     const form = useForm<Pick<Media, 'name' | 'file_name' | 'title' | 'alt' | 'copy' | 'description' | 'folder_id'> & {file: any}>({
         initialValues: {
-            name: "",
-            file_name: "",
-            title: "",
-            alt: "",
-            copy: "",
-            description: "",
-            folder_id: getPreselectedParentFolder(),
+            name: media?.name ?? "",
+            file_name: media?.file_name ?? "",
+            title: media?.title ?? "",
+            alt: media?.alt ?? "",
+            copy: media?.copy ?? "",
+            description: media?.description ?? "",
+            folder_id: media?.folder_id ?? getPreselectedParentFolder(),
             file: null,
-            ...(media ?? {}),
         },
     });
 
@@ -58,6 +57,8 @@ export function MediaForm(props: MediaFormProps) {
                 onSuccess: onSuccess,
                 onError: form.setErrors,
                 module: "media",
+                preserveState: true,
+                preserveScroll: true,
             });
             return;
         }
@@ -65,6 +66,8 @@ export function MediaForm(props: MediaFormProps) {
             onSuccess: props.onSuccess,
             onError: form.setErrors,
             module: "media",
+            preserveState: true,
+            preserveScroll: true,
         });
     };
 

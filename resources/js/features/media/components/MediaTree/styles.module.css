@@ -1,11 +1,15 @@
-.dropTarget {
-    backgroundcolor: rgba(0, 0, 0, 0.1);
-}
-
 .listItem {
     cursor: pointer;
 }
 
 .root {
     border: 1px solid #ced4da;
+}
+
+.draggingSource {
+    opacity: .3;
+}
+
+.dropTarget {
+    background-color: #e8f0fe;
 }

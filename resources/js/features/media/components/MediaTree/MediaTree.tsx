@@ -9,6 +9,7 @@ import {
 import { Divider } from "@mantine/core";
 import classes from "./styles.module.css";
 import ListItem from "../ListItem/ListItem";
+import { useRouter } from "../../../../exports";
 
 interface MediaTreeProps {
     media: MediaListType[];
@@ -19,6 +20,8 @@ export type MediaNode = NodeModel<(MediaListType | FolderListType) & {isFolder: 
 
 const MediaTree = (props: MediaTreeProps) => {
     const { folders, media } = props;
+
+    const router = useRouter();
 
     const treeData: MediaNode[] = useMemo(() => {
         let tree: MediaNode[] = folders.map((folder) => ({
@@ -58,20 +61,36 @@ const MediaTree = (props: MediaTreeProps) => {
                 tree={treeData}
                 rootId={0}
                 classes={{
+                    draggingSource: classes.draggingSource,
                     listItem: classes.listItem,
                     dropTarget: classes.dropTarget,
                 }}
                 sort={false}
-                dropTargetOffset={5}
                 insertDroppableFirst={false}
                 canDrop={(tree, { dragSource, dropTargetId, dropTarget }) => {
                     if (dragSource?.parent === dropTargetId) {
                         return true;
                     }
                 }}
-                onDrop={(pages) => null}
+                onDrop={(tree, { dragSource, dropTarget }) => {
+                    if(!dragSource?.data || !dropTarget?.data) return;
+                    if(dragSource.data.isFolder) {
+                        router.patch(`folders/${dragSource.data.id}`, {
+                            parent_id: dropTarget.data.id,
+                        }, {
+                            preserveState: true,
+                            preserveScroll: true,
+                        });
+                        return;
+                    }
+                    router.post(`${dragSource.data.id}/patch`, {
+                        folder_id: dropTarget.data.id,
+                    }, {
+                        preserveState: true,
+                        preserveScroll: true,
+                    });
+                }}
                 render={(node, params) => <ListItem node={node} {...params} />}
-                placeholderRender={(node, { depth }) => <Divider />}
             />
         </DndProvider>
     );

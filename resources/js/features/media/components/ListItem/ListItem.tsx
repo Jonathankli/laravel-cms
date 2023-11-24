@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderParams } from "@minoru/react-dnd-treeview";
+import { RenderParams, useDragOver } from "@minoru/react-dnd-treeview";
 import {
     ActionIcon,
     Button,
@@ -32,6 +32,8 @@ const ListItem = (props: ListItemProps) => {
 
     const router = useRouter();
 
+    const dragOverProps = useDragOver(node.id, props.isOpen, props.onToggle);
+
     let padding = depth * 30;
 
     if (!media) {
@@ -47,7 +49,7 @@ const ListItem = (props: ListItemProps) => {
     };
 
     return (
-        <div onClick={onClick}>
+        <div onClick={onClick} {...dragOverProps}>
             <Flex justify={"space-between"} align={"center"}>
                 <Flex
                     className={classes.nameContainer}

@@ -129,15 +129,44 @@ class MediaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Media $media
+     * @param  string $media
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Media $media)
+    public function update(Request $request, string $media)
     {
+        $media = Media::findOrFail($media);
+        $fileName = $request->input('file_name');
+        
         if($request->file('file')) {
             $file = $request->file('file');
-            $media->file_name = $file->getClientOriginalName();
+            $media->file_name = $fileName;
             $media->mime_type = $file->getMimeType();
+
+            $storagePath = rtrim(config('cms.media.storage_path'), '/');
+        
+            $file->storeAs($storagePath . '/' . $media->id, $media->file_name, config('cms.media.disk', 'public'));
+    
+            $path = Storage::disk(config('cms.media.disk', 'public'))->path($storagePath . '/' . $media->id . '/' . $media->file_name);
+    
+            if($request->input('optimize', false)) {
+                Image::load($path)
+                    ->optimize()
+                    ->save($path);
+            }
+    
+            if(str_starts_with($file->getMimeType(), 'image')) {
+                $thumbpath = Storage::disk(config('cms.media.disk', 'public'))->path($storagePath . '/' . $media->id . '/thumb_' . $media->file_name);
+                Image::load($path)
+                    ->width(150)
+                    ->height(150)
+                    ->save($thumbpath);
+            }
+
+        } else if($fileName && $fileName !== $media->file_name) {
+            $mediaFolderPath = rtrim(config('cms.media.storage_path'), '/') . '/' . $media->id . '/';
+            Storage::disk(config('cms.media.disk', 'public'))->move($mediaFolderPath . $media->file_name, $mediaFolderPath . $fileName);
+            Storage::disk(config('cms.media.disk', 'public'))->move($mediaFolderPath . 'thumb_' . $media->file_name, $mediaFolderPath . 'thumb_' . $fileName);
+            $media->file_name = $fileName;
         }
         $media->name = $request->input('name', $media->name);
         $media->copy = $request->input('copy', $media->copy);

@@ -20,7 +20,7 @@ Route::get('/{media}', [MediaController::class, "show"])
 Route::get('/{media}/edit', [MediaController::class, "edit"])
     ->name('media.edit');
 
-Route::put('/{media}', [MediaController::class, "update"])
+Route::post('/{media}/patch', [MediaController::class, "update"])
     ->name('media.update');
 
 Route::delete('/{media}', [MediaController::class, "destroy"])

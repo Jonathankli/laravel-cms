@@ -5,6 +5,8 @@ import MediaTree from "../components/MediaTree/MediaTree";
 import { FolderForm } from "../components/FolderForm/FolderForm";
 import { IconPlus } from "@tabler/icons";
 import { openMediaTypeModel } from "../utils/mediaTypeModel";
+import { MediaForm } from "../components/MediaForm/MediaForm";
+import { ShowMedia } from "../components/ShowMedia/ShowMedia";
 
 interface MediaManagerIndexProps {
     folders: FolderListType[];
@@ -58,14 +60,14 @@ const Index = (props: MediaManagerIndexProps) => {
                 <FolderForm folders={props.folders} folder={props.folder} onCancel={navigateToIndex}/>
             </Drawer>
 
-            {/* Edit Folder */}
+            {/* Edit Media */}
             <Drawer
                 {...drawerBaseProps}
                 title={`Edit Media ${props.media?.name}`}
-                opened={!!props.media}
+                opened={!!props.media && !!props.editMedia}
                 onClose={navigateToIndex}
             >
-                
+                <MediaForm folders={props.folders} media={props.media} onCancel={navigateToIndex} />
             </Drawer>
 
             {/* Create Media */}
@@ -75,7 +77,17 @@ const Index = (props: MediaManagerIndexProps) => {
                 opened={!!props.createMedia}
                 onClose={navigateToIndex}
             >
-                
+                <MediaForm folders={props.folders} onCancel={navigateToIndex} />
+            </Drawer>
+
+            {/* Show Media */}
+            <Drawer
+                {...drawerBaseProps}
+                title={`Media: ${props.media?.name ?? ""}`}
+                opened={!!props.media && !props.editMedia}
+                onClose={navigateToIndex}
+            >
+                {props.media && <ShowMedia media={props.media} />}
             </Drawer>
 
         </Container>

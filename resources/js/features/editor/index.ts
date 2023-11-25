@@ -10,7 +10,7 @@ export * from './components/ObjectPickerModal/ObjectPickerModal';
 export * from './components/GlobalObjectPicker/GlobalObjectPicker';
 export * from './components/ObjectEditor/ObjectEditor';
 export * from './components/ObjectEditorModal/ObjectEditorModal';
-export * from '../editor/components/GlobalObjectEditor/GlobalObjectEditor';
+export * from './components/GlobalObjectEditor/GlobalObjectEditor';
 
 export * from './hooks/useObjectPicker';
 export * from './hooks/useObjectEditor';

@@ -10,11 +10,10 @@ use Jkli\Cms\Services\HasModelService;
 trait InteractsWithModels
 {
 
-    protected string $modelType;
-
     function getModelIds(CmsNode $node): null|string|Collection 
     {
         $key = $this->getModelKey();
+        $value = parent::getValue($node);
         return data_get(parent::getValue($node), $key);
     }
 
@@ -43,7 +42,6 @@ trait InteractsWithModels
             $models = $models->whereIn($this->getModelKey(), $ids);
             return $this->getResource()::collection($models);
         }
-        
         return $this->getResource()::make($models->get($ids));
     }
 

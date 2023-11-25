@@ -37,3 +37,14 @@ interface Setting {
     serversideValidation: boolean;
     optimistic: boolean;
 }
+
+interface SettingProps<Value = any, ServerPayload = any, ServerData = any> extends Setting {
+    error: string;
+    data: ServerData;
+    value: Value;
+    update(value: Value): void;
+    reset(): void;
+    resetDefault(): void;
+    requestServerData(payload: ServerPayload, debounce?: boolean): void;
+    isLoading: boolean
+}

@@ -1,9 +1,16 @@
 import { IconBoxMargin, IconBrowser, IconDashboard, IconFolder, IconPencil, IconRocket, IconSitemap, IconUser } from "@tabler/icons";
 import { ExtendedPluginConfig } from "../contexts/ConfigProvider";
 import coreConfig from "./core";
+import { Media } from "../features/media/cmsObjectSettings/Media";
 
 const coreCmsConfig: ExtendedPluginConfig= {
     extend: coreConfig,
+    objectSettings: [
+        {
+            name: 'media',
+            Component: Media,
+        }
+    ],
     modules: [
         {
             type: "admin",

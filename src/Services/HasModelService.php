@@ -42,7 +42,9 @@ class HasModelService
         if(!isset(static::$models)) {
             static::$models = $models;
         } else {
-            static::$models = static::$models->mergeRecursive($models);
+            static::$models = static::$models->mapWithKeys(fn($models, $model) => [
+                $model => $models->merge($models->get($model, collect()))
+            ]);
         }
     }
 

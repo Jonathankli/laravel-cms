@@ -14,12 +14,19 @@ import { useRouter } from "../../../../exports";
 interface MediaTreeProps {
     media: MediaListType[];
     folders: FolderListType[];
+    selectMode?: boolean;
+    onSelect?(media: MediaNode): void;
+    onDrop?(src?: MediaNode, target?: MediaNode): void;
+    actions?(media: MediaNode): React.ReactNode;
 }
 
-export type MediaNode = NodeModel<(MediaListType | FolderListType) & {isFolder: boolean}>;
+export type MediaNode = NodeModel<
+    | (MediaListType & { isFolder: false })
+    | (FolderListType & { isFolder: true })
+>;
 
 const MediaTree = (props: MediaTreeProps) => {
-    const { folders, media } = props;
+    const { folders, media, selectMode = false, onSelect } = props;
 
     const router = useRouter();
 
@@ -28,24 +35,28 @@ const MediaTree = (props: MediaTreeProps) => {
             id: folder.id,
             parent: folder.parent_id ?? 0,
             text: folder.name,
+            draggable: !selectMode,
             droppable: true,
             data: {
                 ...folder,
-                isFolder: true
+                isFolder: true,
             },
         }));
 
-        tree = tree.concat(media.map(media => ({
-            id: media.id,
-            parent: media.folder_id ?? 0,
-            text: media.name,
-            droppable: false,
-            data: {
-                ...media,
-                isFolder: false
-            },
-        })))
-        
+        tree = tree.concat(
+            media.map((media) => ({
+                id: media.id,
+                parent: media.folder_id ?? 0,
+                text: media.name,
+                draggable: !selectMode,
+                droppable: false,
+                data: {
+                    ...media,
+                    isFolder: false,
+                },
+            }))
+        );
+
         return tree;
     }, [media, folders]);
 
@@ -68,29 +79,24 @@ const MediaTree = (props: MediaTreeProps) => {
                 sort={false}
                 insertDroppableFirst={false}
                 canDrop={(tree, { dragSource, dropTargetId, dropTarget }) => {
+                    if (!props.onDrop) return false;
                     if (dragSource?.parent === dropTargetId) {
                         return true;
                     }
                 }}
                 onDrop={(tree, { dragSource, dropTarget }) => {
-                    if(!dragSource?.data || !dropTarget?.data) return;
-                    if(dragSource.data.isFolder) {
-                        router.patch(`folders/${dragSource.data.id}`, {
-                            parent_id: dropTarget.data.id,
-                        }, {
-                            preserveState: true,
-                            preserveScroll: true,
-                        });
-                        return;
-                    }
-                    router.post(`${dragSource.data.id}/patch`, {
-                        folder_id: dropTarget.data.id,
-                    }, {
-                        preserveState: true,
-                        preserveScroll: true,
-                    });
+                    if (!props.onDrop) return;
+                    props.onDrop(dragSource, dropTarget);
                 }}
-                render={(node, params) => <ListItem node={node} {...params} />}
+                render={(node, params) => (
+                    <ListItem
+                        node={node}
+                        selectMode={selectMode}
+                        onSelect={onSelect}
+                        actions={props.actions}
+                        {...params}
+                    />
+                )}
             />
         </DndProvider>
     );

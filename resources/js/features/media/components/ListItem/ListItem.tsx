@@ -10,6 +10,7 @@ import {
     Text,
 } from "@mantine/core";
 import {
+    IconArrowsMaximize,
     IconEdit,
     IconFile,
     IconFolder,
@@ -24,10 +25,13 @@ import { openMediaTypeModel } from "../../utils/mediaTypeModel";
 
 interface ListItemProps extends RenderParams {
     node: MediaNode;
+    selectMode?: boolean;
+    onSelect?(media: MediaNode): void;
+    actions?(media: MediaNode): React.ReactNode;
 }
 
 const ListItem = (props: ListItemProps) => {
-    const { node, depth, onToggle } = props;
+    const { node, depth, onToggle, selectMode = false, onSelect } = props;
     const media = node.data;
 
     const router = useRouter();
@@ -45,7 +49,7 @@ const ListItem = (props: ListItemProps) => {
             onToggle();
             return;
         }
-        router.get(`${media.id}`, {}, { preserveState: true });
+        onSelect?.(node);
     };
 
     return (
@@ -73,61 +77,7 @@ const ListItem = (props: ListItemProps) => {
                     <Text className={classes.name}>{node.text}</Text>
                 </Flex>
                 <Group gap={6}>
-                    {media.isFolder && (
-                        <ActionIcon
-                            color="blue"
-                            size="sm"
-                            variant="outline"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                openMediaTypeModel(router, media)
-                            }}
-                        >
-                            <IconPlus size={14} />
-                        </ActionIcon>
-                    )}
-                    <ActionIcon
-                        color="blue"
-                        size="sm"
-                        variant="outline"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            router.get(
-                                `${media.isFolder ? "folders/" : ""}${
-                                    media.id
-                                }/edit`,
-                                {}
-                            );
-                        }}
-                    >
-                        <IconEdit size={14} />
-                    </ActionIcon>
-                    <ActionIcon
-                        color="red"
-                        size="sm"
-                        variant="outline"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            openConfirmModal({
-                                title: `${
-                                    media.isFolder ? "Ordner" : "Datei"
-                                } "${media.name}" wirklich Löschen?`,
-                                labels: {
-                                    confirm: "Löschen",
-                                    cancel: "Abbrechen",
-                                },
-                                confirmProps: { color: "red" },
-                                onConfirm: () =>
-                                    router.delete(
-                                        `${media.isFolder ? "folders/" : ""}${
-                                            media.id
-                                        }`
-                                    ),
-                            });
-                        }}
-                    >
-                        <IconTrash size={14} />
-                    </ActionIcon>
+                    {props.actions?.(node)}
                 </Group>
             </Flex>
 

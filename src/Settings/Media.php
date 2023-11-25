@@ -16,6 +16,8 @@ class Media extends Setting implements HasModels
     use InteractsWithModels;
     
     protected string $modelType = ModelsMedia::class;
+
+    protected bool $optimistic = true;
     
     protected static string $component = 'media';
 
@@ -63,5 +65,9 @@ class Media extends Setting implements HasModels
 
     }
 
+    public function getResource(): string 
+    {
+        return MediaResource::class;
+    }
 
 }

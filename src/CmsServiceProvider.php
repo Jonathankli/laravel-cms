@@ -7,6 +7,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Jkli\Cms\Console\InstallCommand;
 use Jkli\Cms\Console\PluginMapCommand;
 use Jkli\Cms\Contracts\Node;
 use Jkli\Cms\Enums\PublishStatus;
@@ -62,7 +63,8 @@ class CmsServiceProvider extends ServiceProvider
             ], 'config');
 
             $this->commands([
-                PluginMapCommand::class
+                PluginMapCommand::class,
+                InstallCommand::class,
             ]);
         }
         

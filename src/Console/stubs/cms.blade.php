@@ -1,11 +1,5 @@
-@foreach ($pluginMap as $index => $package)
-import plugin{{$index}} from "{{$package}}"
-@endforeach
+import { createCms } from "@jkli/cms/cms";
 
-const plugins = [
-@foreach ($pluginMap as $index => $package)
-    plugin{{$index}},
-@endforeach
-];
-
-export default plugins;
+createCms({
+    plugins: []
+});
